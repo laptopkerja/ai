@@ -1,0 +1,9 @@
+backend/.wrangler/state/
+backend/.env
+
+# content-py env secrets (jangan pernah di-commit)
+content-py/.env
+content-py/.env.primary
+content-py/.env.backup
+content-py/.env.*
+!content-py/.env.example
