@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Card, ListGroup, Badge, Button, Row, Col, Modal, Toast, ToastContainer, Alert, Form } from 'react-bootstrap'
+import { Card, ListGroup, Badge, Button, Row, Col, Modal, Toast, ToastContainer, Alert, Form, Pagination } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { Icon } from '@iconify/react'
 import validateTemplate from '../lib/validateTemplate'
@@ -241,6 +241,20 @@ function parseDateMs(value) {
   return Number.isFinite(ms) ? ms : 0
 }
 
+function buildModernPaginationItems(currentPage, totalPages) {
+  const page = Math.max(1, Number(currentPage) || 1)
+  const total = Math.max(1, Number(totalPages) || 1)
+  if (total <= 7) return Array.from({ length: total }, (_, idx) => idx + 1)
+  const items = [1]
+  if (page > 3) items.push('...')
+  const start = Math.max(2, page - 1)
+  const end = Math.min(total - 1, page + 1)
+  for (let p = start; p <= end; p += 1) items.push(p)
+  if (page < total - 2) items.push('...')
+  items.push(total)
+  return items
+}
+
 export default function TemplatesPage() {
   const navigate = useNavigate()
   const [templates, setTemplates] = useState(() => loadStoredTemplates())
@@ -259,6 +273,8 @@ export default function TemplatesPage() {
   const [platformFilter, setPlatformFilter] = useState('')
   const [variantFilter, setVariantFilter] = useState('all')
   const [sortMode, setSortMode] = useState('recommended')
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(13)
 
   const platformOptions = useMemo(() => {
     const set = new Set()
@@ -300,6 +316,27 @@ export default function TemplatesPage() {
 
     return rows
   }, [platformFilter, searchQuery, sortMode, sortedTemplates, variantFilter])
+
+  const totalItemCount = filteredTemplates.length
+  const totalPages = Math.max(1, Math.ceil(totalItemCount / pageSize))
+  const paginationEnabled = totalPages > 1
+  const pageStartIndex = (Math.max(1, page) - 1) * pageSize
+  const pagedTemplates = useMemo(
+    () => filteredTemplates.slice(pageStartIndex, pageStartIndex + pageSize),
+    [filteredTemplates, pageSize, pageStartIndex]
+  )
+  const modernPaginationItems = useMemo(
+    () => buildModernPaginationItems(page, totalPages),
+    [page, totalPages]
+  )
+
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages)
+  }, [page, totalPages])
+
+  useEffect(() => {
+    setPage(1)
+  }, [searchQuery, platformFilter, variantFilter, sortMode, pageSize])
 
   const selectedVersions = useMemo(() => {
     if (!historyTarget?.id) return []
@@ -692,6 +729,8 @@ export default function TemplatesPage() {
     setPlatformFilter('')
     setVariantFilter('all')
     setSortMode('recommended')
+    setPage(1)
+    setPageSize(13)
   }
 
   return (
@@ -779,7 +818,8 @@ export default function TemplatesPage() {
           <Col xs={12}>
             <div className="d-flex align-items-center justify-content-between">
               <small className="text-muted">
-                Menampilkan {filteredTemplates.length} dari {sortedTemplates.length} template
+                Menampilkan {pagedTemplates.length} dari {filteredTemplates.length} template
+                {paginationEnabled ? ` · Page ${page}/${totalPages}` : ''}
               </small>
               <Button size="sm" variant="outline-secondary" onClick={resetFilters}>Reset Filter</Button>
             </div>
@@ -795,7 +835,7 @@ export default function TemplatesPage() {
         )}
 
         <ListGroup>
-          {filteredTemplates.map((preset) => (
+          {pagedTemplates.map((preset) => (
             <ListGroup.Item key={preset.id}>
               <Row className="align-items-center">
                 <Col xs={10}>
@@ -876,6 +916,61 @@ export default function TemplatesPage() {
             </ListGroup.Item>
           ))}
         </ListGroup>
+
+        <div className="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-3">
+          <small className="text-muted">
+            Page {page}/{totalPages} · showing {pagedTemplates.length}/{totalItemCount}
+          </small>
+          <div className="d-flex align-items-center gap-2">
+            <small className="text-muted">Page Size</small>
+            <Form.Select
+              size="sm"
+              style={{ width: 92 }}
+              value={pageSize}
+              onChange={(e) => setPageSize(Math.max(1, Number(e.target.value) || 13))}
+            >
+              <option value={13}>13</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </Form.Select>
+          </div>
+        </div>
+
+        {paginationEnabled && (
+          <div className="d-flex justify-content-end mt-2">
+            <Pagination className="mb-0 history-pagination-modern">
+              <Pagination.First
+                disabled={page <= 1}
+                onClick={() => setPage(1)}
+              />
+              <Pagination.Prev
+                disabled={page <= 1}
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+              />
+              {modernPaginationItems.map((item, idx) => (
+                item === '...'
+                  ? <Pagination.Ellipsis key={`${item}-${idx}`} disabled />
+                  : (
+                    <Pagination.Item
+                      key={item}
+                      active={page === item}
+                      onClick={() => setPage(Number(item))}
+                    >
+                      {item}
+                    </Pagination.Item>
+                    )
+              ))}
+              <Pagination.Next
+                disabled={page >= totalPages}
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              />
+              <Pagination.Last
+                disabled={page >= totalPages}
+                onClick={() => setPage(totalPages)}
+              />
+            </Pagination>
+          </div>
+        )}
 
         <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" contentClassName="modal-desk">
           <Modal.Header closeButton>
