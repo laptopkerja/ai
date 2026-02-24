@@ -1,3 +1,3 @@
-import app from '../server/index.js'
+import vercelExpressAdapter from './_express-adapter.js'
 
-export default app
+export default vercelExpressAdapter
