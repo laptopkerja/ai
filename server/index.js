@@ -15,7 +15,7 @@ import normalizePreset from '../shared/lib/normalizePreset.js'
 import applyOverrides from '../shared/lib/applyOverrides.js'
 import validateTemplate from '../shared/lib/validateTemplate.js'
 import { dirname } from 'path'
-import { fileURLToPath } from 'url'
+import { fileURLToPath, pathToFileURL } from 'url'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { encryptProviderApiKey, decryptProviderApiKey, hasProviderKeyEncryptionKey } from './lib/providerKeysCrypto.js'
@@ -6282,4 +6282,25 @@ function tryListen(port, attempts = 0) {
   })
 }
 
-tryListen(PORT)
+function isMainModule() {
+  const argvEntry = String(process.argv?.[1] || '').trim()
+  if (!argvEntry) return false
+  const entryUrl = pathToFileURL(path.resolve(argvEntry)).href
+  return import.meta.url === entryUrl
+}
+
+function shouldStartLocalServer() {
+  if (String(process.env.DISABLE_LOCAL_SERVER_BOOT || '').toLowerCase() === 'true') return false
+  return isMainModule()
+}
+
+function startServer(port = PORT) {
+  return tryListen(port)
+}
+
+if (shouldStartLocalServer()) {
+  startServer(PORT)
+}
+
+export { app, tryListen, startServer }
+export default app
