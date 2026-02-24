@@ -319,11 +319,11 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
   const { register, handleSubmit, reset, watch, setValue, getValues } = useForm({
     defaultValues: {
       platform: 'TikTok',
-      provider: 'OpenAI',
+      provider: 'Gemini',
       tone: 'Fun',
       language: 'Indonesia',
       length: 'short',
-      model: 'gpt-4o-mini',
+      model: 'gemini-2.5-flash',
       mode: 'Standard',
       preset: '',
       useTmdb: tmdbPrefs.enabled !== false
@@ -352,7 +352,7 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
     ? Math.max(1, Number(selectedTemplate?.constraints?.variationCount))
     : 1
   const selectedBuiltin = isBuiltinPreset ? PRESETS.find((x) => x.key === preset) : null
-  const [models, setModels] = useState(fallbackModelOptions('OpenAI'))
+  const [models, setModels] = useState(fallbackModelOptions('Gemini'))
   const [loadingModels, setLoadingModels] = useState(false)
   const [showMore, setShowMore] = useState(false)
   const [toneOpen, setToneOpen] = useState(false)
@@ -576,7 +576,7 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
       const nextProvider = String(
         historyItem.provider ||
         historyResult.meta?.provider ||
-        'OpenAI'
+        'Gemini'
       ).trim()
       const nextModel = String(historyResult.meta?.model || '').trim()
       const nextLanguage = String(
