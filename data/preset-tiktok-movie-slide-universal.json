@@ -1,0 +1,143 @@
+{
+  "id": "tiktok-movie-slide-universal-advanced-001",
+  "version": "1.0.0",
+  "title": "TikTok Movie Slide Universal - High Engagement",
+  "label": "TikTok Movie Slide Universal",
+  "description": "Template universal untuk konten TikTok movie slide. Judul film, vibe, dan angle utama diambil dari topik/ide + referensi image (upload/url/paste) pada saat generate, jadi bisa dipakai untuk semua movie.",
+  "platform": "TikTok",
+  "category": "Entertainment - Movie",
+  "tags": [
+    "tiktok",
+    "movie",
+    "film",
+    "slide",
+    "cinematic",
+    "engagement",
+    "spoiler-safe"
+  ],
+  "engine": "generic",
+  "strategy": {
+    "goals": [
+      "increase_watch_time",
+      "increase_comments",
+      "increase_shares",
+      "increase_saves",
+      "increase_followers"
+    ],
+    "emotionTriggers": [
+      "curiosity",
+      "suspense",
+      "empathy",
+      "nostalgia",
+      "excitement"
+    ],
+    "targetAudience": "Penonton TikTok usia 15-34 yang suka film populer, movie lovers, dan audiens casual yang butuh rekomendasi cepat tanpa spoiler berat."
+  },
+  "contentStructure": {
+    "length": "short",
+    "format": "hook 1 kalimat + movie slide scene-by-scene (5-7 slide) + verdict + CTA interaktif",
+    "placeholders": [
+      {
+        "name": "movie_source_hint",
+        "type": "string",
+        "default": "Ambil judul film, vibe, dan elemen visual dari topik teks + referensi image user."
+      },
+      {
+        "name": "spoiler_level",
+        "type": "string",
+        "default": "safe (hindari ending reveal detail)"
+      },
+      {
+        "name": "slide_count",
+        "type": "string",
+        "default": "5-7 slides"
+      },
+      {
+        "name": "focus_angle",
+        "type": "string",
+        "default": "story hook, karakter, visual tone, soundtrack, dan reason to watch"
+      }
+    ]
+  },
+  "language": "Indonesia",
+  "keywords": [
+    "movie slide tiktok",
+    "review film singkat",
+    "rekomendasi film",
+    "film viral",
+    "no spoiler review",
+    "scene breakdown"
+  ],
+  "hashtags": {
+    "strategy": "mix movie niche + trending + intent (review/rekomendasi)",
+    "count": 8
+  },
+  "cta": [
+    {
+      "type": "primary",
+      "text": "Follow untuk part 2 dan rekomendasi film lain sesuai genre favorit kamu."
+    },
+    {
+      "type": "comment",
+      "text": "Komen: tim nonton karena story, visual, atau cast?"
+    },
+    {
+      "type": "share",
+      "text": "Share ke teman kamu yang lagi cari tontonan malam ini."
+    },
+    {
+      "type": "save",
+      "text": "Save dulu biar tidak lupa masuk watchlist weekend."
+    }
+  ],
+  "audio": {
+    "recommendation": "Gunakan audio cinematic-trending yang memberi build-up lembut di detik 2-4. Output audio harus berupa referensi musik/sound (bukan dialog), relevan dengan genre film yang terdeteksi dari teks + image.",
+    "style": "cinematic beat + emotional rise",
+    "mood": "mysterious, emotional, exciting",
+    "lengthSec": 30
+  },
+  "constraints": {
+    "forbiddenWords": [
+      "link bajakan",
+      "nonton ilegal",
+      "spoiler ending",
+      "ending asli bocor",
+      "klikbait bohong",
+      "penipuan",
+      "ujaran kebencian"
+    ],
+    "variationCount": 3
+  },
+  "analytics": {
+    "trackingEnabled": true,
+    "expectedKPI": "Watch time >= 45%, Comment rate >= 2.5%, Share rate >= 1.5%, Save rate >= 1.2%, Follower conversion >= 1%."
+  },
+  "examples": [
+    {
+      "input": {
+        "topic": "Movie slide film action sci-fi terbaru",
+        "imageReferences": [
+          "poster, still scene, karakter utama"
+        ]
+      },
+      "output": {
+        "hook": "Film ini kelihatan cuma action, tapi lapisan emosinya justru yang bikin susah move on.",
+        "slidePlan": [
+          "Slide 1: hook + judul film (jika terdeteksi)",
+          "Slide 2: premis singkat tanpa spoiler ending",
+          "Slide 3: karakter paling menarik",
+          "Slide 4: visual/cinematography standout",
+          "Slide 5: soundtrack + mood",
+          "Slide 6: verdict siapa yang cocok nonton",
+          "Slide 7: CTA comment + follow + share"
+        ],
+        "cta": "Kamu lebih suka film yang mind-blowing visual atau yang story-nya nempel? Komen ya."
+      }
+    }
+  ],
+  "meta": {
+    "createdAt": "2026-02-21T07:06:54.347Z",
+    "updatedAt": "2026-02-21T07:06:54.348Z",
+    "createdBy": "codex"
+  }
+}

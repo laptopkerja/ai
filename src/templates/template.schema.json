@@ -1,0 +1,223 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Master Preset Format v3 (Format 1 - Locked)",
+  "description": "Canonical and frozen schema for Master Preset Format v3",
+  "type": "object",
+  "additionalProperties": false,
+
+  "required": [
+    "id",
+    "version",
+    "title",
+    "label",
+    "description",
+    "platform",
+    "category",
+    "tags",
+    "engine",
+    "strategy",
+    "contentStructure",
+    "language",
+    "keywords",
+    "hashtags",
+    "cta",
+    "audio",
+    "constraints",
+    "analytics",
+    "examples",
+    "meta"
+  ],
+
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "label": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "description": {
+      "type": "string"
+    },
+
+    "platform": {
+      "type": "string"
+    },
+
+    "category": {
+      "type": "string"
+    },
+
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+
+    "engine": {
+      "type": "string"
+    },
+
+    "strategy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["goals"],
+      "properties": {
+        "goals": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "emotionTriggers": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "targetAudience": {
+          "type": "string"
+        }
+      }
+    },
+
+    "contentStructure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["length", "format"],
+      "properties": {
+        "length": {
+          "type": "string",
+          "enum": ["short", "medium", "long"]
+        },
+        "format": {
+          "type": "string"
+        },
+        "placeholders": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "type": { "type": "string" },
+              "default": {}
+            }
+          }
+        }
+      }
+    },
+
+    "language": {
+      "type": "string"
+    },
+
+    "keywords": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+
+    "hashtags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy", "count"],
+      "properties": {
+        "strategy": { "type": "string" },
+        "count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 30
+        }
+      }
+    },
+
+    "cta": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "text"],
+        "properties": {
+          "type": { "type": "string" },
+          "text": { "type": "string" }
+        }
+      }
+    },
+
+    "audio": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recommendation", "style", "mood", "lengthSec"],
+      "properties": {
+        "recommendation": { "type": "string" },
+        "style": { "type": "string" },
+        "mood": { "type": "string" },
+        "lengthSec": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["forbiddenWords", "variationCount"],
+      "properties": {
+        "forbiddenWords": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "variationCount": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+
+    "analytics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trackingEnabled"],
+      "properties": {
+        "trackingEnabled": { "type": "boolean" },
+        "expectedKPI": { "type": "string" }
+      }
+    },
+
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["input", "output"],
+        "properties": {
+          "input": {},
+          "output": {}
+        }
+      }
+    },
+
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["createdAt"],
+      "properties": {
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "createdBy": { "type": "string" }
+      }
+    }
+  }
+}

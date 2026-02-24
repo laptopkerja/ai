@@ -1,0 +1,34 @@
+[
+  {
+    "id": "preset-konten-iphone-17-pro-max-viral-tiktok",
+    "version": "1.0.0",
+    "title": "iPhone 17 Pro Max - Viral TikTok",
+    "label": "iPhone 17 Pro Max Viral",
+    "description": "Template viral TikTok untuk iPhone 17 Pro Max — highlight battery, layar, kamera, dan warna.",
+    "platform": "TikTok",
+    "category": "Tech",
+    "tags": ["iphone","apple","tech","viral"],
+    "engine": "generic",
+    "strategy": {
+      "goals": ["increase_views","drive_engagement"],
+      "emotionTriggers": ["curiosity","hype"],
+      "targetAudience": "tech_enthusiasts"
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "caption+script",
+      "placeholders": []
+    },
+    "language": "Indonesia",
+    "keywords": ["iPhone 17 Pro Max","Apple Intelligence","baterai terpanjang","Cosmic Orange","kamera revolusioner"],
+    "hashtags": { "strategy": "mix", "count": 7 },
+    "cta": [
+      { "type": "primary", "text": "Cek link di bio untuk pre-order" }
+    ],
+    "audio": { "recommendation": "Viral TikTok upbeat/orchestral drop", "style": "upbeat", "mood": "energetic", "lengthSec": 8 },
+    "constraints": { "forbiddenWords": ["murah","norak","jelek"], "variationCount": 2 },
+    "analytics": { "trackingEnabled": false },
+    "examples": [ { "input": {}, "output": "Voiceover: Bukan sekadar HP, ini statement! 🚀 Siap-siap terkejut sama iPhone 17 Pro Max!" } ],
+    "meta": { "createdAt": "2026-02-19T10:46:50.668Z", "createdBy": "imported" }
+  }
+]

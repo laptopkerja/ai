@@ -1,0 +1,25 @@
+{
+  "id": "tpl-tiktok-affiliate-001",
+  "title": "TikTok - Affiliate Hook",
+  "description": "Hook singkat untuk promosi affiliate produk dengan CTA ke link di bio.",
+  "version": 1,
+  "metadata": { "createdAt": "2026-02-19T00:00:00Z", "visibility": "private" },
+  "generation": {
+    "platform": "TikTok",
+    "topicExample": "Wardah skincare routine",
+    "placeholders": [
+      { "name": "topic", "type": "string", "default": "Wardah skincare" },
+      { "name": "cta", "type": "string", "default": "Beli di link di bio" }
+    ],
+    "tone": "Fun",
+    "language": "Indonesia",
+    "length": "short",
+    "maxWords": 120,
+    "formatOutput": "title, hook, description, hashtags"
+  },
+  "audio": { "recommendation": "Energetic pop beat", "style": "pop", "mood": "energetic", "lengthSec": 12 },
+  "hashtags": { "strategy": "related + trending", "count": 8 },
+  "ctas": [ { "type": "affiliate", "text": "Beli di link di bio" }, { "type": "engagement", "text": "Like & Follow" } ],
+  "constraints": { "forbiddenWords": ["murah banget"], "variationCount": 2 },
+  "prompt": "Buat judul hook singkat untuk topik '{{topic}}' dengan tone '{{tone}}', maksimal {{maxWords}} kata. Sertakan CTA: {{cta}}. Sertakan daftar hashtag sebanyak {{hashtags.count}}."
+}

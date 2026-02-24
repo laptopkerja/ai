@@ -1,0 +1,69 @@
+[
+  {
+    "id": "promo-shopee-001",
+    "version": "1.0.0",
+    "title": "Shopee Promo Diskon 50%",
+    "label": "Promo Shopee - Diskon",
+    "description": "Template untuk promosi flash sale Shopee dengan CTA yang kuat.",
+    "platform": "Shopee",
+    "category": "E-commerce",
+    "tags": ["promo","shopee","diskon"],
+    "engine": "generic",
+    "strategy": {
+      "goals": ["drive_clicks","increase_sales"],
+      "emotionTriggers": ["urgency","fear_of_missing_out"],
+      "targetAudience": "shoppers_18_35"
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "caption",
+      "placeholders": [
+        { "name": "product", "type": "string", "default": "Produk X" },
+        { "name": "discount", "type": "string", "default": "50%" },
+        { "name": "period", "type": "string", "default": "hari ini" }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": ["diskon","flash sale","promo"],
+    "hashtags": { "strategy": "brand+generic", "count": 3 },
+    "cta": [ { "type": "primary", "text": "Beli Sekarang" } ],
+    "audio": { "recommendation": "Bright promo jingle", "style": "upbeat", "mood": "energetic", "lengthSec": 10 },
+    "constraints": { "forbiddenWords": ["gratis"], "variationCount": 2 },
+    "analytics": { "trackingEnabled": false, "expectedKPI": "CTR>2%" },
+    "examples": [ { "input": { "product": "Sabun A" }, "output": "Diskon 50% untuk Sabun A, hanya hari ini! Beli sekarang." } ],
+    "meta": { "createdAt": "2026-02-19T00:00:00.000Z", "createdBy": "system" }
+  },
+  {
+    "id": "tiktok-hook-001",
+    "version": "1.0.0",
+    "title": "TikTok Viral Hook - Resep Kopi",
+    "label": "TikTok Hook",
+    "description": "Hook singkat dan catchy untuk video TikTok seputar resep kopi.",
+    "platform": "TikTok",
+    "category": "Food & Beverage",
+    "tags": ["tiktok","hook","kopi"],
+    "engine": "generic",
+    "strategy": {
+      "goals": ["increase_views","encourage_shares"],
+      "emotionTriggers": ["curiosity","amusement"],
+      "targetAudience": "coffee_lovers"
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "script",
+      "placeholders": [
+        { "name": "tip", "type": "string", "default": "1 sendok gula" },
+        { "name": "result", "type": "string", "default": "kopi lebih enak" }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": ["kopi","resep","hack"],
+    "hashtags": { "strategy": "trending", "count": 5 },
+    "cta": [ { "type": "primary", "text": "Coba Sekarang" } ],
+    "audio": { "recommendation": "Energetic pop beat", "style": "pop", "mood": "fun", "lengthSec": 8 },
+    "constraints": { "forbiddenWords": [], "variationCount": 3 },
+    "analytics": { "trackingEnabled": false },
+    "examples": [ { "input": { "tip": "Tambahkan 1 sendok gula" }, "output": "Tambahkan 1 sendok gula ke kopi Anda untuk hasil lebih lembut." } ],
+    "meta": { "createdAt": "2026-02-19T00:00:00.000Z", "createdBy": "system" }
+  }
+]

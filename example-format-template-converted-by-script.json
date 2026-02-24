@@ -1,0 +1,89 @@
+[
+  {
+    "id": "preset-konten-iphone-17-pro-max-viral-tiktok",
+    "title": "Preset_Konten_iPhone_17_Pro_Max_Viral_TikTok",
+    "description": "Voiceover: 'Bukan sekadar HP, ini statement! 🚀 Siap-siap terkejut sama iPhone 17 Pro Max!' Text Overlay: '39 JAM BATERAI?! SERIUSAN?!' 'Layarnya 3000 nits anti-silau 🔥' 'Kamera 48MP Fusion auto pro! ✨' 'Warna Cosmic Orange? Gilaaa!' Caption: 'Upgrade next level kamu di sini! ➡️ Cek link di bio! #iPhone17ProMax #Apple2025 #TechInovasi #HPImpian #GamingTanpaPanas'",
+    "version": 1,
+    "metadata": {
+      "createdAt": "2026-02-19T10:46:50.668Z",
+      "visibility": "private"
+    },
+    "generation": {
+      "platform": "tiktok",
+      "topicExample": "",
+      "placeholders": [],
+      "tone": "Enerjik, antusias, mewah, eksklusif, informatif tapi ringkas, sedikit playful (TikTok style).",
+      "language": "Bahasa Indonesia gaul dan kekinian, penggunaan emoji yang relevan, kalimat singkat dan padat, sertakan keyword penting secara alami, gunakan sapaan akrab (misal: 'guys', 'bestie').",
+      "length": "3 - 4 kalimat",
+      "maxWords": 120,
+      "formatOutput": "Caption + script video pendek"
+    },
+    "audio": {
+      "recommendation": "Pilih audio yang sedang viral di TikTok tapi memiliki vibe 'premium tech reveal'. Bisa juga sound dengan beat drop yang pas untuk transisi fitur. Contoh: Lagu EDM upbeat tanpa lirik atau instrumental cinematic yang dramatis dan powerful.",
+      "style": "Upbeat, modern, mewah, futuristic, cinematic short burst dengan beat yang catchy dan transisi cepat.",
+      "mood": "Enerjik, powerful, inspiratif, hype, premium.",
+      "genre": "Electronic, Future Bass, Cinematic Hip-Hop, Pop-Dance, Lo-Fi (untuk vibe 'cool tech').",
+      "lengthSec": null
+    },
+    "hashtags": {
+      "strategy": "Mix of trending, niche-specific, product-specific, dan general tech hashtags. Prioritaskan hashtag yang sedang relevan dengan Apple atau gadget high-end. Gunakan maksimal 7-10 hashtag yang bervariasi.",
+      "count": 7
+    },
+    "ctas": [
+      {
+        "type": "main",
+        "text": "Cek link di bio untuk info pre-order!"
+      },
+      {
+        "type": "affiliate",
+        "text": "https://apple.com/iphone17promax/preorder-id"
+      },
+      {
+        "type": "generic",
+        "text": "Cek link di bio untuk info pre-order!"
+      },
+      {
+        "type": "engagement",
+        "text": "Komen di bawah, fitur apa yang paling bikin kalian penasaran?Tag teman kamu yang wajib upgrade ke iPhone ini!Save postingan ini biar gak ketinggalan update!Share ke story kalau kamu pengen banget iPhone 17 Pro Max!"
+      }
+    ],
+    "keywords": {
+      "main": "iPhone 17 Pro Max",
+      "extras": [
+        "Apple Intelligence",
+        "A19 Pro",
+        "Ceramic Shield 2",
+        "Cosmic Orange",
+        "Baterai iPhone terpanjang",
+        "Kamera 48MP Fusion",
+        "Super Retina XDR",
+        "ProMotion 120Hz",
+        "Gaming iPhone",
+        "Smartphone Premium"
+      ],
+      "priority": [
+        "iPhone 17 Pro Max",
+        "Apple Intelligence",
+        "baterai terpanjang",
+        "Cosmic Orange",
+        "kamera revolusioner",
+        "A19 Pro."
+      ]
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "murah",
+        "diskon (fokus premium)",
+        "basi",
+        "ketinggalan zaman",
+        "norak",
+        "jelek"
+      ],
+      "variationCount": 2
+    },
+    "examples": [
+      "Voiceover: 'Bukan sekadar HP, ini statement! 🚀 Siap-siap terkejut sama iPhone 17 Pro Max!' Text Overlay: '39 JAM BATERAI?! SERIUSAN?!' 'Layarnya 3000 nits anti-silau 🔥' 'Kamera 48MP Fusion auto pro! ✨' 'Warna Cosmic Orange? Gilaaa!' Caption: 'Upgrade next level kamu di sini! ➡️ Cek link di bio! #iPhone17ProMax #Apple2025 #TechInovasi #HPImpian #GamingTanpaPanas'"
+    ],
+    "prompt": "Caption + script video pendek"
+  }
+]

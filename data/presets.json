@@ -1,0 +1,5081 @@
+[
+  {
+    "id": "tiktok-movie-slide-universal-advanced-001",
+    "version": "1.0.0",
+    "title": "TikTok Movie Slide Universal - High Engagement",
+    "label": "TikTok Movie Slide Universal",
+    "description": "Template universal untuk konten TikTok movie slide. Judul film, vibe, dan angle utama diambil dari topik/ide + referensi image (upload/url/paste) pada saat generate, jadi bisa dipakai untuk semua movie.",
+    "platform": "TikTok",
+    "category": "Entertainment - Movie",
+    "tags": [
+      "tiktok",
+      "movie",
+      "film",
+      "slide",
+      "cinematic",
+      "engagement",
+      "spoiler-safe"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_watch_time",
+        "increase_comments",
+        "increase_shares",
+        "increase_saves",
+        "increase_followers"
+      ],
+      "emotionTriggers": [
+        "curiosity",
+        "suspense",
+        "empathy",
+        "nostalgia",
+        "excitement"
+      ],
+      "targetAudience": "Penonton TikTok usia 15-34 yang suka film populer, movie lovers, dan audiens casual yang butuh rekomendasi cepat tanpa spoiler berat."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hook 1 kalimat + movie slide scene-by-scene (5-7 slide) + verdict + CTA interaktif",
+      "placeholders": [
+        {
+          "name": "movie_source_hint",
+          "type": "string",
+          "default": "Ambil judul film, vibe, dan elemen visual dari topik teks + referensi image user."
+        },
+        {
+          "name": "spoiler_level",
+          "type": "string",
+          "default": "safe (hindari ending reveal detail)"
+        },
+        {
+          "name": "slide_count",
+          "type": "string",
+          "default": "5-7 slides"
+        },
+        {
+          "name": "focus_angle",
+          "type": "string",
+          "default": "story hook, karakter, visual tone, soundtrack, dan reason to watch"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "movie slide tiktok",
+      "review film singkat",
+      "rekomendasi film",
+      "film viral",
+      "no spoiler review",
+      "scene breakdown"
+    ],
+    "hashtags": {
+      "strategy": "mix movie niche + trending + intent (review/rekomendasi)",
+      "count": 8
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Follow untuk part 2 dan rekomendasi film lain sesuai genre favorit kamu."
+      },
+      {
+        "type": "comment",
+        "text": "Komen: tim nonton karena story, visual, atau cast?"
+      },
+      {
+        "type": "share",
+        "text": "Share ke teman kamu yang lagi cari tontonan malam ini."
+      },
+      {
+        "type": "save",
+        "text": "Save dulu biar tidak lupa masuk watchlist weekend."
+      }
+    ],
+    "audio": {
+      "recommendation": "Gunakan audio cinematic-trending yang memberi build-up lembut di detik 2-4. Output audio harus berupa referensi musik/sound (bukan dialog), relevan dengan genre film yang terdeteksi dari teks + image.",
+      "style": "cinematic beat + emotional rise",
+      "mood": "mysterious, emotional, exciting",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "link bajakan",
+        "nonton ilegal",
+        "spoiler ending",
+        "ending asli bocor",
+        "klikbait bohong",
+        "penipuan",
+        "ujaran kebencian"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Watch time >= 45%, Comment rate >= 2.5%, Share rate >= 1.5%, Save rate >= 1.2%, Follower conversion >= 1%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Movie slide film action sci-fi terbaru",
+          "imageReferences": [
+            "poster, still scene, karakter utama"
+          ]
+        },
+        "output": {
+          "hook": "Film ini kelihatan cuma action, tapi lapisan emosinya justru yang bikin susah move on.",
+          "slidePlan": [
+            "Slide 1: hook + judul film (jika terdeteksi)",
+            "Slide 2: premis singkat tanpa spoiler ending",
+            "Slide 3: karakter paling menarik",
+            "Slide 4: visual/cinematography standout",
+            "Slide 5: soundtrack + mood",
+            "Slide 6: verdict siapa yang cocok nonton",
+            "Slide 7: CTA comment + follow + share"
+          ],
+          "cta": "Kamu lebih suka film yang mind-blowing visual atau yang story-nya nempel? Komen ya."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-21T07:06:54.347Z",
+      "updatedAt": "2026-02-21T07:06:54.348Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "tiktok-review-hp-engagement-advanced-001",
+    "version": "1.0.1",
+    "title": "TikTok Advanced - Review Handphone High Engagement",
+    "label": "TikTok HP Review Advanced",
+    "description": "Template advanced untuk konten review handphone di TikTok yang fokus mendorong follower, like, comment, dan share tinggi lewat hook kuat, proof nyata, serta CTA berlapis.",
+    "platform": "TikTok",
+    "category": "Tech Review",
+    "tags": [
+      "tiktok",
+      "review",
+      "handphone",
+      "tech",
+      "engagement",
+      "follower-growth"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_followers",
+        "increase_likes",
+        "increase_comments",
+        "increase_shares",
+        "boost_watch_time"
+      ],
+      "emotionTriggers": [
+        "curiosity",
+        "surprise",
+        "social_proof",
+        "fear_of_missing_out"
+      ],
+      "targetAudience": "Pengguna TikTok Indonesia usia 17-34 yang sedang mempertimbangkan beli atau upgrade handphone"
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hook + quick verdict + 3 poin plus/minus + proof + CTA interaktif",
+      "placeholders": [
+        {
+          "name": "phone_model",
+          "type": "string",
+          "default": "Model Handphone X"
+        },
+        {
+          "name": "price_range",
+          "type": "string",
+          "default": "Rp4-6 jutaan"
+        },
+        {
+          "name": "target_user",
+          "type": "string",
+          "default": "pelajar, mahasiswa, dan pekerja muda"
+        },
+        {
+          "name": "top_feature",
+          "type": "string",
+          "default": "kamera malam"
+        },
+        {
+          "name": "biggest_weakness",
+          "type": "string",
+          "default": "charging masih 33W"
+        },
+        {
+          "name": "comparison_phone",
+          "type": "string",
+          "default": "kompetitor di kelas harga sama"
+        },
+        {
+          "name": "creator_opinion",
+          "type": "string",
+          "default": "worth it buat daily use"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "review handphone tiktok",
+      "hp terbaik 2026",
+      "review jujur hp",
+      "kamera hp bagus",
+      "hp gaming murah",
+      "value for money smartphone"
+    ],
+    "hashtags": {
+      "strategy": "mix brand + niche + trending",
+      "count": 8
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Follow buat review HP jujur tiap hari"
+      },
+      {
+        "type": "comment",
+        "text": "Komen: tim kamera atau tim performa?"
+      },
+      {
+        "type": "share",
+        "text": "Share ke teman yang lagi cari HP baru"
+      },
+      {
+        "type": "engagement",
+        "text": "Like kalau mau part 2 perbandingan lawan kompetitornya"
+      }
+    ],
+    "audio": {
+      "recommendation": "Gunakan audio beat tech-trending yang clean dengan drop di detik 3-5 untuk memperkuat hook",
+      "style": "upbeat tech beat",
+      "mood": "energetic",
+      "lengthSec": 20
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "paling terbaik sedunia",
+        "garansi pasti awet selamanya",
+        "100% tanpa kekurangan"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Like rate >= 8%, Comment rate >= 2%, Share rate >= 1.5%, Follower conversion >= 1%, Avg watch time >= 45%"
+    },
+    "examples": [
+      {
+        "input": {
+          "phone_model": "ZenPhone Nova 12",
+          "price_range": "Rp4-5 jutaan",
+          "top_feature": "kamera malam",
+          "biggest_weakness": "video 4K cepat panas"
+        },
+        "output": {
+          "hook": "HP 4 jutaan ini bikin saya bingung: kameranya kayak kelas 8 jutaan, tapi ada 1 minus yang harus kamu tahu!",
+          "script": "Quick verdict: buat daily content, ini ngebut. Plusnya: kamera malam tajam, baterai tahan seharian, layar enak buat scrolling. Minus terbesarnya: video 4K masih cepat panas. Kalau kamu prioritas kamera, ini masuk shortlist. Kalau fokus gaming berat lama, pertimbangkan opsi lain.",
+          "cta": "Komen kebutuhan kamu, nanti saya balas rekomendasi HP paling cocok. Follow + share ke temanmu yang lagi cari HP baru!"
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-19T17:26:21.738Z",
+      "updatedAt": "2026-02-20T10:02:05.961Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "threads-insight-funnel-advanced-001",
+    "version": "1.0.0",
+    "title": "Threads Advanced - Insight Funnel Engagement",
+    "label": "Threads Insight Funnel",
+    "description": "Template advanced untuk konten Threads berbasis opini + insight. Fokus memicu reply, profile visit, dan follower growth lewat angle yang jelas, data ringkas, dan CTA diskusi.",
+    "platform": "Threads",
+    "category": "Social Discussion",
+    "tags": [
+      "threads",
+      "insight",
+      "opinion",
+      "engagement",
+      "follower-growth"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_replies",
+        "increase_profile_visits",
+        "increase_followers",
+        "increase_shares"
+      ],
+      "emotionTriggers": [
+        "curiosity",
+        "relatable",
+        "authority",
+        "healthy_debate"
+      ],
+      "targetAudience": "Pengguna Threads usia 18-35 yang suka konten opini, update tren, dan diskusi ringan tapi bernilai."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "1 hook line + 4-6 poin thread + penutup CTA diskusi",
+      "placeholders": [
+        {
+          "name": "main_claim",
+          "type": "string",
+          "default": "Satu opini utama yang berani tapi tetap masuk akal"
+        },
+        {
+          "name": "proof_or_data",
+          "type": "string",
+          "default": "Fakta singkat, contoh nyata, atau observasi lapangan"
+        },
+        {
+          "name": "counter_point",
+          "type": "string",
+          "default": "Sisi lain agar thread terasa adil"
+        },
+        {
+          "name": "discussion_prompt",
+          "type": "string",
+          "default": "Pertanyaan pemancing reply dengan jawaban opini"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "threads indonesia",
+      "insight harian",
+      "opini relevan",
+      "diskusi kreator",
+      "konten thought leadership"
+    ],
+    "hashtags": {
+      "strategy": "minimal niche hashtag (0-3) agar tetap natural di feed Threads",
+      "count": 3
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Reply pendapat kamu: setuju atau tidak, dan kenapa?"
+      },
+      {
+        "type": "follow",
+        "text": "Follow untuk insight harian yang langsung bisa dipakai."
+      },
+      {
+        "type": "share",
+        "text": "Bagikan ke teman yang suka bahas topik serupa."
+      }
+    ],
+    "audio": {
+      "recommendation": "Tidak wajib audio. Jika diubah ke video snippet, gunakan lo-fi ringan tanpa vokal agar fokus ke teks insight.",
+      "style": "clean lo-fi",
+      "mood": "smart and calm",
+      "lengthSec": 35
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "auto viral",
+        "pasti benar",
+        "hoax",
+        "fitnah",
+        "provokasi berlebihan",
+        "ujaran kebencian"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Reply rate >= 3%, Profile visit rate >= 2%, Follow conversion >= 1%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Kenapa konten edukasi pendek sekarang lebih efektif dari konten panjang untuk awareness awal?"
+        },
+        "output": {
+          "hook": "Konten pendek bukan lawan konten panjang, tapi pintu masuknya.",
+          "threadPlan": [
+            "Point 1: Perubahan perilaku attention span",
+            "Point 2: Konten pendek menang di discovery",
+            "Point 3: Konten panjang menang di trust building",
+            "Point 4: Kombinasi funnel yang paling realistis",
+            "Closing: ajak diskusi strategi audiens masing-masing"
+          ]
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T15:00:00.000Z",
+      "updatedAt": "2026-02-22T15:00:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "whatsapp-channel-growth-advanced-001",
+    "version": "1.0.0",
+    "title": "WhatsApp Channel Advanced - Daily Update Growth",
+    "label": "WhatsApp Channel Growth",
+    "description": "Template advanced untuk update WhatsApp Channel yang ringkas, jelas, dan actionable. Fokus meningkatkan retention, repost, dan pertumbuhan subscriber channel.",
+    "platform": "WhatsApp Channel",
+    "category": "Community Broadcast",
+    "tags": [
+      "whatsapp-channel",
+      "broadcast",
+      "community",
+      "retention",
+      "growth"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_subscribers",
+        "increase_view_rate",
+        "increase_reactions",
+        "increase_forwards"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "urgency_light",
+        "trust",
+        "consistency"
+      ],
+      "targetAudience": "Subscriber WhatsApp Channel yang ingin update cepat, praktis, dan terpercaya tanpa teks panjang."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "headline 1 baris + 3 poin inti + CTA tindakan sederhana",
+      "placeholders": [
+        {
+          "name": "update_type",
+          "type": "string",
+          "default": "info terbaru, promo, tips, atau pengumuman"
+        },
+        {
+          "name": "core_benefit",
+          "type": "string",
+          "default": "nilai utama yang langsung dirasakan pembaca"
+        },
+        {
+          "name": "time_context",
+          "type": "string",
+          "default": "hari ini / minggu ini / periode terbatas"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "whatsapp channel",
+      "update harian",
+      "broadcast efektif",
+      "retensi audiens",
+      "konten channel"
+    ],
+    "hashtags": {
+      "strategy": "hindari hashtag berlebihan; prioritaskan pesan inti",
+      "count": 0
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Reaksi jika update seperti ini bermanfaat, biar kami lanjutkan seri berikutnya."
+      },
+      {
+        "type": "share",
+        "text": "Forward ke kontak/teman yang butuh info ini sekarang."
+      },
+      {
+        "type": "follow",
+        "text": "Tetap subscribe channel ini untuk update singkat setiap hari."
+      }
+    ],
+    "audio": {
+      "recommendation": "Tidak wajib audio. Jika dijadikan video update, gunakan background netral yang tidak mengganggu keterbacaan teks.",
+      "style": "neutral ambient",
+      "mood": "clear and helpful",
+      "lengthSec": 20
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "broadcast wajib",
+        "spam",
+        "jaminan hasil",
+        "clickbait",
+        "penipuan",
+        "fitnah"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "View rate >= 55%, Reaction rate >= 8%, Forward/share rate >= 3%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Update promo alat rumah tangga minggu ini"
+        },
+        "output": {
+          "headline": "Update cepat minggu ini: 3 promo rumah tangga paling worth it.",
+          "bodyPlan": [
+            "Poin 1: Produk A + benefit utamanya",
+            "Poin 2: Produk B + siapa yang cocok",
+            "Poin 3: Produk C + batas waktu promo",
+            "Closing: ajak reaksi dan forward seperlunya"
+          ]
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T15:00:00.000Z",
+      "updatedAt": "2026-02-22T15:00:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "telegram-community-booster-advanced-001",
+    "version": "1.0.0",
+    "title": "Telegram Advanced - Community Booster",
+    "label": "Telegram Community Booster",
+    "description": "Template advanced untuk konten Telegram (channel/group) agar interaksi naik: message view stabil, komentar diskusi hidup, dan forwarding sehat tanpa spam.",
+    "platform": "Telegram",
+    "category": "Community Management",
+    "tags": [
+      "telegram",
+      "community",
+      "channel",
+      "engagement",
+      "growth"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_message_views",
+        "increase_comments",
+        "increase_forwards",
+        "increase_member_retention"
+      ],
+      "emotionTriggers": [
+        "belonging",
+        "curiosity",
+        "utility",
+        "trust"
+      ],
+      "targetAudience": "Member Telegram yang aktif membaca update komunitas, tips praktis, dan diskusi topik niche."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "headline + context singkat + 3-5 poin actionable + CTA polling/diskusi",
+      "placeholders": [
+        {
+          "name": "community_topic",
+          "type": "string",
+          "default": "topik niche utama komunitas"
+        },
+        {
+          "name": "action_steps",
+          "type": "string",
+          "default": "langkah yang bisa langsung dipraktikkan anggota"
+        },
+        {
+          "name": "discussion_question",
+          "type": "string",
+          "default": "pertanyaan untuk memancing komentar berkualitas"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "telegram channel",
+      "telegram group",
+      "komunitas aktif",
+      "engagement member",
+      "konten telegram"
+    ],
+    "hashtags": {
+      "strategy": "gunakan seperlunya untuk indexing internal, bukan spam hashtag",
+      "count": 2
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Balas dengan pengalaman kamu biar kita bahas studi kasus real member."
+      },
+      {
+        "type": "poll",
+        "text": "Vote opsi yang paling kamu butuhkan untuk konten berikutnya."
+      },
+      {
+        "type": "share",
+        "text": "Forward ke anggota tim yang relevan agar diskusi makin tajam."
+      }
+    ],
+    "audio": {
+      "recommendation": "Tidak wajib audio. Untuk format video ringkas Telegram, gunakan musik instrumental tipis agar pesan utama tetap dominan.",
+      "style": "minimal instrumental",
+      "mood": "focused and informative",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "forward ke semua grup",
+        "join pasti kaya",
+        "spam",
+        "provokasi",
+        "penipuan",
+        "hoaks"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "View-to-member rate stabil, Comment rate >= 4%, Forward rate >= 2.5%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Rangkuman tools AI gratis untuk kreator minggu ini"
+        },
+        "output": {
+          "headline": "3 tools AI gratis minggu ini yang paling layak dicoba kreator.",
+          "bodyPlan": [
+            "Tool 1: fungsi utama + kapan dipakai",
+            "Tool 2: kelebihan praktis + batasannya",
+            "Tool 3: skenario paling cepat memberi hasil",
+            "Closing: polling tool mana mau dibahas mendalam"
+          ]
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T15:00:00.000Z",
+      "updatedAt": "2026-02-22T15:00:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "tpl-1771511656542",
+    "version": "1.0.0",
+    "title": "Movie - Viral TikTok",
+    "label": "Movie - Viral",
+    "description": "",
+    "platform": "TikTok",
+    "category": "",
+    "tags": [],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "general"
+      ],
+      "emotionTriggers": [],
+      "targetAudience": ""
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "text",
+      "placeholders": []
+    },
+    "language": "Indonesia",
+    "keywords": [],
+    "hashtags": {
+      "strategy": "none",
+      "count": 4
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Call to action"
+      }
+    ],
+    "audio": {
+      "recommendation": "",
+      "style": "",
+      "mood": "",
+      "lengthSec": 0
+    },
+    "constraints": {
+      "forbiddenWords": [],
+      "variationCount": 1
+    },
+    "analytics": {
+      "trackingEnabled": false
+    },
+    "examples": [],
+    "meta": {
+      "createdAt": "2026-02-19T14:34:16.544Z",
+      "updatedAt": "2026-02-22T13:03:51.037Z",
+      "createdBy": "unknown"
+    }
+  },
+  {
+    "id": "preset-konten-iphone-17-pro-max-viral-tiktok",
+    "version": "1.0.3",
+    "title": "iPhone 17 Pro Max - Viral TikTok",
+    "label": "iPhone 17 Pro Max Viral",
+    "description": "Template viral TikTok untuk iPhone 17 Pro Max — highlight battery, layar, kamera, dan warna.",
+    "platform": "TikTok",
+    "category": "Tech",
+    "tags": [
+      "iphone",
+      "apple",
+      "tech",
+      "viral"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_views",
+        "drive_engagement"
+      ],
+      "emotionTriggers": [
+        "curiosity",
+        "hype"
+      ],
+      "targetAudience": "tech_enthusiasts"
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "caption+script",
+      "placeholders": []
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "iPhone 17 Pro Max",
+      "Apple Intelligence",
+      "baterai terpanjang",
+      "Cosmic Orange",
+      "kamera revolusioner"
+    ],
+    "hashtags": {
+      "strategy": "mix",
+      "count": 7
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Cek link di bio untuk pre-order"
+      }
+    ],
+    "audio": {
+      "recommendation": "Viral TikTok upbeat/orchestral drop",
+      "style": "upbeat",
+      "mood": "energetic",
+      "lengthSec": 8
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "murah",
+        "norak",
+        "jelek"
+      ],
+      "variationCount": 2
+    },
+    "analytics": {
+      "trackingEnabled": false
+    },
+    "examples": [
+      {
+        "input": {},
+        "output": "Voiceover: Bukan sekadar HP, ini statement! 🚀 Siap-siap terkejut sama iPhone 17 Pro Max!"
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-19T10:46:50.668Z",
+      "updatedAt": "2026-02-19T14:47:30.233Z",
+      "createdBy": "imported"
+    }
+  },
+  {
+    "id": "promo-shopee-001",
+    "version": "1.0.3",
+    "title": "Shopee Promo Diskon 50%",
+    "label": "Promo Shopee - Diskon",
+    "description": "Template untuk promosi flash sale Shopee dengan CTA yang kuat.",
+    "platform": "Shopee",
+    "category": "E-commerce",
+    "tags": [
+      "promo",
+      "shopee",
+      "diskon"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "drive_clicks",
+        "increase_sales"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "fear_of_missing_out"
+      ],
+      "targetAudience": "shoppers_18_35"
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "caption",
+      "placeholders": [
+        {
+          "name": "product",
+          "type": "string",
+          "default": "Produk X"
+        },
+        {
+          "name": "discount",
+          "type": "string",
+          "default": "50%"
+        },
+        {
+          "name": "period",
+          "type": "string",
+          "default": "hari ini"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "diskon",
+      "flash sale",
+      "promo"
+    ],
+    "hashtags": {
+      "strategy": "brand+generic",
+      "count": 3
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Beli Sekarang"
+      }
+    ],
+    "audio": {
+      "recommendation": "Bright promo jingle",
+      "style": "upbeat",
+      "mood": "energetic",
+      "lengthSec": 10
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "gratis"
+      ],
+      "variationCount": 2
+    },
+    "analytics": {
+      "trackingEnabled": false,
+      "expectedKPI": "CTR>2%"
+    },
+    "examples": [
+      {
+        "input": {
+          "product": "Sabun A"
+        },
+        "output": "Diskon 50% untuk Sabun A, hanya hari ini! Beli sekarang."
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-19T00:00:00.000Z",
+      "updatedAt": "2026-02-19T14:04:33.057Z",
+      "createdBy": "system"
+    }
+  },
+  {
+    "id": "tiktok-hook-001",
+    "version": "1.0.2",
+    "title": "TikTok Viral Hook - Resep Kopi",
+    "label": "TikTok Hook",
+    "description": "Hook singkat dan catchy untuk video TikTok seputar resep kopi.",
+    "platform": "TikTok",
+    "category": "Food & Beverage",
+    "tags": [
+      "tiktok",
+      "hook",
+      "kopi"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_views",
+        "encourage_shares"
+      ],
+      "emotionTriggers": [
+        "curiosity",
+        "amusement"
+      ],
+      "targetAudience": "coffee_lovers"
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "script",
+      "placeholders": [
+        {
+          "name": "tip",
+          "type": "string",
+          "default": "1 sendok gula"
+        },
+        {
+          "name": "result",
+          "type": "string",
+          "default": "kopi lebih enak"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "kopi",
+      "resep",
+      "hack"
+    ],
+    "hashtags": {
+      "strategy": "trending",
+      "count": 5
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Coba Sekarang"
+      }
+    ],
+    "audio": {
+      "recommendation": "Energetic pop beat",
+      "style": "pop",
+      "mood": "fun",
+      "lengthSec": 8
+    },
+    "constraints": {
+      "forbiddenWords": [],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": false
+    },
+    "examples": [
+      {
+        "input": {
+          "tip": "Tambahkan 1 sendok gula"
+        },
+        "output": "Tambahkan 1 sendok gula ke kopi Anda untuk hasil lebih lembut."
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-19T00:00:00.000Z",
+      "updatedAt": "2026-02-19T14:04:33.094Z",
+      "createdBy": "system"
+    }
+  },
+  {
+    "id": "tokopedia-marketplace-conversion-advanced-001",
+    "version": "1.0.0",
+    "title": "Tokopedia Advanced - Marketplace Conversion Booster",
+    "label": "Tokopedia Conversion Booster",
+    "description": "Template universal Tokopedia untuk mendorong klik produk, chat, dan checkout dari konten promosi berbasis benefit nyata, proof singkat, dan CTA yang jelas.",
+    "platform": "Tokopedia",
+    "category": "E-commerce Marketplace",
+    "tags": [
+      "tokopedia",
+      "marketplace",
+      "product",
+      "conversion",
+      "promo"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_product_clicks",
+        "increase_chat_inquiries",
+        "increase_checkout",
+        "increase_repeat_buyers"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "trust",
+        "value_for_money",
+        "social_proof"
+      ],
+      "targetAudience": "Pembeli marketplace Indonesia yang membandingkan harga, rating, dan manfaat sebelum checkout."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hook + value proposition + 3 bukti singkat + CTA checkout/chat",
+      "placeholders": [
+        {
+          "name": "product_name",
+          "type": "string",
+          "default": "Nama produk utama"
+        },
+        {
+          "name": "price_anchor",
+          "type": "string",
+          "default": "Harga normal vs harga promo"
+        },
+        {
+          "name": "top_benefit",
+          "type": "string",
+          "default": "Manfaat utama yang paling dicari"
+        },
+        {
+          "name": "proof_point",
+          "type": "string",
+          "default": "Rating, testimoni, atau data penggunaan"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "tokopedia promo",
+      "produk best seller",
+      "diskon marketplace",
+      "review produk jujur",
+      "belanja hemat"
+    ],
+    "hashtags": {
+      "strategy": "kombinasi brand keyword, intent beli, dan niche produk",
+      "count": 4
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Checkout sekarang sebelum kuota promo habis."
+      },
+      {
+        "type": "comment",
+        "text": "Komentar jika ingin rekomendasi varian paling cocok."
+      },
+      {
+        "type": "chat",
+        "text": "Klik chat untuk tanya stok, ukuran, atau bundle hemat."
+      }
+    ],
+    "audio": {
+      "recommendation": "Gunakan beat promo clean dengan ritme cepat agar terasa urgent tapi tetap jelas saat voice over produk.",
+      "style": "promo upbeat",
+      "mood": "confident and urgent",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "jamin pasti kaya",
+        "harga bohong",
+        "klik jebakan",
+        "penipuan",
+        "produk palsu",
+        "spam"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "CTR produk >= 3.5%, Chat rate >= 1.8%, Checkout rate >= 1.2%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Promo blender portable hemat listrik untuk ibu rumah tangga"
+        },
+        "output": {
+          "hook": "Blender portable ini kecil, tapi hasilnya halus dan hemat listrik buat dipakai tiap hari.",
+          "description": "Harga promo lebih hemat minggu ini, rating tinggi dari pembeli aktif, dan mudah dibersihkan setelah dipakai. Cocok untuk jus harian, MPASI, atau minuman diet.",
+          "cta": "Checkout sekarang atau komentar kebutuhan kamu, nanti saya bantu pilih varian paling pas."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T16:30:00.000Z",
+      "updatedAt": "2026-02-22T16:30:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "lazada-marketplace-conversion-advanced-001",
+    "version": "1.0.0",
+    "title": "Lazada Advanced - Marketplace Conversion Booster",
+    "label": "Lazada Conversion Booster",
+    "description": "Template universal Lazada untuk konten promo produk yang fokus pada trust, value, dan dorongan checkout tanpa klaim berlebihan.",
+    "platform": "Lazada",
+    "category": "E-commerce Marketplace",
+    "tags": [
+      "lazada",
+      "marketplace",
+      "promo",
+      "conversion",
+      "product"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_product_clicks",
+        "increase_cart_additions",
+        "increase_checkout",
+        "increase_repeat_orders"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "trust",
+        "clarity",
+        "practical_value"
+      ],
+      "targetAudience": "Pengguna Lazada yang sensitif harga, membandingkan fitur, dan mencari produk dengan ulasan meyakinkan."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "problem-solution + 3 benefit + proof + CTA checkout",
+      "placeholders": [
+        {
+          "name": "product_name",
+          "type": "string",
+          "default": "Nama produk"
+        },
+        {
+          "name": "buyer_problem",
+          "type": "string",
+          "default": "Masalah utama calon pembeli"
+        },
+        {
+          "name": "promo_window",
+          "type": "string",
+          "default": "Batas waktu promo atau voucher"
+        },
+        {
+          "name": "proof_source",
+          "type": "string",
+          "default": "Bukti rating, review, atau repeat order"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "lazada promo",
+      "voucher lazada",
+      "produk recommended",
+      "belanja online hemat",
+      "review marketplace"
+    ],
+    "hashtags": {
+      "strategy": "mix promo intent, kategori produk, dan marketplace mention",
+      "count": 4
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Checkout sekarang sebelum voucher berakhir."
+      },
+      {
+        "type": "comment",
+        "text": "Komentar kalau mau bandingkan dengan produk sekelas."
+      },
+      {
+        "type": "save",
+        "text": "Simpan dulu untuk referensi belanja berikutnya."
+      }
+    ],
+    "audio": {
+      "recommendation": "Pakai musik promo ringan dengan tempo sedang agar pesan produk tetap dominan dan nyaman didengar.",
+      "style": "light commercial beat",
+      "mood": "friendly and persuasive",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "harga tipu",
+        "pasti termurah sedunia",
+        "stok palsu",
+        "penipuan",
+        "spam",
+        "hoaks"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "CTR produk >= 3.2%, Add-to-cart rate >= 1.7%, Checkout rate >= 1.1%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Promo humidifier kamar minimalis dengan watt rendah"
+        },
+        "output": {
+          "hook": "Humidifier mini ini cocok buat kamar kecil dan tetap hemat listrik dipakai semalaman.",
+          "description": "Desain ringkas, semprotan halus, dan ulasan pengguna stabil untuk penggunaan harian. Ada voucher aktif minggu ini sehingga harga lebih ringan.",
+          "cta": "Checkout sekarang atau komentar kebutuhan ruang kamu supaya saya bantu pilih kapasitas yang pas."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T16:31:00.000Z",
+      "updatedAt": "2026-02-22T16:31:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "linkedin-thought-leadership-advanced-001",
+    "version": "1.0.0",
+    "title": "LinkedIn Advanced - Thought Leadership Growth",
+    "label": "LinkedIn Thought Leadership",
+    "description": "Template LinkedIn untuk konten profesional berbasis insight, framework, dan contoh nyata agar menaikkan komentar berkualitas, saves, dan follower relevan.",
+    "platform": "LinkedIn",
+    "category": "Professional Branding",
+    "tags": [
+      "linkedin",
+      "thought-leadership",
+      "professional",
+      "career",
+      "insight"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_quality_comments",
+        "increase_profile_visits",
+        "increase_follower_growth",
+        "increase_saves"
+      ],
+      "emotionTriggers": [
+        "authority",
+        "clarity",
+        "professional_relevance",
+        "practical_value"
+      ],
+      "targetAudience": "Profesional, founder, marketer, dan tim growth yang mencari insight praktis untuk keputusan bisnis."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "hook profesional + konteks + framework 3-5 poin + CTA diskusi",
+      "placeholders": [
+        {
+          "name": "core_insight",
+          "type": "string",
+          "default": "Insight utama yang ingin dibagikan"
+        },
+        {
+          "name": "framework_name",
+          "type": "string",
+          "default": "Nama framework atau metode kerja"
+        },
+        {
+          "name": "case_example",
+          "type": "string",
+          "default": "Contoh kasus singkat yang relevan"
+        },
+        {
+          "name": "discussion_question",
+          "type": "string",
+          "default": "Pertanyaan untuk memancing komentar berkualitas"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "linkedin indonesia",
+      "growth strategy",
+      "career insight",
+      "professional branding",
+      "business framework"
+    ],
+    "hashtags": {
+      "strategy": "gunakan hashtag profesional seperlunya agar tetap natural",
+      "count": 3
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Komentar pengalaman kamu, saya rangkum praktik terbaiknya."
+      },
+      {
+        "type": "follow",
+        "text": "Follow untuk insight mingguan yang langsung bisa dieksekusi."
+      },
+      {
+        "type": "save",
+        "text": "Simpan posting ini untuk referensi saat menyusun strategi tim."
+      }
+    ],
+    "audio": {
+      "recommendation": "Jika format diubah ke video carousel, gunakan ambient corporate ringan tanpa vokal agar pesan profesional tetap fokus.",
+      "style": "corporate ambient",
+      "mood": "focused and credible",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "janji sukses instan",
+        "tanpa usaha pasti berhasil",
+        "provokasi",
+        "ujaran kebencian",
+        "spam",
+        "penipuan"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Comment quality rate >= 4%, Save rate >= 2%, Follower conversion >= 1.2%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Kenapa banyak tim gagal scale konten walau budget iklan naik?"
+        },
+        "output": {
+          "hook": "Masalah utama scale konten biasanya bukan budget, tapi kejelasan sistem eksperimennya.",
+          "description": "Gunakan framework sederhana: hipotesis, eksperimen kecil, evaluasi berbasis metrik inti, lalu standardisasi temuan yang menang. Cara ini membuat tim bergerak konsisten tanpa mengandalkan intuisi semata.",
+          "cta": "Tim kamu paling sering mentok di tahap mana: hipotesis, eksekusi, atau evaluasi?"
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T16:32:00.000Z",
+      "updatedAt": "2026-02-22T16:32:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "x-twitter-engagement-advanced-001",
+    "version": "1.0.0",
+    "title": "X Advanced - Fast Engagement Thread Starter",
+    "label": "X Thread Starter",
+    "description": "Template X (Twitter) untuk konten singkat, tajam, dan mudah direply/repost dengan sudut pandang jelas dan ajakan diskusi cepat.",
+    "platform": "X (Twitter)",
+    "category": "Social Commentary",
+    "tags": [
+      "x",
+      "twitter",
+      "thread",
+      "engagement",
+      "repost"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_replies",
+        "increase_reposts",
+        "increase_profile_clicks",
+        "increase_follower_growth"
+      ],
+      "emotionTriggers": [
+        "curiosity",
+        "relevance",
+        "opinion_gap",
+        "urgency"
+      ],
+      "targetAudience": "Pengguna X yang aktif mengikuti tren, opini cepat, dan diskusi real-time."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hook ringkas + 1 argumen inti + CTA reply/repost",
+      "placeholders": [
+        {
+          "name": "hot_take",
+          "type": "string",
+          "default": "Sudut pandang singkat yang memancing diskusi"
+        },
+        {
+          "name": "supporting_fact",
+          "type": "string",
+          "default": "Fakta pendek atau observasi relevan"
+        },
+        {
+          "name": "reply_prompt",
+          "type": "string",
+          "default": "Pertanyaan yang mendorong balasan"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "x indonesia",
+      "twitter thread",
+      "opini cepat",
+      "diskusi tren",
+      "real time engagement"
+    ],
+    "hashtags": {
+      "strategy": "maksimal 0-3 hashtag dan utamakan relevansi topik",
+      "count": 2
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Reply pendapat kamu, setuju atau tidak?"
+      },
+      {
+        "type": "repost",
+        "text": "Repost jika menurutmu insight ini relevan buat jaringanmu."
+      }
+    ],
+    "audio": {
+      "recommendation": "Tidak wajib audio. Jika dipakai untuk video pendek X, gunakan beat minimal agar fokus tetap ke teks/opini.",
+      "style": "minimal pulse",
+      "mood": "sharp and modern",
+      "lengthSec": 20
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "fitnah",
+        "hoaks",
+        "ujaran kebencian",
+        "spam link",
+        "penipuan",
+        "provokasi berbahaya"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Reply rate >= 2.8%, Repost rate >= 1.2%, Follow conversion >= 0.9%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "AI tools makin banyak tapi produktivitas tim konten stagnan"
+        },
+        "output": {
+          "hook": "Banyak tool AI tidak otomatis bikin tim lebih cepat, kalau proses kerjanya tetap kabur.",
+          "description": "Tanpa SOP eksperimen dan evaluasi mingguan, tool baru hanya menambah distraksi. Tim butuh sistem, bukan sekadar daftar aplikasi.",
+          "cta": "Menurut kamu bottleneck terbesar tim konten saat ini apa?"
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T16:33:00.000Z",
+      "updatedAt": "2026-02-22T16:33:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "soundcloud-track-promo-advanced-001",
+    "version": "1.0.0",
+    "title": "SoundCloud Advanced - Track Promotion Growth",
+    "label": "SoundCloud Track Promo",
+    "description": "Template SoundCloud untuk promosi lagu/audio agar play, likes, repost, dan followers naik lewat positioning genre yang jelas dan CTA dengar yang spesifik.",
+    "platform": "SoundCloud",
+    "category": "Music Promotion",
+    "tags": [
+      "soundcloud",
+      "music",
+      "track-promo",
+      "audio",
+      "artist-growth"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_plays",
+        "increase_likes",
+        "increase_reposts",
+        "increase_followers"
+      ],
+      "emotionTriggers": [
+        "mood_match",
+        "identity",
+        "novelty",
+        "community"
+      ],
+      "targetAudience": "Pendengar SoundCloud yang mencari track baru berdasarkan vibe, genre, dan mood tertentu."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hook mood + genre positioning + unique element + CTA listen/follow",
+      "placeholders": [
+        {
+          "name": "track_title",
+          "type": "string",
+          "default": "Judul track"
+        },
+        {
+          "name": "genre",
+          "type": "string",
+          "default": "Genre utama track"
+        },
+        {
+          "name": "mood",
+          "type": "string",
+          "default": "Mood yang ingin dibangun"
+        },
+        {
+          "name": "signature_element",
+          "type": "string",
+          "default": "Elemen audio pembeda (drop, texture, vocal chop, dll)"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "soundcloud release",
+      "new track",
+      "music producer indonesia",
+      "indie music",
+      "track recommendation"
+    ],
+    "hashtags": {
+      "strategy": "mix genre + vibe + artist intent tanpa berlebihan",
+      "count": 4
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Listen full track sekarang dan kasih feedback paling jujur di komentar."
+      },
+      {
+        "type": "follow",
+        "text": "Follow untuk rilis berikutnya dan update preview eksklusif."
+      },
+      {
+        "type": "repost",
+        "text": "Repost kalau vibenya cocok buat temanmu."
+      }
+    ],
+    "audio": {
+      "recommendation": "Output audio wajib 5 field: Style, Mood, Genre, Suggestion, Length. Fokus pada referensi sound/music, bukan dialog narasi.",
+      "style": "aesthetic groove",
+      "mood": "immersive and expressive",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "stream bot",
+        "play palsu",
+        "spam follow",
+        "penipuan",
+        "hoaks",
+        "konten bajakan"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Play completion >= 35%, Like rate >= 4%, Repost rate >= 1.5%, Follow conversion >= 1%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Track chill house untuk night drive"
+        },
+        "output": {
+          "hook": "Track ini dirancang buat vibe night drive yang tenang tapi tetap punya groove.",
+          "description": "Dominasi synth hangat, bass halus, dan transisi clean di bagian drop agar tetap nyaman diputar berulang.",
+          "cta": "Dengarkan full track dan beri tahu bagian favoritmu di komentar."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T16:34:00.000Z",
+      "updatedAt": "2026-02-22T16:34:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "blog-blogger-seo-story-advanced-001",
+    "version": "1.0.0",
+    "title": "Blog Blogger Advanced - SEO Story Conversion",
+    "label": "Blog Blogger SEO Story",
+    "description": "Template Blog Blogger untuk artikel yang informatif, SEO-ready, dan tetap engaging lewat struktur masalah-solusi, insight praktis, dan CTA komentar.",
+    "platform": "Blog Blogger",
+    "category": "Content Marketing",
+    "tags": [
+      "blogger",
+      "blog",
+      "seo",
+      "article",
+      "content-strategy"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_read_depth",
+        "increase_organic_clicks",
+        "increase_comments",
+        "increase_return_visits"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "trust",
+        "problem_solution",
+        "actionable_value"
+      ],
+      "targetAudience": "Pembaca blog yang mencari panduan praktis, ulasan mendalam, dan keputusan berbasis informasi."
+    },
+    "contentStructure": {
+      "length": "long",
+      "format": "headline SEO + intro masalah + pembahasan 4-6 subbagian + ringkasan + CTA komentar",
+      "placeholders": [
+        {
+          "name": "primary_keyword",
+          "type": "string",
+          "default": "Kata kunci utama artikel"
+        },
+        {
+          "name": "reader_problem",
+          "type": "string",
+          "default": "Masalah utama pembaca"
+        },
+        {
+          "name": "solution_framework",
+          "type": "string",
+          "default": "Langkah solusi yang sistematis"
+        },
+        {
+          "name": "proof_or_case",
+          "type": "string",
+          "default": "Contoh nyata, data, atau studi kasus"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "blogger seo",
+      "artikel evergreen",
+      "panduan lengkap",
+      "konten blog indonesia",
+      "strategi konten"
+    ],
+    "hashtags": {
+      "strategy": "opsional, cukup 0-4 hashtag relevan jika diperlukan",
+      "count": 2
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Tulis pertanyaanmu di komentar, nanti saya bantu breakdown kasusnya."
+      },
+      {
+        "type": "subscribe",
+        "text": "Ikuti blog ini untuk update panduan praktis berikutnya."
+      },
+      {
+        "type": "share",
+        "text": "Bagikan artikel ini ke rekan yang butuh referensi serupa."
+      }
+    ],
+    "audio": {
+      "recommendation": "Untuk versi video ringkas artikel, gunakan background music netral agar fokus tetap ke poin edukatif.",
+      "style": "ambient editorial",
+      "mood": "informative and calm",
+      "lengthSec": 60
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "hasil instan 100%",
+        "tanpa usaha pasti sukses",
+        "konten plagiat",
+        "spam keyword",
+        "hoaks",
+        "penipuan"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Avg read depth >= 55%, Comment rate >= 1.5%, Return visitor rate >= 12%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Cara memilih provider AI terbaik untuk tim content kecil"
+        },
+        "output": {
+          "hook": "Memilih provider AI bukan soal fitur terbanyak, tapi kecocokan dengan workflow tim.",
+          "description": "Mulai dari kebutuhan output, biaya per konten, reliabilitas model, lalu buat matriks keputusan sederhana. Dengan begitu, tim kecil tetap efisien tanpa trial berulang yang mahal.",
+          "cta": "Model evaluasi apa yang saat ini kamu pakai saat memilih tools untuk tim?"
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T16:35:00.000Z",
+      "updatedAt": "2026-02-22T16:35:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "tokopedia-hard-sell-flash-offer-001",
+    "version": "1.0.0",
+    "title": "Tokopedia Hard Sell - Flash Offer Booster",
+    "label": "Tokopedia Hard Sell",
+    "description": "Varian hard sell untuk Tokopedia dengan fokus urgency promo, bukti cepat, dan dorongan checkout.",
+    "platform": "Tokopedia",
+    "category": "E-commerce Marketplace",
+    "tags": [
+      "tokopedia",
+      "hard-sell",
+      "flash-sale",
+      "checkout",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_checkout",
+        "increase_clicks",
+        "increase_chat_inquiries"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "fomo",
+        "social_proof"
+      ],
+      "targetAudience": "Pembeli yang responsif terhadap promo terbatas."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hook promo + value utama + bukti + CTA checkout",
+      "placeholders": [
+        {
+          "name": "product_name",
+          "type": "string",
+          "default": "Nama produk"
+        },
+        {
+          "name": "promo_limit",
+          "type": "string",
+          "default": "Promo berakhir malam ini"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "tokopedia diskon",
+      "promo terbatas",
+      "produk viral",
+      "checkout cepat"
+    ],
+    "hashtags": {
+      "strategy": "niche produk + intent beli + momen promo",
+      "count": 5
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Checkout sekarang sebelum promonya habis."
+      },
+      {
+        "type": "comment",
+        "text": "Komentar kebutuhanmu, saya bantu pilih varian terbaik."
+      }
+    ],
+    "audio": {
+      "recommendation": "Beat promo cepat dan clean agar urgency terasa kuat.",
+      "style": "fast promo beat",
+      "mood": "urgent and persuasive",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "tipu",
+        "penipuan",
+        "stok palsu",
+        "hoaks"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Checkout rate >= 1.5%, CTR >= 3.8%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Promo vacuum cleaner mini anti debu"
+        },
+        "output": {
+          "hook": "Vacuum mini ini lagi promo besar dan stoknya cepat habis.",
+          "description": "Hisap debu halus, desain ringan, dan cocok untuk meja kerja atau mobil.",
+          "cta": "Checkout sekarang atau komentar area yang ingin dibersihkan."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T18:00:00.000Z",
+      "updatedAt": "2026-02-22T18:00:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "tokopedia-soft-education-buying-guide-001",
+    "version": "1.0.0",
+    "title": "Tokopedia Soft Education - Smart Buying Guide",
+    "label": "Tokopedia Soft Education",
+    "description": "Varian soft education Tokopedia yang menekankan edukasi pembelian agar trust naik sebelum checkout.",
+    "platform": "Tokopedia",
+    "category": "E-commerce Education",
+    "tags": [
+      "tokopedia",
+      "soft-education",
+      "buying-guide",
+      "trust",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_trust",
+        "increase_product_clicks",
+        "increase_checkout"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "confidence",
+        "value_for_money"
+      ],
+      "targetAudience": "Pembeli yang ingin membandingkan fitur sebelum membeli."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "masalah pembeli + tips memilih + rekomendasi + CTA checkout",
+      "placeholders": [
+        {
+          "name": "buyer_problem",
+          "type": "string",
+          "default": "Pembeli bingung memilih produk awet"
+        },
+        {
+          "name": "selection_tips",
+          "type": "string",
+          "default": "3 poin cek sebelum beli"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "cara pilih produk tokopedia",
+      "tips belanja aman",
+      "review jujur produk",
+      "produk sesuai kebutuhan"
+    ],
+    "hashtags": {
+      "strategy": "niche edukasi + intent belanja",
+      "count": 4
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Checkout varian paling sesuai kebutuhanmu setelah cek tips ini."
+      },
+      {
+        "type": "comment",
+        "text": "Komentar budget dan kebutuhanmu, nanti saya bantu shortlist."
+      }
+    ],
+    "audio": {
+      "recommendation": "Musik edukatif ringan agar pesan tips tetap jelas.",
+      "style": "light informative beat",
+      "mood": "helpful and clear",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "garansi bohong",
+        "penipuan",
+        "hoaks",
+        "spam"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Product click >= 3.0%, Checkout >= 1.1%, Comment >= 2.0%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Cara pilih rice cooker untuk kos"
+        },
+        "output": {
+          "hook": "Jangan asal beli rice cooker, cek 3 hal ini dulu biar awet.",
+          "description": "Perhatikan kapasitas, material panci, dan konsumsi listrik agar sesuai kebutuhan.",
+          "cta": "Setelah itu checkout opsi yang pas dan komentar bila perlu rekomendasi."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T18:01:00.000Z",
+      "updatedAt": "2026-02-22T18:01:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "lazada-hard-sell-flash-offer-001",
+    "version": "1.0.0",
+    "title": "Lazada Hard Sell - Flash Offer Booster",
+    "label": "Lazada Hard Sell",
+    "description": "Varian hard sell Lazada untuk mendorong klik, add to cart, dan checkout cepat.",
+    "platform": "Lazada",
+    "category": "E-commerce Marketplace",
+    "tags": [
+      "lazada",
+      "hard-sell",
+      "promo",
+      "checkout",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_checkout",
+        "increase_cart_additions",
+        "increase_clicks"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "scarcity",
+        "social_proof"
+      ],
+      "targetAudience": "Pembeli Lazada yang responsif terhadap promo terbatas."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hook cepat + benefit + proof + CTA checkout",
+      "placeholders": [
+        {
+          "name": "product_name",
+          "type": "string",
+          "default": "Produk unggulan"
+        },
+        {
+          "name": "voucher_info",
+          "type": "string",
+          "default": "Voucher aktif hari ini"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "lazada flash sale",
+      "voucher lazada",
+      "checkout sekarang",
+      "promo produk"
+    ],
+    "hashtags": {
+      "strategy": "promo + kategori produk + intent beli",
+      "count": 5
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Checkout sekarang sebelum voucher berakhir."
+      },
+      {
+        "type": "comment",
+        "text": "Komentar kalau kamu mau perbandingan dengan produk lain."
+      }
+    ],
+    "audio": {
+      "recommendation": "Jingle sales modern yang cepat dan tegas.",
+      "style": "sales jingle",
+      "mood": "energetic and urgent",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "tipu",
+        "penipuan",
+        "palsu",
+        "hoaks"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Checkout >= 1.4%, Add-to-cart >= 2.0%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Promo air fryer hemat minyak"
+        },
+        "output": {
+          "hook": "Air fryer ini lagi turun harga dan vouchernya terbatas.",
+          "description": "Masak lebih praktis, kapasitas pas keluarga kecil, dan review pengguna stabil.",
+          "cta": "Checkout sekarang atau komentar kebutuhan kapasitasmu."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T18:02:00.000Z",
+      "updatedAt": "2026-02-22T18:02:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "lazada-soft-education-buying-guide-001",
+    "version": "1.0.0",
+    "title": "Lazada Soft Education - Smart Buying Guide",
+    "label": "Lazada Soft Education",
+    "description": "Varian soft education Lazada untuk memandu user memilih produk tepat sebelum CTA transaksi.",
+    "platform": "Lazada",
+    "category": "E-commerce Education",
+    "tags": [
+      "lazada",
+      "soft-education",
+      "guide",
+      "smart-buy",
+      "trust"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_trust",
+        "increase_clicks",
+        "increase_checkout"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "security",
+        "confidence"
+      ],
+      "targetAudience": "Pembeli yang butuh edukasi fitur sebelum memutuskan checkout."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "edukasi 3 poin + rekomendasi kondisi pakai + CTA checkout",
+      "placeholders": [
+        {
+          "name": "use_case",
+          "type": "string",
+          "default": "Skenario penggunaan utama"
+        },
+        {
+          "name": "must_check_specs",
+          "type": "string",
+          "default": "Spesifikasi penting yang wajib dicek"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "tips belanja lazada",
+      "cara pilih produk",
+      "belanja online aman",
+      "review fitur produk"
+    ],
+    "hashtags": {
+      "strategy": "edukasi pembelian + kategori produk",
+      "count": 4
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Checkout setelah cocokkan kebutuhanmu dengan poin edukasi di atas."
+      },
+      {
+        "type": "comment",
+        "text": "Komentar use case kamu, nanti saya bantu rekomendasi modelnya."
+      }
+    ],
+    "audio": {
+      "recommendation": "Beat edukatif santai agar fokus tetap di insight pembelian.",
+      "style": "clean educational beat",
+      "mood": "calm and practical",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "bohong",
+        "penipuan",
+        "spam",
+        "hoaks"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "CTR >= 2.8%, Checkout >= 1.0%, Comment >= 1.8%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Tips memilih headphone kerja hybrid"
+        },
+        "output": {
+          "hook": "Kalau kerja hybrid, jangan pilih headphone cuma dari harga.",
+          "description": "Cek 3 hal: noise isolation, kenyamanan lama, dan kualitas mic saat meeting.",
+          "cta": "Kalau sudah cocok, checkout model yang pas dan komentar budgetmu."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T18:03:00.000Z",
+      "updatedAt": "2026-02-22T18:03:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "linkedin-hard-sell-lead-offer-001",
+    "version": "1.0.0",
+    "title": "LinkedIn Hard Sell - Lead Offer Accelerator",
+    "label": "LinkedIn Hard Sell",
+    "description": "Varian hard sell LinkedIn untuk promosi offer profesional dengan CTA langsung namun tetap kredibel.",
+    "platform": "LinkedIn",
+    "category": "Professional Lead Generation",
+    "tags": [
+      "linkedin",
+      "hard-sell",
+      "lead-gen",
+      "offer",
+      "professional"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_leads",
+        "increase_profile_visits",
+        "increase_comments"
+      ],
+      "emotionTriggers": [
+        "authority",
+        "urgency",
+        "clarity"
+      ],
+      "targetAudience": "Pemilik bisnis dan manajer yang mencari solusi cepat untuk masalah growth."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "problem statement + offer + benefit + CTA comment/follow",
+      "placeholders": [
+        {
+          "name": "offer_name",
+          "type": "string",
+          "default": "Free audit 20 menit"
+        },
+        {
+          "name": "offer_limit",
+          "type": "string",
+          "default": "Slot terbatas minggu ini"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "linkedin lead generation",
+      "konsultasi bisnis",
+      "growth audit",
+      "professional offer"
+    ],
+    "hashtags": {
+      "strategy": "hashtag profesional dan niche bisnis",
+      "count": 3
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Komentar kata AUDIT untuk dapat slot konsultasi."
+      },
+      {
+        "type": "follow",
+        "text": "Follow untuk insight eksekusi growth yang bisa langsung dipakai."
+      }
+    ],
+    "audio": {
+      "recommendation": "Untuk format video, gunakan corporate beat ringan yang tegas.",
+      "style": "corporate pulse",
+      "mood": "confident and direct",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "jamin sukses instan",
+        "bohong",
+        "spam",
+        "penipuan"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Lead inquiry >= 1.5%, Comment >= 3.0%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Offer audit funnel konten B2B"
+        },
+        "output": {
+          "hook": "Kalau funnel konten B2B kamu stagnan, ada 3 titik kebocoran yang sering tidak terlihat.",
+          "description": "Saya buka slot audit singkat untuk bantu identifikasi bottleneck paling kritis minggu ini.",
+          "cta": "Komentar AUDIT dan follow untuk studi kasus berikutnya."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T18:04:00.000Z",
+      "updatedAt": "2026-02-22T18:04:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "linkedin-soft-education-framework-001",
+    "version": "1.0.0",
+    "title": "LinkedIn Soft Education - Framework Insight",
+    "label": "LinkedIn Soft Education",
+    "description": "Varian soft education LinkedIn untuk membangun authority lewat framework praktis dan diskusi bernilai.",
+    "platform": "LinkedIn",
+    "category": "Professional Education",
+    "tags": [
+      "linkedin",
+      "soft-education",
+      "framework",
+      "authority",
+      "insight"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_quality_comments",
+        "increase_saves",
+        "increase_followers"
+      ],
+      "emotionTriggers": [
+        "credibility",
+        "clarity",
+        "practical_value"
+      ],
+      "targetAudience": "Profesional yang butuh referensi framework kerja yang aplikatif."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "hook insight + framework 3-5 langkah + CTA comment/follow",
+      "placeholders": [
+        {
+          "name": "framework_name",
+          "type": "string",
+          "default": "Nama framework"
+        },
+        {
+          "name": "case_context",
+          "type": "string",
+          "default": "Konteks masalah tim"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "framework linkedin",
+      "insight profesional",
+      "strategi tim",
+      "business execution"
+    ],
+    "hashtags": {
+      "strategy": "profesional + topik niche",
+      "count": 3
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Komentar tantangan timmu, saya bantu mapping langkahnya."
+      },
+      {
+        "type": "follow",
+        "text": "Follow untuk insight framework praktis tiap minggu."
+      }
+    ],
+    "audio": {
+      "recommendation": "Jika video, gunakan musik netral agar teks framework tetap dominan.",
+      "style": "neutral corporate ambience",
+      "mood": "professional and calm",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "hasil instan 100%",
+        "bohong",
+        "spam",
+        "hoaks"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Save >= 2.0%, Comment >= 3.5%, Follow >= 1.1%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Framework evaluasi konten mingguan"
+        },
+        "output": {
+          "hook": "Banyak tim konten gagal scale karena evaluasinya hanya berdasarkan feeling.",
+          "description": "Pakai framework 3 langkah: objective metric, experiment note, dan next action prioritas.",
+          "cta": "Komentar jika kamu ingin template evaluasinya, lalu follow untuk breakdown lanjutannya."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T18:05:00.000Z",
+      "updatedAt": "2026-02-22T18:05:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "x-hard-sell-thread-launch-001",
+    "version": "1.0.0",
+    "title": "X Hard Sell - Launch Blast",
+    "label": "X Hard Sell",
+    "description": "Varian hard sell X (Twitter) dengan format tajam dan mendorong reply/repost cepat.",
+    "platform": "X (Twitter)",
+    "category": "Social Launch",
+    "tags": [
+      "x",
+      "twitter",
+      "hard-sell",
+      "launch",
+      "repost"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_replies",
+        "increase_reposts",
+        "increase_profile_clicks"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "curiosity",
+        "novelty"
+      ],
+      "targetAudience": "Audiens X yang aktif merespons rilis baru atau offer singkat."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hook cepat + offer inti + CTA reply/repost",
+      "placeholders": [
+        {
+          "name": "launch_offer",
+          "type": "string",
+          "default": "Offer rilis hari ini"
+        },
+        {
+          "name": "expiry",
+          "type": "string",
+          "default": "Berlaku 24 jam"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "x launch",
+      "twitter promo",
+      "reply now",
+      "repost insight"
+    ],
+    "hashtags": {
+      "strategy": "maksimal 2 hashtag relevan",
+      "count": 2
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Reply sekarang kalau kamu mau akses lebih dulu."
+      },
+      {
+        "type": "repost",
+        "text": "Repost agar temanmu tidak ketinggalan update ini."
+      }
+    ],
+    "audio": {
+      "recommendation": "Jika video, gunakan pulse beat singkat yang kuat.",
+      "style": "short punch beat",
+      "mood": "bold and urgent",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "fitnah",
+        "hoaks",
+        "spam",
+        "penipuan"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Reply >= 2.5%, Repost >= 1.2%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Launch template konten baru"
+        },
+        "output": {
+          "hook": "Saya rilis template konten baru hari ini, dan hanya dibuka terbatas.",
+          "description": "Fokus untuk tim kecil yang butuh output cepat tanpa kehilangan kualitas.",
+          "cta": "Reply untuk akses, repost jika ini relevan untuk jaringanmu."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T18:06:00.000Z",
+      "updatedAt": "2026-02-22T18:06:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "x-soft-education-micro-insight-001",
+    "version": "1.0.0",
+    "title": "X Soft Education - Micro Insight Thread",
+    "label": "X Soft Education",
+    "description": "Varian soft education X (Twitter) untuk insight ringkas yang memancing reply/repost berkualitas.",
+    "platform": "X (Twitter)",
+    "category": "Social Education",
+    "tags": [
+      "x",
+      "twitter",
+      "soft-education",
+      "insight",
+      "discussion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_replies",
+        "increase_reposts",
+        "increase_followers"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "relevance",
+        "curiosity"
+      ],
+      "targetAudience": "Pengguna X yang suka insight cepat dan diskusi praktis."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "hook insight + poin inti + CTA reply/repost",
+      "placeholders": [
+        {
+          "name": "micro_insight",
+          "type": "string",
+          "default": "Insight 1 kalimat yang bisa langsung dipakai"
+        },
+        {
+          "name": "supporting_fact",
+          "type": "string",
+          "default": "Fakta atau observasi singkat"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "twitter insight",
+      "x thread indonesia",
+      "micro learning",
+      "diskusi cepat"
+    ],
+    "hashtags": {
+      "strategy": "maksimal 2 hashtag topikal",
+      "count": 2
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Reply pengalaman kamu setelah mencoba insight ini."
+      },
+      {
+        "type": "repost",
+        "text": "Repost kalau kamu rasa insight ini berguna."
+      }
+    ],
+    "audio": {
+      "recommendation": "Untuk video singkat, gunakan beat ringan dan tidak mengganggu teks.",
+      "style": "minimal trend pulse",
+      "mood": "smart and concise",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "hoaks",
+        "fitnah",
+        "spam",
+        "penipuan"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Reply >= 2.8%, Repost >= 1.1%, Follow >= 0.8%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Kenapa banyak eksperimen konten gagal?"
+        },
+        "output": {
+          "hook": "Eksperimen konten gagal bukan karena ide buruk, tapi karena metrik suksesnya tidak jelas.",
+          "description": "Tentukan satu metrik utama per eksperimen agar evaluasi tidak bias.",
+          "cta": "Reply metrik yang paling sering kamu pakai, lalu repost jika relevan."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T18:07:00.000Z",
+      "updatedAt": "2026-02-22T18:07:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "soundcloud-hard-sell-track-launch-001",
+    "version": "1.0.0",
+    "title": "SoundCloud Hard Sell - Track Launch Push",
+    "label": "SoundCloud Hard Sell",
+    "description": "Varian hard sell SoundCloud untuk mendorong play langsung, follow, dan repost saat rilis track baru.",
+    "platform": "SoundCloud",
+    "category": "Music Promotion",
+    "tags": [
+      "soundcloud",
+      "hard-sell",
+      "track-launch",
+      "listen-now",
+      "follow"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_plays",
+        "increase_followers",
+        "increase_reposts"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "hype",
+        "identity"
+      ],
+      "targetAudience": "Pendengar yang suka menemukan rilis baru secara cepat."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hook launch + vibe singkat + CTA listen/follow/repost",
+      "placeholders": [
+        {
+          "name": "track_title",
+          "type": "string",
+          "default": "Judul track baru"
+        },
+        {
+          "name": "genre",
+          "type": "string",
+          "default": "Genre utama"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "new soundcloud track",
+      "listen now",
+      "music release",
+      "producer indonesia"
+    ],
+    "hashtags": {
+      "strategy": "genre + vibe + release intent",
+      "count": 5
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Listen sekarang dan kasih feedback bagian favoritmu."
+      },
+      {
+        "type": "follow",
+        "text": "Follow untuk rilis berikutnya."
+      }
+    ],
+    "audio": {
+      "recommendation": "Output audio wajib sebagai referensi sound 5-field (Style/Mood/Genre/Suggestion/Length).",
+      "style": "release hype beat",
+      "mood": "energetic and bold",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "stream bot",
+        "play palsu",
+        "spam",
+        "penipuan"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Play >= 35%, Repost >= 1.5%, Follow >= 1.0%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Track bass house baru"
+        },
+        "output": {
+          "hook": "Track bass house terbaru sudah live, siap jadi booster workout kamu.",
+          "description": "Drop tebal, build up cepat, dan texture synth yang agresif tapi clean.",
+          "cta": "Listen sekarang dan follow kalau kamu mau versi extended."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T18:08:00.000Z",
+      "updatedAt": "2026-02-22T18:08:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "soundcloud-soft-education-track-breakdown-001",
+    "version": "1.0.0",
+    "title": "SoundCloud Soft Education - Track Breakdown",
+    "label": "SoundCloud Soft Education",
+    "description": "Varian soft education SoundCloud untuk cerita kreatif dan breakdown elemen lagu agar listener loyal.",
+    "platform": "SoundCloud",
+    "category": "Music Education",
+    "tags": [
+      "soundcloud",
+      "soft-education",
+      "track-breakdown",
+      "music-story",
+      "retention"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_play_completion",
+        "increase_comments",
+        "increase_followers"
+      ],
+      "emotionTriggers": [
+        "curiosity",
+        "connection",
+        "authenticity"
+      ],
+      "targetAudience": "Pendengar yang tertarik proses kreatif di balik track."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "hook cerita + breakdown 3 elemen + CTA listen/follow",
+      "placeholders": [
+        {
+          "name": "creative_story",
+          "type": "string",
+          "default": "Cerita singkat inspirasi track"
+        },
+        {
+          "name": "signature_sound",
+          "type": "string",
+          "default": "Elemen sound paling unik"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "music production story",
+      "track breakdown",
+      "soundcloud indonesia",
+      "creative process"
+    ],
+    "hashtags": {
+      "strategy": "genre + proses kreatif + mood",
+      "count": 4
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Listen full track dan komentar bagian yang paling ngena."
+      },
+      {
+        "type": "follow",
+        "text": "Follow untuk breakdown track berikutnya."
+      }
+    ],
+    "audio": {
+      "recommendation": "Output audio harus konsisten 5-field, fokus referensi musik/sound bukan dialog.",
+      "style": "aesthetic educational groove",
+      "mood": "emotional and reflective",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "bot stream",
+        "spam follow",
+        "penipuan",
+        "hoaks"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Completion >= 38%, Comment >= 2.0%, Follow >= 1.1%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Breakdown track lo-fi hujan malam"
+        },
+        "output": {
+          "hook": "Track ini lahir dari suasana hujan malam setelah sesi kerja panjang.",
+          "description": "Elemen kunci: piano basah, noise kaset tipis, dan bass hangat untuk ruang emosi.",
+          "cta": "Listen sampai selesai, komentar bagian favoritmu, dan follow untuk breakdown berikutnya."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T18:09:00.000Z",
+      "updatedAt": "2026-02-22T18:09:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "blog-blogger-hard-sell-conversion-article-001",
+    "version": "1.0.0",
+    "title": "Blog Blogger Hard Sell - Conversion Article",
+    "label": "Blog Blogger Hard Sell",
+    "description": "Varian hard sell Blog Blogger yang tetap informatif tetapi diarahkan kuat ke aksi akhir.",
+    "platform": "Blog Blogger",
+    "category": "Content Marketing Conversion",
+    "tags": [
+      "blogger",
+      "hard-sell",
+      "conversion",
+      "article",
+      "cta"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_conversion_clicks",
+        "increase_comments",
+        "increase_time_on_page"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "clarity",
+        "trust"
+      ],
+      "targetAudience": "Pembaca yang sedang membandingkan solusi dan siap mengambil keputusan."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "headline solusi + bukti + perbandingan + CTA baca/komentar",
+      "placeholders": [
+        {
+          "name": "offer_topic",
+          "type": "string",
+          "default": "Solusi utama yang ditawarkan"
+        },
+        {
+          "name": "proof_data",
+          "type": "string",
+          "default": "Data atau studi kasus singkat"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "artikel konversi",
+      "review solusi",
+      "panduan keputusan",
+      "blog marketing"
+    ],
+    "hashtags": {
+      "strategy": "opsional dan tetap relevan",
+      "count": 2
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Baca rekomendasi lengkapnya lalu komentar pilihanmu."
+      },
+      {
+        "type": "follow",
+        "text": "Ikuti blog ini untuk update artikel lanjutan."
+      }
+    ],
+    "audio": {
+      "recommendation": "Untuk versi video artikel, gunakan musik netral yang tidak mengganggu teks.",
+      "style": "editorial conversion ambience",
+      "mood": "focused and assertive",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "bohong",
+        "plagiat",
+        "spam keyword",
+        "penipuan"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "CTR CTA >= 2.2%, Comment >= 1.5%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Perbandingan tool AI untuk tim kecil"
+        },
+        "output": {
+          "hook": "Jika tim kecilmu butuh output cepat, kamu tidak butuh tool paling mahal.",
+          "description": "Bandingkan dari sisi kecepatan setup, biaya per output, dan stabilitas hasil.",
+          "cta": "Baca sampai akhir lalu komentar tool yang paling cocok untuk timmu."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T18:10:00.000Z",
+      "updatedAt": "2026-02-22T18:10:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "blog-blogger-soft-education-evergreen-001",
+    "version": "1.0.0",
+    "title": "Blog Blogger Soft Education - Evergreen Guide",
+    "label": "Blog Blogger Soft Education",
+    "description": "Varian soft education Blog Blogger untuk artikel evergreen mendalam, SEO-ready, dan mendorong diskusi.",
+    "platform": "Blog Blogger",
+    "category": "Evergreen Education",
+    "tags": [
+      "blogger",
+      "soft-education",
+      "evergreen",
+      "seo",
+      "guide"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_read_depth",
+        "increase_return_visits",
+        "increase_comments"
+      ],
+      "emotionTriggers": [
+        "helpfulness",
+        "clarity",
+        "trust"
+      ],
+      "targetAudience": "Pembaca yang ingin panduan lengkap dan bisa dipraktikkan bertahap."
+    },
+    "contentStructure": {
+      "length": "long",
+      "format": "pendahuluan masalah + langkah detail + contoh + ringkasan + CTA baca/komentar",
+      "placeholders": [
+        {
+          "name": "main_keyword",
+          "type": "string",
+          "default": "Keyword utama artikel"
+        },
+        {
+          "name": "step_framework",
+          "type": "string",
+          "default": "Urutan langkah implementasi"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "panduan lengkap blogger",
+      "artikel evergreen seo",
+      "konten edukasi blog",
+      "tutorial step by step"
+    ],
+    "hashtags": {
+      "strategy": "opsional, minimal, relevan topik",
+      "count": 1
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Baca panduan ini sampai selesai lalu komentar bagian yang paling ingin diperdalam."
+      },
+      {
+        "type": "share",
+        "text": "Bagikan ke rekan yang sedang butuh referensi serupa."
+      }
+    ],
+    "audio": {
+      "recommendation": "Untuk versi visual, gunakan musik ambient tenang agar fokus pembelajaran terjaga.",
+      "style": "ambient learning bed",
+      "mood": "calm and educational",
+      "lengthSec": 60
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "hasil instan",
+        "konten plagiat",
+        "spam",
+        "hoaks"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Read depth >= 58%, Return visitor >= 13%, Comment >= 1.7%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Panduan menentukan niche konten jangka panjang"
+        },
+        "output": {
+          "hook": "Menentukan niche bukan soal ikut tren, tapi soal konsistensi nilai yang kamu bawa.",
+          "description": "Mulai dari kekuatan personal, kebutuhan audiens, lalu validasi dengan eksperimen konten kecil 30 hari.",
+          "cta": "Baca langkah lengkapnya dan komentar niche yang sedang kamu bangun."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T18:11:00.000Z",
+      "updatedAt": "2026-02-22T18:11:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "tiktok-hard-sell-core-001",
+    "version": "1.0.0",
+    "title": "TikTok Hard Sell - Growth Preset",
+    "label": "TikTok Hard Sell",
+    "description": "Preset Hard Sell untuk TikTok: fokus call-to-action cepat, urgency, dan dorongan konversi.",
+    "platform": "TikTok",
+    "category": "Short Video Growth",
+    "tags": [
+      "tiktok",
+      "hard-sell",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_views",
+        "increase_comments",
+        "increase_shares"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "clarity",
+        "action"
+      ],
+      "targetAudience": "Audiens TikTok yang menyukai konten cepat, relevan, dan mudah dibagikan."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hook cepat + benefit + CTA comment/share/save",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "tiktok hard sell",
+      "tiktok conversion",
+      "tiktok cta",
+      "tiktok growth"
+    ],
+    "hashtags": {
+      "strategy": "intent konversi + niche platform",
+      "count": 6
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Komentar sekarang, lalu share dan save biar tidak ketinggalan update berikutnya."
+      }
+    ],
+    "audio": {
+      "recommendation": "Energetic trend beat dengan transisi jelas di detik awal.",
+      "style": "direct growth beat",
+      "mood": "bold and persuasive",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "hoaks",
+        "spam",
+        "penipuan",
+        "ujaran kebencian"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Conversion-oriented KPI meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Ini poin inti yang perlu kamu eksekusi sekarang.",
+          "description": "Fokus ke manfaat paling kuat, bukti ringkas, lalu arahkan ke aksi.",
+          "cta": "Komentar sekarang, lalu share dan save biar tidak ketinggalan update berikutnya."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:00:00.000Z",
+      "updatedAt": "2026-02-22T19:00:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "tiktok-soft-education-core-001",
+    "version": "1.0.0",
+    "title": "TikTok Soft Education - Growth Preset",
+    "label": "TikTok Soft Education",
+    "description": "Preset Soft Education untuk TikTok: fokus edukasi bernilai agar trust naik sebelum call-to-action.",
+    "platform": "TikTok",
+    "category": "Short Video Growth",
+    "tags": [
+      "tiktok",
+      "soft-education",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_watch_time",
+        "increase_saves",
+        "increase_comments"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "trust",
+        "helpfulness"
+      ],
+      "targetAudience": "Audiens TikTok yang menyukai konten cepat, relevan, dan mudah dibagikan."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "edukasi ringkas + contoh + CTA comment/share/save",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "tiktok soft education",
+      "tiktok guide",
+      "tiktok trust",
+      "tiktok growth"
+    ],
+    "hashtags": {
+      "strategy": "edukasi + niche platform",
+      "count": 5
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Komentar insight kamu, share ke temanmu, dan save untuk referensi nanti."
+      }
+    ],
+    "audio": {
+      "recommendation": "Energetic trend beat dengan transisi jelas di detik awal.",
+      "style": "clean educational beat",
+      "mood": "calm and credible",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "hoaks",
+        "spam",
+        "penipuan",
+        "ujaran kebencian"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Engagement quality dan trust meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Mulai dari langkah dasar ini agar hasilnya lebih konsisten.",
+          "description": "Jelaskan konteks, berikan langkah praktis, lalu arahkan aksi ringan.",
+          "cta": "Komentar insight kamu, share ke temanmu, dan save untuk referensi nanti."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:01:00.000Z",
+      "updatedAt": "2026-02-22T19:01:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "youtube-short-hard-sell-core-001",
+    "version": "1.0.0",
+    "title": "YouTube Short Hard Sell - Growth Preset",
+    "label": "YouTube Short Hard Sell",
+    "description": "Preset Hard Sell untuk YouTube Short: fokus call-to-action cepat, urgency, dan dorongan konversi.",
+    "platform": "YouTube Short",
+    "category": "Short Video Discovery",
+    "tags": [
+      "youtube-short",
+      "hard-sell",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_views",
+        "increase_comments",
+        "increase_followers"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "clarity",
+        "action"
+      ],
+      "targetAudience": "Penonton YouTube Shorts yang mencari konten cepat dan to the point."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hook cepat + value + CTA comment/follow",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "youtube short hard sell",
+      "youtube short conversion",
+      "youtube short cta",
+      "youtube short growth"
+    ],
+    "hashtags": {
+      "strategy": "intent konversi + niche platform",
+      "count": 5
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Comment sekarang dan follow untuk bagian lanjutan."
+      }
+    ],
+    "audio": {
+      "recommendation": "Upbeat short-form beat yang menjaga tempo video tetap cepat.",
+      "style": "direct growth beat",
+      "mood": "bold and persuasive",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "misleading",
+        "hoaks",
+        "spam",
+        "penipuan"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Conversion-oriented KPI meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Ini poin inti yang perlu kamu eksekusi sekarang.",
+          "description": "Fokus ke manfaat paling kuat, bukti ringkas, lalu arahkan ke aksi.",
+          "cta": "Comment sekarang dan follow untuk bagian lanjutan."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:02:00.000Z",
+      "updatedAt": "2026-02-22T19:02:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "youtube-short-soft-education-core-001",
+    "version": "1.0.0",
+    "title": "YouTube Short Soft Education - Growth Preset",
+    "label": "YouTube Short Soft Education",
+    "description": "Preset Soft Education untuk YouTube Short: fokus edukasi bernilai agar trust naik sebelum call-to-action.",
+    "platform": "YouTube Short",
+    "category": "Short Video Discovery",
+    "tags": [
+      "youtube-short",
+      "soft-education",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_watch_time",
+        "increase_comments",
+        "increase_followers"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "trust",
+        "helpfulness"
+      ],
+      "targetAudience": "Penonton YouTube Shorts yang mencari konten cepat dan to the point."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "penjelasan singkat + takeaway + CTA comment/follow",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "youtube short soft education",
+      "youtube short guide",
+      "youtube short trust",
+      "youtube short growth"
+    ],
+    "hashtags": {
+      "strategy": "edukasi + niche platform",
+      "count": 4
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Comment pertanyaanmu dan follow untuk tutorial berikutnya."
+      }
+    ],
+    "audio": {
+      "recommendation": "Upbeat short-form beat yang menjaga tempo video tetap cepat.",
+      "style": "clean educational beat",
+      "mood": "calm and credible",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "misleading",
+        "hoaks",
+        "spam",
+        "penipuan"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Engagement quality dan trust meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Mulai dari langkah dasar ini agar hasilnya lebih konsisten.",
+          "description": "Jelaskan konteks, berikan langkah praktis, lalu arahkan aksi ringan.",
+          "cta": "Comment pertanyaanmu dan follow untuk tutorial berikutnya."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:03:00.000Z",
+      "updatedAt": "2026-02-22T19:03:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "youtube-long-hard-sell-core-001",
+    "version": "1.0.0",
+    "title": "YouTube Long Hard Sell - Growth Preset",
+    "label": "YouTube Long Hard Sell",
+    "description": "Preset Hard Sell untuk YouTube Long: fokus call-to-action cepat, urgency, dan dorongan konversi.",
+    "platform": "YouTube Long",
+    "category": "Long Form Retention",
+    "tags": [
+      "youtube-long",
+      "hard-sell",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_click_through",
+        "increase_comments",
+        "increase_watch_time"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "clarity",
+        "action"
+      ],
+      "targetAudience": "Penonton YouTube long-form yang mencari penjelasan lengkap dan bernilai."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "opening problem + promise + CTA watch/comment",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "youtube long hard sell",
+      "youtube long conversion",
+      "youtube long cta",
+      "youtube long growth"
+    ],
+    "hashtags": {
+      "strategy": "intent konversi + niche platform",
+      "count": 4
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Watch sampai akhir lalu comment bagian yang paling membantu."
+      }
+    ],
+    "audio": {
+      "recommendation": "Cinematic educational bed yang stabil untuk video panjang.",
+      "style": "direct growth beat",
+      "mood": "bold and persuasive",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "clickbait bohong",
+        "hoaks",
+        "spam",
+        "penipuan"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Conversion-oriented KPI meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Ini poin inti yang perlu kamu eksekusi sekarang.",
+          "description": "Fokus ke manfaat paling kuat, bukti ringkas, lalu arahkan ke aksi.",
+          "cta": "Watch sampai akhir lalu comment bagian yang paling membantu."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:04:00.000Z",
+      "updatedAt": "2026-02-22T19:04:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "youtube-long-soft-education-core-001",
+    "version": "1.0.0",
+    "title": "YouTube Long Soft Education - Growth Preset",
+    "label": "YouTube Long Soft Education",
+    "description": "Preset Soft Education untuk YouTube Long: fokus edukasi bernilai agar trust naik sebelum call-to-action.",
+    "platform": "YouTube Long",
+    "category": "Long Form Retention",
+    "tags": [
+      "youtube-long",
+      "soft-education",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_watch_time",
+        "increase_retention",
+        "increase_comments"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "trust",
+        "helpfulness"
+      ],
+      "targetAudience": "Penonton YouTube long-form yang mencari penjelasan lengkap dan bernilai."
+    },
+    "contentStructure": {
+      "length": "long",
+      "format": "struktur edukatif detail + rangkuman + CTA watch/comment",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "youtube long soft education",
+      "youtube long guide",
+      "youtube long trust",
+      "youtube long growth"
+    ],
+    "hashtags": {
+      "strategy": "edukasi + niche platform",
+      "count": 3
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Watch versi lengkapnya lalu comment kendala yang kamu alami."
+      }
+    ],
+    "audio": {
+      "recommendation": "Cinematic educational bed yang stabil untuk video panjang.",
+      "style": "clean educational beat",
+      "mood": "calm and credible",
+      "lengthSec": 60
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "clickbait bohong",
+        "hoaks",
+        "spam",
+        "penipuan"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Engagement quality dan trust meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Mulai dari langkah dasar ini agar hasilnya lebih konsisten.",
+          "description": "Jelaskan konteks, berikan langkah praktis, lalu arahkan aksi ringan.",
+          "cta": "Watch versi lengkapnya lalu comment kendala yang kamu alami."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:05:00.000Z",
+      "updatedAt": "2026-02-22T19:05:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "shopee-hard-sell-core-001",
+    "version": "1.0.0",
+    "title": "Shopee Hard Sell - Growth Preset",
+    "label": "Shopee Hard Sell",
+    "description": "Preset Hard Sell untuk Shopee: fokus call-to-action cepat, urgency, dan dorongan konversi.",
+    "platform": "Shopee",
+    "category": "Marketplace Conversion",
+    "tags": [
+      "shopee",
+      "hard-sell",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_checkout",
+        "increase_clicks",
+        "increase_comments"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "clarity",
+        "action"
+      ],
+      "targetAudience": "Pembeli Shopee yang sensitif promo dan bukti manfaat produk."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "promo cepat + bukti + CTA checkout/comment",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "shopee hard sell",
+      "shopee conversion",
+      "shopee cta",
+      "shopee growth"
+    ],
+    "hashtags": {
+      "strategy": "intent konversi + niche platform",
+      "count": 5
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Checkout sekarang dan comment jika ingin rekomendasi varian."
+      }
+    ],
+    "audio": {
+      "recommendation": "Bright marketplace jingle yang clean dan persuasif.",
+      "style": "direct growth beat",
+      "mood": "bold and persuasive",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "penipuan",
+        "stok palsu",
+        "hoaks",
+        "spam"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Conversion-oriented KPI meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Ini poin inti yang perlu kamu eksekusi sekarang.",
+          "description": "Fokus ke manfaat paling kuat, bukti ringkas, lalu arahkan ke aksi.",
+          "cta": "Checkout sekarang dan comment jika ingin rekomendasi varian."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:06:00.000Z",
+      "updatedAt": "2026-02-22T19:06:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "shopee-soft-education-core-001",
+    "version": "1.0.0",
+    "title": "Shopee Soft Education - Growth Preset",
+    "label": "Shopee Soft Education",
+    "description": "Preset Soft Education untuk Shopee: fokus edukasi bernilai agar trust naik sebelum call-to-action.",
+    "platform": "Shopee",
+    "category": "Marketplace Conversion",
+    "tags": [
+      "shopee",
+      "soft-education",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_trust",
+        "increase_clicks",
+        "increase_checkout"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "trust",
+        "helpfulness"
+      ],
+      "targetAudience": "Pembeli Shopee yang sensitif promo dan bukti manfaat produk."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "tips memilih + manfaat + CTA checkout/comment",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "shopee soft education",
+      "shopee guide",
+      "shopee trust",
+      "shopee growth"
+    ],
+    "hashtags": {
+      "strategy": "edukasi + niche platform",
+      "count": 4
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Checkout setelah cek tips ini, lalu comment kebutuhanmu."
+      }
+    ],
+    "audio": {
+      "recommendation": "Bright marketplace jingle yang clean dan persuasif.",
+      "style": "clean educational beat",
+      "mood": "calm and credible",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "penipuan",
+        "stok palsu",
+        "hoaks",
+        "spam"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Engagement quality dan trust meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Mulai dari langkah dasar ini agar hasilnya lebih konsisten.",
+          "description": "Jelaskan konteks, berikan langkah praktis, lalu arahkan aksi ringan.",
+          "cta": "Checkout setelah cek tips ini, lalu comment kebutuhanmu."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:07:00.000Z",
+      "updatedAt": "2026-02-22T19:07:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "instagram-reels-hard-sell-core-001",
+    "version": "1.0.0",
+    "title": "Instagram Reels Hard Sell - Growth Preset",
+    "label": "Instagram Reels Hard Sell",
+    "description": "Preset Hard Sell untuk Instagram Reels: fokus call-to-action cepat, urgency, dan dorongan konversi.",
+    "platform": "Instagram Reels",
+    "category": "Reels Engagement",
+    "tags": [
+      "instagram-reels",
+      "hard-sell",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_comments",
+        "increase_shares",
+        "increase_reach"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "clarity",
+        "action"
+      ],
+      "targetAudience": "Pengguna Instagram Reels yang menyukai konten visual cepat dan relatable."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hook visual + value + CTA comment/share",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "instagram reels hard sell",
+      "instagram reels conversion",
+      "instagram reels cta",
+      "instagram reels growth"
+    ],
+    "hashtags": {
+      "strategy": "intent konversi + niche platform",
+      "count": 6
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Comment sekarang lalu share ke teman yang butuh info ini."
+      }
+    ],
+    "audio": {
+      "recommendation": "Trendy reels beat dengan transisi halus untuk visual first.",
+      "style": "direct growth beat",
+      "mood": "bold and persuasive",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "hoaks",
+        "spam",
+        "penipuan",
+        "ujaran kebencian"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Conversion-oriented KPI meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Ini poin inti yang perlu kamu eksekusi sekarang.",
+          "description": "Fokus ke manfaat paling kuat, bukti ringkas, lalu arahkan ke aksi.",
+          "cta": "Comment sekarang lalu share ke teman yang butuh info ini."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:08:00.000Z",
+      "updatedAt": "2026-02-22T19:08:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "instagram-reels-soft-education-core-001",
+    "version": "1.0.0",
+    "title": "Instagram Reels Soft Education - Growth Preset",
+    "label": "Instagram Reels Soft Education",
+    "description": "Preset Soft Education untuk Instagram Reels: fokus edukasi bernilai agar trust naik sebelum call-to-action.",
+    "platform": "Instagram Reels",
+    "category": "Reels Engagement",
+    "tags": [
+      "instagram-reels",
+      "soft-education",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_saves",
+        "increase_comments",
+        "increase_shares"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "trust",
+        "helpfulness"
+      ],
+      "targetAudience": "Pengguna Instagram Reels yang menyukai konten visual cepat dan relatable."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "edukasi visual + contoh + CTA comment/share",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "instagram reels soft education",
+      "instagram reels guide",
+      "instagram reels trust",
+      "instagram reels growth"
+    ],
+    "hashtags": {
+      "strategy": "edukasi + niche platform",
+      "count": 5
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Comment insightmu dan share agar makin banyak yang terbantu."
+      }
+    ],
+    "audio": {
+      "recommendation": "Trendy reels beat dengan transisi halus untuk visual first.",
+      "style": "clean educational beat",
+      "mood": "calm and credible",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "hoaks",
+        "spam",
+        "penipuan",
+        "ujaran kebencian"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Engagement quality dan trust meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Mulai dari langkah dasar ini agar hasilnya lebih konsisten.",
+          "description": "Jelaskan konteks, berikan langkah praktis, lalu arahkan aksi ringan.",
+          "cta": "Comment insightmu dan share agar makin banyak yang terbantu."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:09:00.000Z",
+      "updatedAt": "2026-02-22T19:09:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "facebook-reels-hard-sell-core-001",
+    "version": "1.0.0",
+    "title": "Facebook Reels Hard Sell - Growth Preset",
+    "label": "Facebook Reels Hard Sell",
+    "description": "Preset Hard Sell untuk Facebook Reels: fokus call-to-action cepat, urgency, dan dorongan konversi.",
+    "platform": "Facebook Reels",
+    "category": "Reels Reach",
+    "tags": [
+      "facebook-reels",
+      "hard-sell",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_comments",
+        "increase_shares",
+        "increase_reach"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "clarity",
+        "action"
+      ],
+      "targetAudience": "Pengguna Facebook Reels yang suka konten ringkas, praktis, dan mudah dibagikan."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hook + nilai cepat + CTA comment/share",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "facebook reels hard sell",
+      "facebook reels conversion",
+      "facebook reels cta",
+      "facebook reels growth"
+    ],
+    "hashtags": {
+      "strategy": "intent konversi + niche platform",
+      "count": 5
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Comment pendapatmu lalu share ke temanmu."
+      }
+    ],
+    "audio": {
+      "recommendation": "Friendly upbeat beat untuk gaya konten komunitas.",
+      "style": "direct growth beat",
+      "mood": "bold and persuasive",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "hoaks",
+        "spam",
+        "penipuan",
+        "provokasi"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Conversion-oriented KPI meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Ini poin inti yang perlu kamu eksekusi sekarang.",
+          "description": "Fokus ke manfaat paling kuat, bukti ringkas, lalu arahkan ke aksi.",
+          "cta": "Comment pendapatmu lalu share ke temanmu."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:10:00.000Z",
+      "updatedAt": "2026-02-22T19:10:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "facebook-reels-soft-education-core-001",
+    "version": "1.0.0",
+    "title": "Facebook Reels Soft Education - Growth Preset",
+    "label": "Facebook Reels Soft Education",
+    "description": "Preset Soft Education untuk Facebook Reels: fokus edukasi bernilai agar trust naik sebelum call-to-action.",
+    "platform": "Facebook Reels",
+    "category": "Reels Reach",
+    "tags": [
+      "facebook-reels",
+      "soft-education",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_comments",
+        "increase_shares",
+        "increase_watch_time"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "trust",
+        "helpfulness"
+      ],
+      "targetAudience": "Pengguna Facebook Reels yang suka konten ringkas, praktis, dan mudah dibagikan."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "penjelasan ringan + contoh + CTA comment/share",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "facebook reels soft education",
+      "facebook reels guide",
+      "facebook reels trust",
+      "facebook reels growth"
+    ],
+    "hashtags": {
+      "strategy": "edukasi + niche platform",
+      "count": 4
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Comment pengalamanmu dan share jika bermanfaat."
+      }
+    ],
+    "audio": {
+      "recommendation": "Friendly upbeat beat untuk gaya konten komunitas.",
+      "style": "clean educational beat",
+      "mood": "calm and credible",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "hoaks",
+        "spam",
+        "penipuan",
+        "provokasi"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Engagement quality dan trust meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Mulai dari langkah dasar ini agar hasilnya lebih konsisten.",
+          "description": "Jelaskan konteks, berikan langkah praktis, lalu arahkan aksi ringan.",
+          "cta": "Comment pengalamanmu dan share jika bermanfaat."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:11:00.000Z",
+      "updatedAt": "2026-02-22T19:11:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "pinterest-hard-sell-core-001",
+    "version": "1.0.0",
+    "title": "Pinterest Hard Sell - Growth Preset",
+    "label": "Pinterest Hard Sell",
+    "description": "Preset Hard Sell untuk Pinterest: fokus call-to-action cepat, urgency, dan dorongan konversi.",
+    "platform": "Pinterest",
+    "category": "Visual Discovery",
+    "tags": [
+      "pinterest",
+      "hard-sell",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_saves",
+        "increase_outbound_clicks",
+        "increase_reach"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "clarity",
+        "action"
+      ],
+      "targetAudience": "Pengguna Pinterest yang mencari ide visual dan inspirasi praktis."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "value visual + CTA save/pin",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "pinterest hard sell",
+      "pinterest conversion",
+      "pinterest cta",
+      "pinterest growth"
+    ],
+    "hashtags": {
+      "strategy": "intent konversi + niche platform",
+      "count": 4
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Save pin ini sekarang agar mudah ditemukan saat dibutuhkan."
+      }
+    ],
+    "audio": {
+      "recommendation": "Light aesthetic background yang mendukung visual board.",
+      "style": "direct growth beat",
+      "mood": "bold and persuasive",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "spam",
+        "penipuan",
+        "hoaks",
+        "konten ilegal"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Conversion-oriented KPI meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Ini poin inti yang perlu kamu eksekusi sekarang.",
+          "description": "Fokus ke manfaat paling kuat, bukti ringkas, lalu arahkan ke aksi.",
+          "cta": "Save pin ini sekarang agar mudah ditemukan saat dibutuhkan."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:12:00.000Z",
+      "updatedAt": "2026-02-22T19:12:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "pinterest-soft-education-core-001",
+    "version": "1.0.0",
+    "title": "Pinterest Soft Education - Growth Preset",
+    "label": "Pinterest Soft Education",
+    "description": "Preset Soft Education untuk Pinterest: fokus edukasi bernilai agar trust naik sebelum call-to-action.",
+    "platform": "Pinterest",
+    "category": "Visual Discovery",
+    "tags": [
+      "pinterest",
+      "soft-education",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_saves",
+        "increase_time_spent",
+        "increase_outbound_clicks"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "trust",
+        "helpfulness"
+      ],
+      "targetAudience": "Pengguna Pinterest yang mencari ide visual dan inspirasi praktis."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "how-to visual + CTA save/pin",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "pinterest soft education",
+      "pinterest guide",
+      "pinterest trust",
+      "pinterest growth"
+    ],
+    "hashtags": {
+      "strategy": "edukasi + niche platform",
+      "count": 3
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Save dan pin ke board kamu untuk referensi langkah berikutnya."
+      }
+    ],
+    "audio": {
+      "recommendation": "Light aesthetic background yang mendukung visual board.",
+      "style": "clean educational beat",
+      "mood": "calm and credible",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "spam",
+        "penipuan",
+        "hoaks",
+        "konten ilegal"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Engagement quality dan trust meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Mulai dari langkah dasar ini agar hasilnya lebih konsisten.",
+          "description": "Jelaskan konteks, berikan langkah praktis, lalu arahkan aksi ringan.",
+          "cta": "Save dan pin ke board kamu untuk referensi langkah berikutnya."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:13:00.000Z",
+      "updatedAt": "2026-02-22T19:13:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "whatsapp-status-hard-sell-core-001",
+    "version": "1.0.0",
+    "title": "WhatsApp Status Hard Sell - Growth Preset",
+    "label": "WhatsApp Status Hard Sell",
+    "description": "Preset Hard Sell untuk WhatsApp Status: fokus call-to-action cepat, urgency, dan dorongan konversi.",
+    "platform": "WhatsApp Status",
+    "category": "Private Network Reach",
+    "tags": [
+      "whatsapp-status",
+      "hard-sell",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_replies",
+        "increase_contacts",
+        "increase_interest"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "clarity",
+        "action"
+      ],
+      "targetAudience": "Kontak WhatsApp yang melihat update cepat dari jaringan personal."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "status cepat + CTA reply/contact",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "whatsapp status hard sell",
+      "whatsapp status conversion",
+      "whatsapp status cta",
+      "whatsapp status growth"
+    ],
+    "hashtags": {
+      "strategy": "intent konversi + niche platform",
+      "count": 1
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Reply sekarang atau contact saya untuk detail lanjut."
+      }
+    ],
+    "audio": {
+      "recommendation": "Minimal audio atau no-audio agar pesan status tetap jelas.",
+      "style": "direct growth beat",
+      "mood": "bold and persuasive",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "spam",
+        "penipuan",
+        "hoaks",
+        "ujaran kebencian"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Conversion-oriented KPI meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Ini poin inti yang perlu kamu eksekusi sekarang.",
+          "description": "Fokus ke manfaat paling kuat, bukti ringkas, lalu arahkan ke aksi.",
+          "cta": "Reply sekarang atau contact saya untuk detail lanjut."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:14:00.000Z",
+      "updatedAt": "2026-02-22T19:14:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "whatsapp-status-soft-education-core-001",
+    "version": "1.0.0",
+    "title": "WhatsApp Status Soft Education - Growth Preset",
+    "label": "WhatsApp Status Soft Education",
+    "description": "Preset Soft Education untuk WhatsApp Status: fokus edukasi bernilai agar trust naik sebelum call-to-action.",
+    "platform": "WhatsApp Status",
+    "category": "Private Network Reach",
+    "tags": [
+      "whatsapp-status",
+      "soft-education",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_replies",
+        "increase_trust",
+        "increase_interest"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "trust",
+        "helpfulness"
+      ],
+      "targetAudience": "Kontak WhatsApp yang melihat update cepat dari jaringan personal."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "info singkat + CTA reply/contact",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "whatsapp status soft education",
+      "whatsapp status guide",
+      "whatsapp status trust",
+      "whatsapp status growth"
+    ],
+    "hashtags": {
+      "strategy": "edukasi + niche platform",
+      "count": 0
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Reply kalau kamu butuh panduan lebih lanjut, bisa langsung contact juga."
+      }
+    ],
+    "audio": {
+      "recommendation": "Minimal audio atau no-audio agar pesan status tetap jelas.",
+      "style": "clean educational beat",
+      "mood": "calm and credible",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "spam",
+        "penipuan",
+        "hoaks",
+        "ujaran kebencian"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Engagement quality dan trust meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Mulai dari langkah dasar ini agar hasilnya lebih konsisten.",
+          "description": "Jelaskan konteks, berikan langkah praktis, lalu arahkan aksi ringan.",
+          "cta": "Reply kalau kamu butuh panduan lebih lanjut, bisa langsung contact juga."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:15:00.000Z",
+      "updatedAt": "2026-02-22T19:15:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "threads-hard-sell-core-001",
+    "version": "1.0.0",
+    "title": "Threads Hard Sell - Growth Preset",
+    "label": "Threads Hard Sell",
+    "description": "Preset Hard Sell untuk Threads: fokus call-to-action cepat, urgency, dan dorongan konversi.",
+    "platform": "Threads",
+    "category": "Conversation Growth",
+    "tags": [
+      "threads",
+      "hard-sell",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_replies",
+        "increase_profile_visits",
+        "increase_reach"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "clarity",
+        "action"
+      ],
+      "targetAudience": "Pengguna Threads yang suka opini cepat dan diskusi ringan."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hot take + CTA reply/debate",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "threads hard sell",
+      "threads conversion",
+      "threads cta",
+      "threads growth"
+    ],
+    "hashtags": {
+      "strategy": "intent konversi + niche platform",
+      "count": 2
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Reply pendapatmu, setuju atau tidak? ayo debat sehat."
+      }
+    ],
+    "audio": {
+      "recommendation": "Text-first, audio optional agar fokus tetap pada diskusi.",
+      "style": "direct growth beat",
+      "mood": "bold and persuasive",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "hoaks",
+        "fitnah",
+        "spam",
+        "ujaran kebencian"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Conversion-oriented KPI meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Ini poin inti yang perlu kamu eksekusi sekarang.",
+          "description": "Fokus ke manfaat paling kuat, bukti ringkas, lalu arahkan ke aksi.",
+          "cta": "Reply pendapatmu, setuju atau tidak? ayo debat sehat."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:16:00.000Z",
+      "updatedAt": "2026-02-22T19:16:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "threads-soft-education-core-001",
+    "version": "1.0.0",
+    "title": "Threads Soft Education - Growth Preset",
+    "label": "Threads Soft Education",
+    "description": "Preset Soft Education untuk Threads: fokus edukasi bernilai agar trust naik sebelum call-to-action.",
+    "platform": "Threads",
+    "category": "Conversation Growth",
+    "tags": [
+      "threads",
+      "soft-education",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_replies",
+        "increase_quality_discussion",
+        "increase_followers"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "trust",
+        "helpfulness"
+      ],
+      "targetAudience": "Pengguna Threads yang suka opini cepat dan diskusi ringan."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "insight + konteks + CTA reply/debate",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "threads soft education",
+      "threads guide",
+      "threads trust",
+      "threads growth"
+    ],
+    "hashtags": {
+      "strategy": "edukasi + niche platform",
+      "count": 1
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Reply perspektifmu dan lanjutkan diskusi/debate dengan data."
+      }
+    ],
+    "audio": {
+      "recommendation": "Text-first, audio optional agar fokus tetap pada diskusi.",
+      "style": "clean educational beat",
+      "mood": "calm and credible",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "hoaks",
+        "fitnah",
+        "spam",
+        "ujaran kebencian"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Engagement quality dan trust meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Mulai dari langkah dasar ini agar hasilnya lebih konsisten.",
+          "description": "Jelaskan konteks, berikan langkah praktis, lalu arahkan aksi ringan.",
+          "cta": "Reply perspektifmu dan lanjutkan diskusi/debate dengan data."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:17:00.000Z",
+      "updatedAt": "2026-02-22T19:17:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "whatsapp-channel-hard-sell-core-001",
+    "version": "1.0.0",
+    "title": "WhatsApp Channel Hard Sell - Growth Preset",
+    "label": "WhatsApp Channel Hard Sell",
+    "description": "Preset Hard Sell untuk WhatsApp Channel: fokus call-to-action cepat, urgency, dan dorongan konversi.",
+    "platform": "WhatsApp Channel",
+    "category": "Channel Broadcast",
+    "tags": [
+      "whatsapp-channel",
+      "hard-sell",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_reactions",
+        "increase_forwards",
+        "increase_views"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "clarity",
+        "action"
+      ],
+      "targetAudience": "Subscriber WhatsApp Channel yang mencari update ringkas dan jelas."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "headline + poin penting + CTA react/forward",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "whatsapp channel hard sell",
+      "whatsapp channel conversion",
+      "whatsapp channel cta",
+      "whatsapp channel growth"
+    ],
+    "hashtags": {
+      "strategy": "intent konversi + niche platform",
+      "count": 1
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "React sekarang dan forward ke teman yang relevan."
+      }
+    ],
+    "audio": {
+      "recommendation": "No-audio focus, prioritas ke pesan broadcast yang jelas.",
+      "style": "direct growth beat",
+      "mood": "bold and persuasive",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "spam",
+        "penipuan",
+        "hoaks",
+        "provokasi"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Conversion-oriented KPI meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Ini poin inti yang perlu kamu eksekusi sekarang.",
+          "description": "Fokus ke manfaat paling kuat, bukti ringkas, lalu arahkan ke aksi.",
+          "cta": "React sekarang dan forward ke teman yang relevan."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:18:00.000Z",
+      "updatedAt": "2026-02-22T19:18:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "whatsapp-channel-soft-education-core-001",
+    "version": "1.0.0",
+    "title": "WhatsApp Channel Soft Education - Growth Preset",
+    "label": "WhatsApp Channel Soft Education",
+    "description": "Preset Soft Education untuk WhatsApp Channel: fokus edukasi bernilai agar trust naik sebelum call-to-action.",
+    "platform": "WhatsApp Channel",
+    "category": "Channel Broadcast",
+    "tags": [
+      "whatsapp-channel",
+      "soft-education",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_reactions",
+        "increase_retention",
+        "increase_forwards"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "trust",
+        "helpfulness"
+      ],
+      "targetAudience": "Subscriber WhatsApp Channel yang mencari update ringkas dan jelas."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "ringkasan edukatif + CTA react/forward",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "whatsapp channel soft education",
+      "whatsapp channel guide",
+      "whatsapp channel trust",
+      "whatsapp channel growth"
+    ],
+    "hashtags": {
+      "strategy": "edukasi + niche platform",
+      "count": 0
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "React jika berguna, lalu forward agar makin banyak yang terbantu."
+      }
+    ],
+    "audio": {
+      "recommendation": "No-audio focus, prioritas ke pesan broadcast yang jelas.",
+      "style": "clean educational beat",
+      "mood": "calm and credible",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "spam",
+        "penipuan",
+        "hoaks",
+        "provokasi"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Engagement quality dan trust meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Mulai dari langkah dasar ini agar hasilnya lebih konsisten.",
+          "description": "Jelaskan konteks, berikan langkah praktis, lalu arahkan aksi ringan.",
+          "cta": "React jika berguna, lalu forward agar makin banyak yang terbantu."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:19:00.000Z",
+      "updatedAt": "2026-02-22T19:19:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "telegram-hard-sell-core-001",
+    "version": "1.0.0",
+    "title": "Telegram Hard Sell - Growth Preset",
+    "label": "Telegram Hard Sell",
+    "description": "Preset Hard Sell untuk Telegram: fokus call-to-action cepat, urgency, dan dorongan konversi.",
+    "platform": "Telegram",
+    "category": "Community Broadcast",
+    "tags": [
+      "telegram",
+      "hard-sell",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_comments",
+        "increase_votes",
+        "increase_forwards"
+      ],
+      "emotionTriggers": [
+        "urgency",
+        "clarity",
+        "action"
+      ],
+      "targetAudience": "Member channel/group Telegram yang aktif berdiskusi."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "headline + value + CTA reply/vote",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "telegram hard sell",
+      "telegram conversion",
+      "telegram cta",
+      "telegram growth"
+    ],
+    "hashtags": {
+      "strategy": "intent konversi + niche platform",
+      "count": 2
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Reply pendapatmu dan vote di polling yang tersedia."
+      }
+    ],
+    "audio": {
+      "recommendation": "Instrumental tipis agar fokus ke isi pesan komunitas.",
+      "style": "direct growth beat",
+      "mood": "bold and persuasive",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "hoaks",
+        "spam",
+        "penipuan",
+        "fitnah"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Conversion-oriented KPI meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Ini poin inti yang perlu kamu eksekusi sekarang.",
+          "description": "Fokus ke manfaat paling kuat, bukti ringkas, lalu arahkan ke aksi.",
+          "cta": "Reply pendapatmu dan vote di polling yang tersedia."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:20:00.000Z",
+      "updatedAt": "2026-02-22T19:20:00.000Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "telegram-soft-education-core-001",
+    "version": "1.0.0",
+    "title": "Telegram Soft Education - Growth Preset",
+    "label": "Telegram Soft Education",
+    "description": "Preset Soft Education untuk Telegram: fokus edukasi bernilai agar trust naik sebelum call-to-action.",
+    "platform": "Telegram",
+    "category": "Community Broadcast",
+    "tags": [
+      "telegram",
+      "soft-education",
+      "growth",
+      "conversion"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_comments",
+        "increase_quality_discussion",
+        "increase_retention"
+      ],
+      "emotionTriggers": [
+        "clarity",
+        "trust",
+        "helpfulness"
+      ],
+      "targetAudience": "Member channel/group Telegram yang aktif berdiskusi."
+    },
+    "contentStructure": {
+      "length": "medium",
+      "format": "context + tips + CTA reply/vote",
+      "placeholders": [
+        {
+          "name": "main_topic",
+          "type": "string",
+          "default": "Topik/offer utama"
+        },
+        {
+          "name": "key_value",
+          "type": "string",
+          "default": "Nilai utama untuk audiens"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "telegram soft education",
+      "telegram guide",
+      "telegram trust",
+      "telegram growth"
+    ],
+    "hashtags": {
+      "strategy": "edukasi + niche platform",
+      "count": 1
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Reply insightmu lalu vote agar topik berikutnya lebih tepat."
+      }
+    ],
+    "audio": {
+      "recommendation": "Instrumental tipis agar fokus ke isi pesan komunitas.",
+      "style": "clean educational beat",
+      "mood": "calm and credible",
+      "lengthSec": 45
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "hoaks",
+        "spam",
+        "penipuan",
+        "fitnah"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Engagement quality dan trust meningkat stabil."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Contoh topik implementasi"
+        },
+        "output": {
+          "hook": "Mulai dari langkah dasar ini agar hasilnya lebih konsisten.",
+          "description": "Jelaskan konteks, berikan langkah praktis, lalu arahkan aksi ringan.",
+          "cta": "Reply insightmu lalu vote agar topik berikutnya lebih tepat."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-22T19:21:00.000Z",
+      "updatedAt": "2026-02-22T19:21:00.000Z",
+      "createdBy": "codex"
+    }
+  }
+]
