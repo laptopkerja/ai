@@ -28,7 +28,7 @@ export default function AuthForm() {
     let mounted = true
     async function loadSignupPolicy() {
       try {
-        const resp = await apiAxios({ method: 'get', url: '/api/auth/signup-policy' })
+        const resp = await apiAxios({ method: 'get', url: '/api/public/signup-policy' })
         if (!mounted) return
         if (resp.data?.ok) setSignupPolicy(resp.data.data)
       } catch (e) {
@@ -53,7 +53,7 @@ export default function AuthForm() {
       if (isSigningUp) {
         const resp = await apiAxios({
           method: 'post',
-          url: '/api/auth/sign-up',
+          url: '/api/public/sign-up',
           data: {
             email: data.email,
             password: data.password
@@ -63,7 +63,7 @@ export default function AuthForm() {
         setSuccess('Akun berhasil dibuat. Silakan cek email untuk verifikasi lalu login.')
         setIsSigningUp(false)
         try {
-          const p = await apiAxios({ method: 'get', url: '/api/auth/signup-policy' })
+          const p = await apiAxios({ method: 'get', url: '/api/public/signup-policy' })
           if (p.data?.ok) setSignupPolicy(p.data.data)
         } catch (e) {}
       } else {
@@ -78,7 +78,7 @@ export default function AuthForm() {
         try {
           await apiAxios({
             method: 'get',
-            url: '/api/auth/session-access',
+            url: '/api/session-access',
             headers: { Authorization: `Bearer ${accessToken}` }
           })
         } catch (accessErr) {

@@ -4067,7 +4067,7 @@ function mockGenerate(data) {
   }
 }
 
-app.get('/api/auth/signup-policy', async (req, res) => {
+app.get(['/api/auth/signup-policy', '/api/public/signup-policy'], async (req, res) => {
   try {
     if (!supabaseAdmin) {
       return sendError(res, 503, 'MISCONFIGURED', 'Supabase admin client is not configured')
@@ -4101,7 +4101,7 @@ app.get('/api/auth/signup-policy', async (req, res) => {
   }
 })
 
-app.post('/api/auth/sign-up', async (req, res) => {
+app.post(['/api/auth/sign-up', '/api/public/sign-up'], async (req, res) => {
   try {
     if (!supabaseAdmin) {
       return sendError(res, 503, 'MISCONFIGURED', 'Supabase admin client is not configured')
@@ -4173,7 +4173,7 @@ app.post('/api/auth/sign-up', async (req, res) => {
   }
 })
 
-app.get('/api/auth/session-access', requireAuthenticatedUser, async (req, res) => {
+app.get(['/api/auth/session-access', '/api/session-access'], requireAuthenticatedUser, async (req, res) => {
   const email = resolveAuthUserEmail(req.authUser)
   return sendOk(res, {
     allowed: true,
