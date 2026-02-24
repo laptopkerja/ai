@@ -5,7 +5,7 @@
       "destination": "/api/index?__path=:path*"
     },
     {
-      "source": "/((?!api/).*)",
+      "source": "/:path*",
       "destination": "/index.html"
     }
   ]
