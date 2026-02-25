@@ -129,9 +129,113 @@ test('instruction-like narrator scenes are rewritten to ready-to-speak lines', (
   assert.equal(String(out.narrator).toLowerCase().includes('buka dengan hook'), false)
   assert.equal(String(out.narrator).toLowerCase().includes('sebut pain point'), false)
   assert.equal(String(out.narrator).toLowerCase().includes('tutup dengan cta'), false)
+  assert.equal(String(out.narrator).toLowerCase().includes('fokus ke hype, bukan kebutuhan nyata'), false)
   assert.match(String(out.narrator), /Scene 1 \(0-10s\):/i)
   assert.match(String(out.narrator), /Scene 2 \(10-20s\):/i)
   assert.match(String(out.narrator), /Scene 3 \(20-30s\):/i)
+})
+
+test('short narrator scene 2 uses contextual narrative instead of static generic line', () => {
+  const input = {
+    title: 'Movie Shelter',
+    hook: 'Jason Statham kembali dengan aksi menegangkan di Shelter.',
+    narrator: 'Cerita berfokus pada konflik masa lalu, tekanan moral, dan keputusan berisiko dalam situasi darurat.',
+    description: 'Ulas kekuatan cerita, tensi aksi, dan alasan film ini relevan buat penonton action-thriller.',
+    hashtags: ['#movieshelter', '#reviewfilm'],
+    audioRecommendation: [
+      'Style: Soft beat aesthetic',
+      'Mood: Fresh confident',
+      'Genre: Chill pop',
+      'Suggestion: Creator sound medium tempo',
+      'Length: 30s'
+    ].join('\n')
+  }
+
+  const out = applyGenerationQualityGuardrails(input, {
+    platform: 'TikTok',
+    language: 'Indonesia',
+    contentLength: 'short',
+    topic: 'movie Shelter'
+  })
+
+  const scene2Line = String(out.narrator)
+    .split('\n')
+    .find((line) => /^Scene\s+2\s+\(\d+-\d+s\):/i.test(line))
+
+  assert.ok(scene2Line, 'Scene 2 line should exist')
+  assert.equal(String(scene2Line).toLowerCase().includes('fokus ke hype, bukan kebutuhan nyata'), false)
+  assert.match(String(scene2Line), /(konflik|tekanan moral|keputusan berisiko|tensi aksi|kekuatan cerita)/i)
+})
+
+test('medium narrator rewrites clipped directive fragments into contextual scene lines', () => {
+  const input = {
+    title: 'Movie Shelter Breakdown',
+    hook: 'Sebelum nonton, pahami konflik utama Shelter dalam 45 detik.',
+    narrator: [
+      'Scene 1 (0-9s): Buka dengan hook yang tajam tentang film ini.',
+      'Scene 2 (9-18s): Jelaskan poin utama dengan ringkas.',
+      'Scene 3 (18-27s): Jelaskan poin utama lanjutan.',
+      'Scene 4 (27-36s): Jelaskan poin utama lanjutan.',
+      'Scene 5 (36-45s): Tutup dengan CTA lembut untuk komentar.'
+    ].join('\n'),
+    description: 'Ulas konflik karakter, motivasi tokoh, dan payoff emosi agar penonton bisa menilai apakah film ini cocok dengan selera mereka.',
+    hashtags: ['#movieshelter', '#reviewfilm'],
+    audioRecommendation: [
+      'Style: Soft beat aesthetic',
+      'Mood: Fresh confident',
+      'Genre: Chill pop',
+      'Suggestion: Creator sound medium tempo',
+      'Length: 45s'
+    ].join('\n')
+  }
+
+  const out = applyGenerationQualityGuardrails(input, {
+    platform: 'YouTube Short',
+    language: 'Indonesia',
+    contentLength: 'medium',
+    topic: 'Movie Shelter'
+  })
+
+  const lines = String(out.narrator).split('\n').filter(Boolean)
+  const scene2 = lines.find((line) => /^Scene\s+2\s+\(\d+-\d+s\):/i.test(line)) || ''
+  assert.equal(scene2.toLowerCase().includes('utama dengan ringkas'), false)
+  assert.equal(scene2.toLowerCase().includes('poin utama lanjutan'), false)
+})
+
+test('scene CTA follows preset language and ignores mismatched cta text', () => {
+  const input = {
+    title: 'Shelter quick review',
+    hook: 'Is Shelter worth watching this week?',
+    narrator: [
+      'Scene 1 (0-10s): Open with hook about Shelter.',
+      'Scene 2 (10-20s): State audience pain point and relevance.',
+      'Scene 3 (20-30s): Close with soft CTA.'
+    ].join('\n'),
+    description: 'Break down the conflict setup, pacing, and payoff so viewers can decide faster.',
+    hashtags: ['#shelter', '#moviereview'],
+    audioRecommendation: [
+      'Style: Soft beat aesthetic',
+      'Mood: Fresh confident',
+      'Genre: Chill pop',
+      'Suggestion: Creator sound medium tempo',
+      'Length: 30s'
+    ].join('\n')
+  }
+
+  const out = applyGenerationQualityGuardrails(input, {
+    platform: 'TikTok',
+    language: 'English',
+    contentLength: 'short',
+    topic: 'Movie Shelter',
+    ctaTexts: ['Follow untuk part 2 dan rekomendasi film lain sesuai genre favorit kamu.']
+  })
+
+  const scene3 = String(out.narrator)
+    .split('\n')
+    .find((line) => /^Scene\s+3\s+\(\d+-\d+s\):/i.test(line)) || ''
+
+  assert.equal(scene3.toLowerCase().includes('untuk part 2'), false)
+  assert.match(scene3, /(save|comment|share|follow)/i)
 })
 
 test('blogger platform enforces SEO article contract with word range and FAQ structure', () => {

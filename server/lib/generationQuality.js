@@ -72,6 +72,42 @@ function languageCode(language) {
   return safeString(language).toLowerCase().startsWith('en') ? 'en' : 'id'
 }
 
+function countWordHits(text, words = []) {
+  if (!text || !Array.isArray(words) || !words.length) return 0
+  let score = 0
+  for (const word of words) {
+    const re = new RegExp(`\\b${escapeRegExp(String(word || ''))}\\b`, 'i')
+    if (re.test(text)) score += 1
+  }
+  return score
+}
+
+function detectTextLanguageHint(text) {
+  const source = safeString(text).toLowerCase()
+  if (!source) return 'unknown'
+
+  const idWords = ['yang', 'dan', 'untuk', 'dengan', 'atau', 'karena', 'tidak', 'kamu', 'kalian', 'komentar', 'simpan', 'bagikan', 'ikuti', 'cek']
+  const enWords = ['the', 'and', 'for', 'with', 'or', 'because', 'not', 'you', 'comment', 'save', 'share', 'follow', 'check']
+
+  const idScore = countWordHits(source, idWords)
+  const enScore = countWordHits(source, enWords)
+
+  if (idScore >= 2 && idScore >= enScore + 1) return 'id'
+  if (enScore >= 2 && enScore >= idScore + 1) return 'en'
+  return 'unknown'
+}
+
+function isLanguageCompatible(text, targetLang) {
+  const hint = detectTextLanguageHint(text)
+  return hint === 'unknown' || hint === targetLang
+}
+
+function resolveLocalizedContextCta(context) {
+  const raw = Array.isArray(context?.ctaTexts) ? safeString(context.ctaTexts[0]) : ''
+  if (!raw) return ''
+  return isLanguageCompatible(raw, languageCode(context?.language)) ? raw : ''
+}
+
 const GLOBAL_FORBIDDEN_TERMS = [
   'pasti untung',
   '100%',
@@ -810,11 +846,38 @@ function isNarratorInstructionLike(text) {
   return NARRATOR_INSTRUCTION_PATTERNS.some((pattern) => pattern.test(source))
 }
 
-function buildNarratorFallbackLine(context, sceneIndex, sceneCount, hook, description) {
+function toNarrativeSentencePool(rawText) {
+  const source = safeString(rawText)
+  if (!source) return []
+  const out = []
+  const lines = source
+    .split(/\r?\n/)
+    .map((line) => compactSpaces(line.replace(/^Scene\s+\d+\s*\(\d+-\d+s\)\s*:\s*/i, '')))
+    .filter(Boolean)
+
+  for (const line of lines) {
+    const parts = splitSentences(line)
+    if (parts.length) out.push(...parts)
+    else out.push(line)
+  }
+
+  return out
+    .map((text) => compactSpaces(text))
+    .filter((text) => text.length >= 18 && !isNarratorInstructionLike(text))
+}
+
+function buildNarratorFallbackLine(context, sceneIndex, sceneCount, hook, description, sourceNarrator = '') {
   const lang = languageCode(context.language)
   const topic = safeString(context.topic) || (lang === 'en' ? 'this topic' : 'topik ini')
-  const ctaFromContext = Array.isArray(context.ctaTexts) ? safeString(context.ctaTexts[0]) : ''
-  const descSentences = splitSentences(description)
+  const ctaFromContext = resolveLocalizedContextCta(context)
+  const speechLang = lang === 'en' ? 'English' : 'Indonesia'
+  const sourceSentences = toNarrativeSentencePool(sourceNarrator)
+    .filter((line) => isLanguageCompatible(line, lang))
+    .filter((line) => !detectCtaSignal(line, speechLang))
+  const descSentences = toNarrativeSentencePool(description)
+    .filter((line) => isLanguageCompatible(line, lang))
+    .filter((line) => !detectCtaSignal(line, speechLang))
+  const narrativePool = descSentences.length ? descSentences : sourceSentences
 
   if (sceneIndex === 0) {
     if (safeString(hook)) return safeString(hook)
@@ -831,13 +894,14 @@ function buildNarratorFallbackLine(context, sceneIndex, sceneCount, hook, descri
   }
 
   if (sceneIndex === 1) {
+    if (narrativePool.length) return narrativePool[0]
     return lang === 'en'
-      ? `The common issue is people focus on hype, not on what they actually need from ${topic}.`
-      : `Masalah yang sering terjadi, orang fokus ke hype, bukan kebutuhan nyata dari ${topic}.`
+      ? `In this part, focus on the key facts about ${topic} so viewers can assess it realistically.`
+      : `Di bagian ini, fokus ke fakta kunci tentang ${topic} agar audiens bisa menilai dengan realistis.`
   }
 
-  if (descSentences.length) {
-    return descSentences[(sceneIndex - 2) % descSentences.length]
+  if (narrativePool.length) {
+    return narrativePool[(sceneIndex - 2 + narrativePool.length) % narrativePool.length]
   }
 
   return lang === 'en'
@@ -845,17 +909,29 @@ function buildNarratorFallbackLine(context, sceneIndex, sceneCount, hook, descri
     : `Di scene ini, tunjukkan satu poin konkret agar ${topic} lebih mudah dipahami.`
 }
 
-function normalizeNarratorSceneText(text, context, sceneIndex, sceneCount, hook, description) {
-  const fallbackLine = buildNarratorFallbackLine(context, sceneIndex, sceneCount, hook, description)
+function normalizeNarratorSceneText(text, context, sceneIndex, sceneCount, hook, description, sourceNarrator = '') {
+  const fallbackLine = buildNarratorFallbackLine(
+    context,
+    sceneIndex,
+    sceneCount,
+    hook,
+    description,
+    sourceNarrator
+  )
   let value = compactSpaces(text)
   value = value.replace(/^scene\s*\d+\s*\(\d+-\d+s\)\s*:\s*/i, '')
+  const hadDirectivePrefix = /^(buka dengan hook|open with (a )?hook|sebut|state|tutup dengan cta|close with (a )?cta|jelaskan poin|explain (the )?key point)\b/i.test(value)
   value = value.replace(/^(buka dengan hook|open with (a )?hook)\s*[:,-]?\s*/i, '')
   value = value.replace(/^(sebut|state)\s+(pain point|audience pain point|pain point audiens)\s*[:,-]?\s*/i, '')
   value = value.replace(/^(tutup dengan cta|close with (a )?cta)\s*[:,-]?\s*/i, '')
   value = value.replace(/^(jelaskan poin|explain (the )?key point)\s*[:,-]?\s*/i, '')
   value = compactSpaces(value)
+  const clippedDirectiveRemainder =
+    hadDirectivePrefix &&
+    (value.length < 36 || /\b(utama dengan ringkas|poin utama lanjutan|lanjutan)\b/i.test(value))
+  const languageMismatch = !isLanguageCompatible(value, languageCode(context.language))
 
-  if (!value || isNarratorInstructionLike(value) || value.length < 12) {
+  if (!value || clippedDirectiveRemainder || languageMismatch || isNarratorInstructionLike(value) || value.length < 12) {
     value = fallbackLine
   }
   return truncateText(value, 180)
@@ -1058,26 +1134,42 @@ function buildBloggerArticle(context, sourceNarrator, hook, description) {
 }
 
 function buildSceneNarrator(context, lengthProfile, sourceNarrator, hook, description) {
-  const bodySentences = splitSentences(sourceNarrator || description)
+  const speechLang = languageCode(context.language) === 'en' ? 'English' : 'Indonesia'
+  const targetLang = languageCode(context.language)
+  const fromDescription = toNarrativeSentencePool(description)
+    .filter((line) => isLanguageCompatible(line, targetLang))
+    .filter((line) => !detectCtaSignal(line, speechLang))
+  const fromSourceNarrator = toNarrativeSentencePool(sourceNarrator)
+    .filter((line) => isLanguageCompatible(line, targetLang))
+    .filter((line) => !detectCtaSignal(line, speechLang))
+  const bodySentences = fromDescription.length ? fromDescription : fromSourceNarrator
   const ranges = buildSceneRanges(lengthProfile.totalSec, lengthProfile.sceneCount)
 
   const getBodySentence = (idx) => {
     if (bodySentences.length) return bodySentences[idx % bodySentences.length]
-    return buildNarratorFallbackLine(context, Math.max(2, idx + 2), lengthProfile.sceneCount, hook, description)
+    return buildNarratorFallbackLine(
+      context,
+      Math.max(1, idx + 1),
+      lengthProfile.sceneCount,
+      hook,
+      description,
+      sourceNarrator
+    )
   }
 
   const lines = []
   for (let i = 0; i < lengthProfile.sceneCount; i += 1) {
-    const baseText = i >= 2 && i < lengthProfile.sceneCount - 1
-      ? getBodySentence(i - 2)
+    const baseText = i > 0 && i < lengthProfile.sceneCount - 1
+      ? getBodySentence(i - 1)
       : ''
     const clipped = normalizeNarratorSceneText(
-      baseText || buildNarratorFallbackLine(context, i, lengthProfile.sceneCount, hook, description),
+      baseText || buildNarratorFallbackLine(context, i, lengthProfile.sceneCount, hook, description, sourceNarrator),
       context,
       i,
       lengthProfile.sceneCount,
       hook,
-      description
+      description,
+      sourceNarrator
     )
     const range = ranges[i]
     lines.push(`Scene ${i + 1} (${range.start}-${range.end}s): ${clipped}`)
@@ -1122,7 +1214,8 @@ function normalizeNarrator(raw, context, lengthProfile, hook, description) {
         idx,
         lengthProfile.sceneCount,
         hook,
-        description
+        description,
+        raw
       )
       return {
         ...scene,
@@ -1184,7 +1277,7 @@ function getPlatformCtaSentence(platformContract, context) {
   const lang = languageCode(context.language)
   const platform = safeString(platformContract.platform)
   const style = safeString(platformContract.ctaStyle)
-  const fromContext = Array.isArray(context.ctaTexts) ? safeString(context.ctaTexts[0]) : ''
+  const fromContext = resolveLocalizedContextCta(context)
   if (fromContext) return fromContext
 
   if (lang === 'en') {

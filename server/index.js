@@ -385,6 +385,15 @@ function validateManualConfig(config) {
   return errs
 }
 
+function createRequestError(status, code, message, details = undefined) {
+  const err = new Error(String(message || 'Request validation failed'))
+  err.isRequestError = true
+  err.statusCode = Number(status) || 400
+  err.errorCode = String(code || 'BAD_REQUEST')
+  if (details !== undefined) err.errorDetails = details
+  return err
+}
+
 function isValidHttpUrl(raw) {
   try {
     const u = new URL(String(raw || '').trim())
@@ -5002,6 +5011,211 @@ app.post('/api/tmdb/detail', sensitiveAuthMiddleware, async (req, res) => {
   }
 })
 
+async function buildGeneratePromptPayload(payloadInput = {}, { authUserId = '' } = {}) {
+  const payload = isPlainObject(payloadInput) ? payloadInput : {}
+  const mode = payload.mode || (payload.presetId ? 'preset' : 'manual')
+  const provider = payload.provider || null
+  const model = payload.model || null
+  let override = payload.override
+  let extraInstruction = String(payload.extraInstruction || '').trim()
+  const tmdbPreference = normalizeTmdbPreference(payload.tmdb)
+  const imageRefsResult = sanitizeImageReferences(payload.imageReferences)
+
+  if (!['manual', 'preset'].includes(mode)) {
+    throw createRequestError(400, 'BAD_REQUEST', 'mode must be either manual or preset')
+  }
+  if (override !== undefined && !isPlainObject(override)) {
+    throw createRequestError(400, 'BAD_REQUEST', 'override must be an object')
+  }
+  if (imageRefsResult.error) {
+    throw createRequestError(400, 'VALIDATION_ERROR', imageRefsResult.error, imageRefsResult.details)
+  }
+
+  const mergedImageRefs = mergeUniqueImageReferences(
+    imageRefsResult.data,
+    tmdbPreference.selectedImages,
+    MAX_IMAGE_REFERENCES
+  )
+  const mergedImageRefsResult = sanitizeImageReferences(mergedImageRefs)
+  if (mergedImageRefsResult.error) {
+    throw createRequestError(400, 'VALIDATION_ERROR', mergedImageRefsResult.error, mergedImageRefsResult.details)
+  }
+  const imageReferences = mergedImageRefsResult.data
+
+  if (provider && !isSupportedProvider(provider)) {
+    throw createRequestError(400, 'VALIDATION_ERROR', 'provider is not supported')
+  }
+  const visionRouting = buildVisionRoutingContext({ provider, model, imageReferences })
+  if (!visionRouting.ok) {
+    throw createRequestError(
+      400,
+      visionRouting.error.code || 'VALIDATION_ERROR',
+      visionRouting.error.message || 'Validation failed',
+      visionRouting.error.details
+    )
+  }
+
+  if (mode === 'preset') {
+    const presetId = String(payload.presetId || '').trim()
+    if (!presetId) {
+      throw createRequestError(400, 'BAD_REQUEST', 'presetId is required for preset mode')
+    }
+    const presetRaw = await loadPresetById(presetId, authUserId)
+    if (!presetRaw) {
+      throw createRequestError(404, 'NOT_FOUND', 'Preset not found')
+    }
+
+    let normalized = normalizePreset(presetRaw)
+
+    // Backward compatibility: fold legacy topic-ish payload into extraInstruction.
+    const legacyTopLevelTopic = String(payload.topic || '').trim()
+    if (legacyTopLevelTopic) {
+      extraInstruction = [extraInstruction, legacyTopLevelTopic].filter(Boolean).join('\n')
+    }
+    if (override && isPlainObject(override)) {
+      const nextOverride = { ...override }
+      const extractedTopicLines = []
+      const collectTopicText = (value) => {
+        if (value === null || value === undefined) return
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          const text = String(value).trim()
+          if (text) extractedTopicLines.push(text)
+        }
+      }
+
+      collectTopicText(nextOverride.topic)
+      delete nextOverride.topic
+
+      for (const key of Object.keys(nextOverride)) {
+        if (!String(key).startsWith('topic.')) continue // eslint-disable-line no-continue
+        collectTopicText(nextOverride[key])
+        delete nextOverride[key]
+      }
+
+      if (extractedTopicLines.length) {
+        extraInstruction = [extraInstruction, ...extractedTopicLines].filter(Boolean).join('\n')
+      }
+      override = Object.keys(nextOverride).length ? nextOverride : undefined
+    }
+
+    if (override) {
+      const invalidOverridePaths = validateOverridePaths(normalized, override)
+      if (invalidOverridePaths.length) {
+        throw createRequestError(400, 'VALIDATION_ERROR', 'Invalid override path(s)', invalidOverridePaths)
+      }
+      normalized = applyOverrides(normalized, override)
+    }
+
+    const strategyTone = Array.isArray(normalized.strategy?.emotionTriggers) && normalized.strategy.emotionTriggers.length
+      ? normalized.strategy.emotionTriggers.join(', ')
+      : ''
+    const promptInput = { ...normalized, tone: normalized.tone || strategyTone }
+
+    const postErrs = validateTemplate(normalized)
+    if (postErrs.length) {
+      throw createRequestError(400, 'VALIDATION_ERROR', 'Preset validation failed after overrides', postErrs)
+    }
+    const contractLint = lintPresetAgainstPlatformContract(normalized)
+    if (Array.isArray(contractLint?.errors) && contractLint.errors.length) {
+      throw createRequestError(
+        400,
+        'PRESET_CONTRACT_REJECTED',
+        'Preset ditolak karena melanggar kontrak platform.',
+        {
+          presetId: String(normalized?.id || presetId || '').trim() || null,
+          platform: String(normalized?.platform || '').trim() || null,
+          errors: contractLint.errors,
+          warnings: Array.isArray(contractLint.warnings) ? contractLint.warnings : [],
+          action: {
+            canEdit: true,
+            canDelete: true,
+            tip: 'Buka halaman Templates lalu Edit untuk perbaiki field yang disebutkan, atau Hapus preset jika sudah tidak dipakai.'
+          }
+        }
+      )
+    }
+
+    const tpl = defaultTemplateForConfig(normalized)
+    const basePrompt = compilePrompt(tpl, promptInput)
+    const withInstructionPrompt = appendExtraInstructionToPrompt(basePrompt, extraInstruction)
+    const tmdbContext = await fetchTmdbEnrichmentContext({
+      topic: promptInput?.topic || normalized?.topic || '',
+      extraInstruction,
+      language: promptInput?.language || normalized?.language || '',
+      preference: tmdbPreference
+    })
+    const withTmdbPrompt = appendTmdbContextToPrompt(withInstructionPrompt, tmdbContext)
+    const finalPrompt = appendImageReferencesToPrompt(withTmdbPrompt, imageReferences)
+
+    return {
+      mode: 'preset',
+      provider,
+      model,
+      presetId,
+      normalizedConfig: promptInput,
+      prompt: finalPrompt,
+      imageReferences,
+      warnings: visionRouting.warnings,
+      vision: visionRouting.vision,
+      tmdb: tmdbContext
+    }
+  }
+
+  // manual mode
+  let manualConfig = payload.manualConfig || payload.normalizedConfig || null
+  if (!manualConfig && payload.topic) {
+    // backward compatibility for old clients sending top-level fields
+    manualConfig = {
+      topic: payload.topic,
+      platform: payload.platform,
+      language: payload.language,
+      tone: payload.tone,
+      contentStructure: { length: payload.length || 'short', format: payload.formatOutput || 'text' }
+    }
+  }
+  const manualErrs = validateManualConfig(manualConfig)
+  if (manualErrs.length) {
+    throw createRequestError(400, 'VALIDATION_ERROR', 'Manual payload validation failed', manualErrs)
+  }
+
+  let normalized = manualConfig
+  if (override) {
+    const invalidOverridePaths = validateOverridePaths(normalized, override)
+    if (invalidOverridePaths.length) {
+      throw createRequestError(400, 'VALIDATION_ERROR', 'Invalid override path(s)', invalidOverridePaths)
+    }
+    normalized = applyOverrides(normalized, override)
+  }
+  const postOverrideErrs = validateManualConfig(normalized)
+  if (postOverrideErrs.length) {
+    throw createRequestError(400, 'VALIDATION_ERROR', 'Manual payload validation failed after overrides', postOverrideErrs)
+  }
+
+  const tpl = defaultTemplateForConfig(normalized)
+  const basePrompt = compilePrompt(tpl, normalized)
+  const tmdbContext = await fetchTmdbEnrichmentContext({
+    topic: normalized?.topic || normalized?.title || '',
+    extraInstruction,
+    language: normalized?.language || '',
+    preference: tmdbPreference
+  })
+  const withTmdbPrompt = appendTmdbContextToPrompt(basePrompt, tmdbContext)
+  const finalPrompt = appendImageReferencesToPrompt(withTmdbPrompt, imageReferences)
+
+  return {
+    mode: 'manual',
+    provider,
+    model,
+    presetId: null,
+    normalizedConfig: normalized,
+    prompt: finalPrompt,
+    imageReferences,
+    warnings: visionRouting.warnings,
+    vision: visionRouting.vision,
+    tmdb: tmdbContext
+  }
+}
+
 app.post('/api/history/user-display-names', sensitiveAuthMiddleware, async (req, res) => {
   try {
     if (!supabaseAdmin) {
@@ -5018,55 +5232,45 @@ app.post('/api/history/user-display-names', sensitiveAuthMiddleware, async (req,
   }
 })
 
+app.post('/api/generate/preview', sensitiveAuthMiddleware, async (req, res) => {
+  try {
+    const authUser = await resolveOptionalAuthenticatedUser(req)
+    const previewPayload = await buildGeneratePromptPayload(req.body || {}, { authUserId: authUser?.id || '' })
+    return sendOk(res, {
+      prompt: previewPayload.prompt,
+      meta: {
+        source: 'server',
+        mode: previewPayload.mode,
+        provider: previewPayload.provider || null,
+        model: previewPayload.model || null,
+        presetId: previewPayload.presetId || null,
+        tmdbUsed: !!previewPayload?.tmdb?.used,
+        tmdbReason: previewPayload?.tmdb?.reason || null,
+        imageRefCount: Array.isArray(previewPayload.imageReferences) ? previewPayload.imageReferences.length : 0,
+        visionMode: previewPayload?.vision?.mode || 'text_only'
+      }
+    })
+  } catch (err) {
+    if (err?.isRequestError) {
+      return sendError(res, err.statusCode || 400, err.errorCode || 'BAD_REQUEST', err.message, err.errorDetails)
+    }
+    console.error(err)
+    return sendError(res, 500, 'INTERNAL_ERROR', 'Server error')
+  }
+})
+
 app.post('/api/generate', sensitiveAuthMiddleware, async (req, res) => {
   try {
-    const payload = req.body || {}
-    const mode = payload.mode || (payload.presetId ? 'preset' : 'manual')
-    const provider = payload.provider || null
-    const model = payload.model || null
-    let override = payload.override
-    let extraInstruction = String(payload.extraInstruction || '').trim()
-    const tmdbPreference = normalizeTmdbPreference(payload.tmdb)
-    const imageRefsResult = sanitizeImageReferences(payload.imageReferences)
-
-    if (!['manual', 'preset'].includes(mode)) {
-      return sendError(res, 400, 'BAD_REQUEST', 'mode must be either manual or preset')
-    }
-    if (override !== undefined && !isPlainObject(override)) {
-      return sendError(res, 400, 'BAD_REQUEST', 'override must be an object')
-    }
-    if (imageRefsResult.error) {
-      return sendError(res, 400, 'VALIDATION_ERROR', imageRefsResult.error, imageRefsResult.details)
-    }
-    const mergedImageRefs = mergeUniqueImageReferences(
-      imageRefsResult.data,
-      tmdbPreference.selectedImages,
-      MAX_IMAGE_REFERENCES
-    )
-    const mergedImageRefsResult = sanitizeImageReferences(mergedImageRefs)
-    if (mergedImageRefsResult.error) {
-      return sendError(res, 400, 'VALIDATION_ERROR', mergedImageRefsResult.error, mergedImageRefsResult.details)
-    }
-    const imageReferences = mergedImageRefsResult.data
-    if (provider && !isSupportedProvider(provider)) {
-      return sendError(res, 400, 'VALIDATION_ERROR', 'provider is not supported')
-    }
-    const visionRouting = buildVisionRoutingContext({ provider, model, imageReferences })
-    if (!visionRouting.ok) {
-      return sendError(
-        res,
-        400,
-        visionRouting.error.code || 'VALIDATION_ERROR',
-        visionRouting.error.message || 'Validation failed',
-        visionRouting.error.details
-      )
-    }
-    const providerContext = await resolveGenerateKeySource(req, provider)
-    if (provider && providerContext.keySource === 'not_configured') {
-      return sendError(res, 400, 'KEY_NOT_CONFIGURED', `Provider key for ${provider} is not configured`)
+    const authUser = await resolveOptionalAuthenticatedUser(req)
+    const promptPayload = await buildGeneratePromptPayload(req.body || {}, { authUserId: authUser?.id || '' })
+    const providerContext = await resolveGenerateKeySource(req, promptPayload.provider)
+    if (promptPayload.provider && providerContext.keySource === 'not_configured') {
+      return sendError(res, 400, 'KEY_NOT_CONFIGURED', `Provider key for ${promptPayload.provider} is not configured`)
     }
 
     async function generateUsingProviderOrMock(genPayload) {
+      const provider = genPayload.provider || null
+      const model = genPayload.model || null
       const baseResult = mockGenerate(genPayload)
       if (!ENABLE_REAL_PROVIDER_CALLS || !provider || !providerContext.providerApiKey) {
         return applyQualityToGeneratedResult(baseResult, genPayload)
@@ -5126,164 +5330,15 @@ app.post('/api/generate', sensitiveAuthMiddleware, async (req, res) => {
       }
     }
 
-    if (mode === 'preset') {
-      const presetId = payload.presetId
-      if (!presetId) return sendError(res, 400, 'BAD_REQUEST', 'presetId is required for preset mode')
-      const authUser = await resolveOptionalAuthenticatedUser(req)
-      const presetRaw = await loadPresetById(presetId, authUser?.id || '')
-      if (!presetRaw) return sendError(res, 404, 'NOT_FOUND', 'Preset not found')
-
-      let normalized = normalizePreset(presetRaw)
-      // Backward compatibility: some clients used topic in preset payload.
-      // Canonical preset schema has no top-level topic, so fold any topic-ish input
-      // into extraInstruction and remove it from override before path validation.
-      const legacyTopLevelTopic = String(payload.topic || '').trim()
-      if (legacyTopLevelTopic) {
-        extraInstruction = [extraInstruction, legacyTopLevelTopic].filter(Boolean).join('\n')
-      }
-      if (override && isPlainObject(override)) {
-        const nextOverride = { ...override }
-        const extractedTopicLines = []
-        const collectTopicText = (value) => {
-          if (value === null || value === undefined) return
-          if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-            const text = String(value).trim()
-            if (text) extractedTopicLines.push(text)
-          }
-        }
-
-        collectTopicText(nextOverride.topic)
-        delete nextOverride.topic
-
-        for (const key of Object.keys(nextOverride)) {
-          if (!String(key).startsWith('topic.')) continue
-          collectTopicText(nextOverride[key])
-          delete nextOverride[key]
-        }
-
-        if (extractedTopicLines.length) {
-          extraInstruction = [extraInstruction, ...extractedTopicLines].filter(Boolean).join('\n')
-        }
-        override = Object.keys(nextOverride).length ? nextOverride : undefined
-      }
-
-      if (override) {
-        const invalidOverridePaths = validateOverridePaths(normalized, override)
-        if (invalidOverridePaths.length) {
-          return sendError(res, 400, 'VALIDATION_ERROR', 'Invalid override path(s)', invalidOverridePaths)
-        }
-        normalized = applyOverrides(normalized, override)
-      }
-      const strategyTone = Array.isArray(normalized.strategy?.emotionTriggers) && normalized.strategy.emotionTriggers.length
-        ? normalized.strategy.emotionTriggers.join(', ')
-        : ''
-      const promptInput = { ...normalized, tone: normalized.tone || strategyTone }
-
-      const postErrs = validateTemplate(normalized)
-      if (postErrs.length) {
-        return sendError(res, 400, 'VALIDATION_ERROR', 'Preset validation failed after overrides', postErrs)
-      }
-      const contractLint = lintPresetAgainstPlatformContract(normalized)
-      if (Array.isArray(contractLint?.errors) && contractLint.errors.length) {
-        return sendError(
-          res,
-          400,
-          'PRESET_CONTRACT_REJECTED',
-          'Preset ditolak karena melanggar kontrak platform.',
-          {
-            presetId: String(normalized?.id || presetId || '').trim() || null,
-            platform: String(normalized?.platform || '').trim() || null,
-            errors: contractLint.errors,
-            warnings: Array.isArray(contractLint.warnings) ? contractLint.warnings : [],
-            action: {
-              canEdit: true,
-              canDelete: true,
-              tip: 'Buka halaman Templates lalu Edit untuk perbaiki field yang disebutkan, atau Hapus preset jika sudah tidak dipakai.'
-            }
-          }
-        )
-      }
-
-      const tpl = defaultTemplateForConfig(normalized)
-      const basePrompt = compilePrompt(tpl, promptInput)
-      const withInstructionPrompt = appendExtraInstructionToPrompt(basePrompt, extraInstruction)
-      const tmdbContext = await fetchTmdbEnrichmentContext({
-        topic: promptInput?.topic || normalized?.topic || '',
-        extraInstruction,
-        language: promptInput?.language || normalized?.language || '',
-        preference: tmdbPreference
-      })
-      const withTmdbPrompt = appendTmdbContextToPrompt(withInstructionPrompt, tmdbContext)
-      const finalPrompt = appendImageReferencesToPrompt(withTmdbPrompt, imageReferences)
-      const genPayload = {
-        normalizedConfig: promptInput,
-        provider,
-        model,
-        prompt: finalPrompt,
-        imageReferences,
-        warnings: visionRouting.warnings,
-        vision: visionRouting.vision,
-        keySource: providerContext.keySource,
-        tmdb: tmdbContext
-      }
-      const generated = await generateUsingProviderOrMock(genPayload)
-      return sendOk(res, generated)
-    }
-
-    // manual mode
-    let manualConfig = payload.manualConfig || payload.normalizedConfig || null
-    if (!manualConfig && payload.topic) {
-      // backward compatibility for old clients sending top-level fields
-      manualConfig = {
-        topic: payload.topic,
-        platform: payload.platform,
-        language: payload.language,
-        tone: payload.tone,
-        contentStructure: { length: payload.length || 'short', format: payload.formatOutput || 'text' }
-      }
-    }
-    const manualErrs = validateManualConfig(manualConfig)
-    if (manualErrs.length) {
-      return sendError(res, 400, 'VALIDATION_ERROR', 'Manual payload validation failed', manualErrs)
-    }
-
-    let normalized = manualConfig
-    if (override) {
-      const invalidOverridePaths = validateOverridePaths(normalized, override)
-      if (invalidOverridePaths.length) {
-        return sendError(res, 400, 'VALIDATION_ERROR', 'Invalid override path(s)', invalidOverridePaths)
-      }
-      normalized = applyOverrides(normalized, override)
-    }
-    const postOverrideErrs = validateManualConfig(normalized)
-    if (postOverrideErrs.length) {
-      return sendError(res, 400, 'VALIDATION_ERROR', 'Manual payload validation failed after overrides', postOverrideErrs)
-    }
-
-    const tpl = defaultTemplateForConfig(normalized)
-    const basePrompt = compilePrompt(tpl, normalized)
-    const tmdbContext = await fetchTmdbEnrichmentContext({
-      topic: normalized?.topic || normalized?.title || '',
-      extraInstruction,
-      language: normalized?.language || '',
-      preference: tmdbPreference
+    const generated = await generateUsingProviderOrMock({
+      ...promptPayload,
+      keySource: providerContext.keySource
     })
-    const withTmdbPrompt = appendTmdbContextToPrompt(basePrompt, tmdbContext)
-    const finalPrompt = appendImageReferencesToPrompt(withTmdbPrompt, imageReferences)
-    const genPayload = {
-      normalizedConfig: normalized,
-      provider,
-      model,
-      prompt: finalPrompt,
-      imageReferences,
-      warnings: visionRouting.warnings,
-      vision: visionRouting.vision,
-      keySource: providerContext.keySource,
-      tmdb: tmdbContext
-    }
-    const generated = await generateUsingProviderOrMock(genPayload)
     return sendOk(res, generated)
   } catch (err) {
+    if (err?.isRequestError) {
+      return sendError(res, err.statusCode || 400, err.errorCode || 'BAD_REQUEST', err.message, err.errorDetails)
+    }
     if (err?.code === 'PROVIDER_API_ERROR') {
       const details = isPlainObject(err?.details) ? err.details : undefined
       const classification = String(details?.classification || '').toLowerCase()

@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
-import { Form, Button, Row, Col, Spinner, Alert, Dropdown, Accordion } from 'react-bootstrap'
+import { Form, Button, Row, Col, Spinner, Alert, Dropdown, Accordion, Badge } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Icon } from '@iconify/react'
 import { apiAxios, humanizeApiError } from '../lib/apiRuntime'
 import { supabase } from '../supabase/client'
 import normalizeManual from '../lib/normalizeManual'
-import { compilePrompt, defaultTemplateForConfig } from '../lib/promptCompiler'
 import { syncLocalFallbackToSupabase } from '../lib/generationStorage'
 import { sortPresetsForUi } from '../lib/presetOrdering'
 import {
@@ -242,6 +241,15 @@ const LANGS = [
   { value: 'Indonesia', label: 'ID' },
   { value: 'English', label: 'EN' }
 ]
+const MODE_OPTIONS = [
+  { value: 'Standard', label: 'Standard' },
+  { value: 'Instant', label: 'Instant' }
+]
+const LENGTH_OPTIONS = [
+  { value: 'short', label: 'Short' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'long', label: 'Long' }
+]
 
 const PRESETS = [
   { key: 'builtin:short-hook', label: 'Short Hook (Instant)', tone: 'Fun', length: 'short' },
@@ -339,6 +347,7 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
   const platform = watch('platform')
   const model = watch('model')
   const language = watch('language')
+  const length = watch('length')
   const topicValue = watch('topic')
   const useTmdb = watch('useTmdb')
   const [templatePresets, setTemplatePresets] = useState([])
@@ -355,8 +364,13 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
   const [models, setModels] = useState(fallbackModelOptions('Gemini'))
   const [loadingModels, setLoadingModels] = useState(false)
   const [showMore, setShowMore] = useState(false)
+  const [modeOpen, setModeOpen] = useState(false)
   const [toneOpen, setToneOpen] = useState(false)
+  const [languageOpen, setLanguageOpen] = useState(false)
+  const [lengthOpen, setLengthOpen] = useState(false)
+  const [previewLoading, setPreviewLoading] = useState(false)
   const [promptPreview, setPromptPreview] = useState('')
+  const [promptPreviewMeta, setPromptPreviewMeta] = useState(null)
   // preset dropdown state
   const [presetOpen, setPresetOpen] = useState(false)
   const [presetSearch, setPresetSearch] = useState('')
@@ -967,17 +981,8 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
     setImageReferences([])
     setTmdbSelection(readTmdbGenerateSelection())
     setError(null)
-  }
-
-  function appendImageReferencesToPrompt(basePrompt, refs = toPayloadImageReferences()) {
-    if (!refs.length) return basePrompt
-    const lines = refs.map((ref, idx) => {
-      if (ref.type === 'url') return `${idx + 1}. URL: ${ref.url}`
-      const sizeKb = ref.sizeBytes ? Math.max(1, Math.round(ref.sizeBytes / 1024)) : null
-      const sizeLabel = sizeKb ? `${sizeKb}KB` : 'unknown size'
-      return `${idx + 1}. Upload: ${ref.name || `image-${idx + 1}`} (${sizeLabel})`
-    })
-    return `${basePrompt}\n\nReferensi visual:\n${lines.map((l) => `- ${l}`).join('\n')}`
+    setPromptPreview('')
+    setPromptPreviewMeta(null)
   }
 
   function buildTmdbField(values, cleanedTopic = '') {
@@ -1063,6 +1068,12 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
   function mapRequestError(err) {
     return humanizeApiError(err, {
       fallback: 'Generate gagal. Coba lagi atau ganti model/provider.'
+    })
+  }
+
+  function mapPreviewError(err) {
+    return humanizeApiError(err, {
+      fallback: 'Preview final gagal. Coba lagi.'
     })
   }
 
@@ -1187,21 +1198,46 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
     handleSubmit(onSubmit)()
   }, [regenerateToken, loading, handleSubmit])
 
-  function handlePreview() {
-    const { cleanedTopic, combinedImageRefs } = resolveTopicAndImageRefs(watch('topic'))
-    const values = {
-      platform: watch('platform'),
-      topic: cleanedTopic || (combinedImageRefs.length ? 'Konten berbasis referensi gambar' : ''),
-      length: watch('length'),
-      language: watch('language'),
-      tone: watch('tone'),
-      keywords: watch('keywords') || [],
-      cta: watch('cta') ? [{ type: 'primary', text: watch('cta') }] : []
+  async function handlePreview() {
+    setPreviewLoading(true)
+    setError(null)
+    try {
+      const values = getValues()
+      const preError = validateBeforeGenerate(values)
+      if (preError) {
+        setError(preError)
+        return
+      }
+
+      const { payload, error: buildError } = buildPayload(values)
+      if (buildError) {
+        setError(buildError)
+        return
+      }
+
+      const headers = await buildAuthHeaders()
+      const requestConfig = Object.keys(headers).length ? { headers } : {}
+      const resp = await apiAxios({
+        method: 'post',
+        url: '/api/generate/preview',
+        data: payload,
+        ...requestConfig
+      }, { timeoutMs: 30000, retryAttempts: 1, retryDelayMs: 450 })
+
+      if (!resp.data?.ok) {
+        const apiError = resp.data?.error
+        setError(apiError?.message || apiError || 'Preview prompt gagal')
+        return
+      }
+
+      const data = resp.data?.data || {}
+      setPromptPreview(String(data.prompt || ''))
+      setPromptPreviewMeta(data.meta && typeof data.meta === 'object' ? data.meta : null)
+    } catch (err) {
+      setError(mapPreviewError(err))
+    } finally {
+      setPreviewLoading(false)
     }
-    const normalized = normalizeManual(values)
-    const tpl = defaultTemplateForConfig(normalized)
-    const rendered = compilePrompt(tpl, normalized)
-    setPromptPreview(appendImageReferencesToPrompt(rendered, combinedImageRefs))
   }
 
   const selectedModelOption = (models || []).find((x) => x.id === model) || null
@@ -1285,17 +1321,32 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
        <Row className="mb-3">
         <Col md={4}>
           <Form.Label>Mode</Form.Label>
-          <Form.Select {...register('mode')}>
-            <option value="Standard">Standard</option>
-            <option value="Instant">Instant</option>
-          </Form.Select>
+          <Dropdown show={modeOpen} onToggle={(isOpen) => setModeOpen(isOpen)}>
+            <Dropdown.Toggle as={Button} variant="outline-secondary" size="sm" className="w-100 text-start">
+              {(MODE_OPTIONS.find((opt) => opt.value === mode)?.label) || 'Standard'}
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="w-100">
+              {MODE_OPTIONS.map((opt) => (
+                <Dropdown.Item
+                  key={opt.value}
+                  onClick={() => {
+                    setValue('mode', opt.value)
+                    setModeOpen(false)
+                  }}
+                >
+                  {opt.label}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+          <Form.Control type="hidden" {...register('mode')} />
         </Col>
         {mode === 'Instant' && (
           <Col md={8}>
             <Form.Label>Preset (Instant)</Form.Label>
 
             <Dropdown show={presetOpen} onToggle={(isOpen) => setPresetOpen(isOpen)} className="w-100">
-              <Dropdown.Toggle as={Button} variant="outline-secondary" className="w-100 text-start preset-toggle">
+              <Dropdown.Toggle as={Button} variant="outline-secondary" size="sm" className="w-100 text-start preset-toggle">
                 {getPresetLabel(preset) || '-- choose preset --'}
               </Dropdown.Toggle>
 
@@ -1450,25 +1501,51 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
             <Row className="mb-2 mt-2 triple-row">
               <Col md={2}>
                 <Form.Label>Bahasa</Form.Label>
-                <Form.Select
-                  className="language-select-compact"
-                  style={{ width: '9ch' }}
-                  {...register('language')}
-                >
-                  {LANGS.map((l) => <option key={l.value} value={l.value}>{l.label}</option>)}
-                </Form.Select>
+                <Dropdown show={languageOpen} onToggle={(isOpen) => setLanguageOpen(isOpen)}>
+                  <Dropdown.Toggle as={Button} variant="outline-secondary" size="sm" className="w-100 text-start">
+                    {(LANGS.find((l) => l.value === language)?.label) || 'ID'}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu className="w-100">
+                    {LANGS.map((l) => (
+                      <Dropdown.Item
+                        key={l.value}
+                        onClick={() => {
+                          setValue('language', l.value)
+                          setLanguageOpen(false)
+                        }}
+                      >
+                        {l.label}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+                <Form.Control type="hidden" {...register('language')} />
               </Col>
               <Col md={4}>
                 <Form.Label>Long Output</Form.Label>
-                <Form.Select {...register('length')}>
-                  <option value="short">Short</option>
-                  <option value="medium">Medium</option>
-                  <option value="long">Long</option>
-                </Form.Select>
+                <Dropdown show={lengthOpen} onToggle={(isOpen) => setLengthOpen(isOpen)}>
+                  <Dropdown.Toggle as={Button} variant="outline-secondary" size="sm" className="w-100 text-start">
+                    {(LENGTH_OPTIONS.find((opt) => opt.value === length)?.label) || 'Short'}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu className="w-100">
+                    {LENGTH_OPTIONS.map((opt) => (
+                      <Dropdown.Item
+                        key={opt.value}
+                        onClick={() => {
+                          setValue('length', opt.value)
+                          setLengthOpen(false)
+                        }}
+                      >
+                        {opt.label}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+                <Form.Control type="hidden" {...register('length')} />
               </Col>
               {mode === 'Standard' && (
                 <Col md={4}>
-                  <Form.Label>Tone (Manual)</Form.Label>
+                  <Form.Label>Tone</Form.Label>
                   <div>
                     <Dropdown show={toneOpen} onToggle={(isOpen) => setToneOpen(isOpen)} autoClose={false}>
                       <Dropdown.Toggle as={Button} variant="outline-secondary" size="sm" className="w-100 text-start">
@@ -1667,11 +1744,21 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
           </Button>
         )}
         <Button type="button" variant="outline-secondary" onClick={resetForm} className="w-md-auto"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="none"/><path fill="none" stroke="currentColor" strokeWidth="2" d="M20 8c-1.403-2.96-4.463-5-8-5a9 9 0 1 0 0 18a9 9 0 0 0 9-9m0-9v6h-6"/></svg></Button>
-        <Button type="button" variant="outline-primary" onClick={handlePreview} className="w-md-auto">Preview Prompt</Button>
+        <Button type="button" variant="outline-primary" onClick={handlePreview} disabled={loading || previewLoading} className="w-md-auto">
+          {previewLoading ? <Spinner animation="border" size="sm"/> : 'Preview Final'}
+        </Button>
       </div>
       {promptPreview && (
         <div className="mt-3">
-          <h6>Preview Prompt</h6>
+          <h6>Preview Final Prompt</h6>
+          {promptPreviewMeta && (
+            <div className="d-flex flex-wrap gap-2 mb-2">
+              <Badge bg="secondary">Mode: {String(promptPreviewMeta.mode || '-')}</Badge>
+              <Badge bg="secondary">Source: {String(promptPreviewMeta.source || 'server')}</Badge>
+              <Badge bg="secondary">Preset: {String(promptPreviewMeta.presetId || '-')}</Badge>
+              <Badge bg="secondary">TMDB: {promptPreviewMeta.tmdbUsed ? 'ON' : 'OFF'}</Badge>
+            </div>
+          )}
           <pre style={{ whiteSpace: 'pre-wrap' }}>{promptPreview}</pre>
         </div>
       )}

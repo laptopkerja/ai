@@ -5077,5 +5077,294 @@
       "updatedAt": "2026-02-22T19:21:00.000Z",
       "createdBy": "codex"
     }
+  },
+  {
+    "id": "tiktok-movie-image-slide-story-hook-001",
+    "version": "1.0.0",
+    "title": "TikTok Movie Image Slide - Story Hook",
+    "label": "TikTok Movie Image Slide",
+    "description": "Preset untuk konten TikTok movie berbasis image slide (poster/backdrop/still). Fokus ke alur cerita singkat, visual highlight, dan CTA interaktif tanpa spoiler berat.",
+    "platform": "TikTok",
+    "category": "Entertainment - Movie",
+    "tags": [
+      "tiktok",
+      "movie",
+      "image-slide",
+      "film",
+      "review-singkat",
+      "engagement"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_watch_time",
+        "increase_comments",
+        "increase_shares",
+        "increase_saves",
+        "increase_followers"
+      ],
+      "emotionTriggers": [
+        "curiosity",
+        "suspense",
+        "empathy",
+        "anticipation"
+      ],
+      "targetAudience": "Pengguna TikTok usia 15-34 yang suka rekomendasi film cepat, visual kuat, dan ulasan tanpa spoiler ending."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "hook singkat + 5-7 image slide + verdict + CTA comment/share/save",
+      "placeholders": [
+        {
+          "name": "movie_title",
+          "type": "string",
+          "default": "Judul film dari topik/TMDB"
+        },
+        {
+          "name": "spoiler_level",
+          "type": "string",
+          "default": "safe"
+        },
+        {
+          "name": "slide_count",
+          "type": "string",
+          "default": "5-7 slides"
+        },
+        {
+          "name": "core_angle",
+          "type": "string",
+          "default": "story hook + visual tone + reason to watch"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "tiktok movie slide",
+      "rekomendasi film tiktok",
+      "review film singkat",
+      "movie image slide",
+      "no spoiler movie review"
+    ],
+    "hashtags": {
+      "strategy": "mix niche movie + intent review + discovery hashtag",
+      "count": 6
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Komentar film apa yang mau dibahas di part berikutnya, lalu simpan konten ini."
+      },
+      {
+        "type": "share",
+        "text": "Bagikan ke teman kamu yang lagi cari tontonan malam ini."
+      },
+      {
+        "type": "follow",
+        "text": "Follow untuk part 2 dan rekomendasi film sesuai genre favoritmu."
+      }
+    ],
+    "audio": {
+      "recommendation": "Gunakan sound cinematic yang punya build-up halus di detik awal agar transisi antar image slide terasa dramatis.",
+      "style": "cinematic pulse",
+      "mood": "mysterious and exciting",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "link bajakan",
+        "nonton ilegal",
+        "spoiler ending",
+        "ending bocor",
+        "penipuan",
+        "ujaran kebencian"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Watch time >= 45%, comment rate >= 2%, share rate >= 1.5%, save rate >= 1%. "
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Movie Shelter",
+          "imageReferences": [
+            "poster utama",
+            "still konflik",
+            "backdrop klimaks"
+          ]
+        },
+        "output": {
+          "hook": "Film ini bukan cuma action, tapi konflik moralnya bikin tegang sampai akhir.",
+          "description": "Ulas cepat visual tone, tensi cerita, dan alasan kenapa film ini layak masuk watchlist. Komentar pendapatmu lalu simpan buat referensi nonton.",
+          "cta": "Komentar film berikutnya yang harus kita review dan bagikan ke temanmu."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-25T15:21:48.296Z",
+      "updatedAt": "2026-02-25T15:21:48.296Z",
+      "createdBy": "codex"
+    }
+  },
+  {
+    "id": "tiktok-cinematic-universal-tmdb-viral-001",
+    "version": "1.0.0",
+    "title": "TikTok Cinematic Universal - TMDB Viral Engine",
+    "label": "TikTok Cinematic Universal",
+    "description": "Preset universal short-form cinematic movie/series untuk TikTok image-slide. TMDB-first untuk fakta, fallback ke topik+visual jika TMDB tidak tersedia. Fokus FYP, retention, interaksi, dan follower growth.",
+    "platform": "TikTok",
+    "category": "Entertainment - Movie/Series",
+    "tags": [
+      "tiktok",
+      "cinematic",
+      "movie",
+      "series",
+      "tmdb",
+      "viral",
+      "retention"
+    ],
+    "engine": "generic",
+    "strategy": {
+      "goals": [
+        "increase_watch_time",
+        "increase_retention",
+        "increase_comments",
+        "increase_shares",
+        "increase_followers"
+      ],
+      "emotionTriggers": [
+        "curiosity",
+        "tension",
+        "emotional_peak",
+        "identity_match",
+        "social_proof"
+      ],
+      "targetAudience": "Audiens TikTok usia 15-35 yang suka konten movie cepat, sinematik, dan ingin tahu apakah tontonan ini worth watching."
+    },
+    "contentStructure": {
+      "length": "short",
+      "format": "0-3s hook + build tension + emotional peak + punchline insight + CTA komentar/share/save/follow",
+      "placeholders": [
+        {
+          "name": "movie_or_series_title",
+          "type": "string",
+          "default": "Judul dari TMDB atau topik input"
+        },
+        {
+          "name": "platform_target",
+          "type": "string",
+          "default": "TikTok"
+        },
+        {
+          "name": "duration_target",
+          "type": "string",
+          "default": "30-60 detik"
+        },
+        {
+          "name": "audience_segment",
+          "type": "string",
+          "default": "Remaja / Dewasa"
+        },
+        {
+          "name": "spoiler_level",
+          "type": "string",
+          "default": "light"
+        },
+        {
+          "name": "core_emotion",
+          "type": "string",
+          "default": "tegang + penasaran"
+        },
+        {
+          "name": "viral_hook_angle",
+          "type": "string",
+          "default": "unexpected truth + hidden detail"
+        },
+        {
+          "name": "editing_formula",
+          "type": "string",
+          "default": "pattern interrupt detik 2-3, 11-13, 24-27"
+        }
+      ]
+    },
+    "language": "Indonesia",
+    "keywords": [
+      "cinematic content preset",
+      "movie short video",
+      "tiktok movie viral",
+      "tmdb movie breakdown",
+      "viral hook movie",
+      "movie retention formula"
+    ],
+    "hashtags": {
+      "strategy": "mix niche movie + trending intent + discovery hashtag",
+      "count": 6
+    },
+    "cta": [
+      {
+        "type": "comment",
+        "text": "Komentar: menurut kamu ini overrated atau wajib nonton?"
+      },
+      {
+        "type": "share",
+        "text": "Bagikan ke teman kamu yang paling sering kasih rekomendasi film."
+      },
+      {
+        "type": "save",
+        "text": "Simpan dulu buat watchlist weekend kamu."
+      },
+      {
+        "type": "follow",
+        "text": "Follow untuk part lanjutan dengan genre yang sama."
+      }
+    ],
+    "audio": {
+      "recommendation": "Gunakan cinematic score dengan build-up halus dan impact hit di emotional peak. Audio wajib referensi musik/sound, bukan dialog promosi.",
+      "style": "cinematic pulse + dramatic rise",
+      "mood": "tense, emotional, and immersive",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "link bajakan",
+        "nonton ilegal",
+        "spoiler ending",
+        "ending bocor",
+        "penipuan",
+        "ujaran kebencian",
+        "garansi viral",
+        "100% pasti"
+      ],
+      "variationCount": 3
+    },
+    "analytics": {
+      "trackingEnabled": true,
+      "expectedKPI": "Retention awal > 70% (3 detik), watch time > 45%, comment rate > 2%, share rate > 1.5%, save rate > 1%."
+    },
+    "examples": [
+      {
+        "input": {
+          "topic": "Movie Shelter",
+          "durationTarget": "30-60 detik",
+          "targetAudience": "Dewasa",
+          "imageReferences": [
+            "poster",
+            "still konflik utama",
+            "backdrop klimaks"
+          ]
+        },
+        "output": {
+          "hook": "Film ini keliatan action biasa, tapi satu konflik moralnya bikin tegang sampai akhir.",
+          "description": "Breakdown singkat: konflik inti, visual tone, dan kenapa film ini relevan buat penonton thriller. Komentar versimu lalu simpan untuk watchlist.",
+          "cta": "Komentar judul film berikutnya yang wajib dibedah."
+        }
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-25T18:41:21.261Z",
+      "updatedAt": "2026-02-25T18:41:21.261Z",
+      "createdBy": "codex"
+    }
   }
 ]

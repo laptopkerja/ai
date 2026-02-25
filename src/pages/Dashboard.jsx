@@ -666,17 +666,23 @@ export default function Dashboard() {
       .slice(0, 5)
     const teamMap = new Map()
     recentRows.forEach((row) => {
+      const userId = String(row?.user_id || '').trim()
       const label = displayNameOf(row, currentUser)
-      const key = `${String(row?.user_id || '').trim()}|||${label}`
+      const key = userId || `label:${String(label || '-').trim().toLowerCase()}`
       const current = teamMap.get(key) || {
+        key,
         userLabel: label || '-',
-        userId: String(row?.user_id || '').trim(),
+        userId,
         count: 0,
         scoreValues: [],
         decisionTotal: 0,
         decisionGo: 0,
         lastCreatedAtMs: 0
       }
+      if (!current.userLabel || current.userLabel === '-' || isEmailLike(current.userLabel)) {
+        if (label && label !== '-') current.userLabel = label
+      }
+      if (!current.userId && userId) current.userId = userId
       current.count += 1
       const score = scoreOf(row)
       if (Number.isFinite(score)) current.scoreValues.push(score)
@@ -1764,7 +1770,7 @@ export default function Dashboard() {
               ) : (
                 <ListGroup variant="flush">
                   {dashboard.teamPerformance.map((item) => (
-                    <ListGroup.Item key={`team-${item.userId || item.userLabel}`} className="px-0 py-2">
+                    <ListGroup.Item key={`team-${item.key || item.userId || item.userLabel}`} className="px-0 py-2">
                       <div className="d-flex justify-content-between align-items-start gap-2">
                         <div className="dashboard-recent-text">
                           <div className="fw-semibold">{item.userLabel || '-'}</div>

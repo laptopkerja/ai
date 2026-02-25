@@ -360,14 +360,14 @@ export default function GenerateResult({ item, onCopy, onRegenerate, onSave }) {
         {!isBlogger && (
           <>
             <label className="lb-result">{audioLabel}</label>
-            <pre className="pre-end" style={{ whiteSpace: 'pre-wrap', marginBottom: '.75rem' }}>{activeItem.audioRecommendation || activeItem.meta?.audio || '—'}</pre>
+            <pre className="pre-end">{activeItem.audioRecommendation || activeItem.meta?.audio || '—'}</pre>
           </>
         )}
          
         <div className="d-flex gap-2 btns-result">
           <Button
             size="sm"
-            variant="outline-primary" className="btn-salin" 
+            variant="outline-success" className="btn-salin btn-success" 
             onClick={() => {
               const text = buildClipboardOutput(activeItem, { isBlogger })
               navigator.clipboard.writeText(text)
@@ -376,58 +376,65 @@ export default function GenerateResult({ item, onCopy, onRegenerate, onSave }) {
           >
             Salin
           </Button>
-          <Button size="sm" variant="outline-success" className="btn-bulang" onClick={() => onRegenerate && onRegenerate(activeItem)}>Buat Ulang</Button>
+         
           <Button size="sm" variant="primary" className="btn-simpan" onClick={() => onSave && onSave(activeItem)}>Simpan</Button>
+
+           <Button size="sm" variant="outline-warning" className="btn-ulang" onClick={() => onRegenerate && onRegenerate(activeItem)}>Buat Ulang  
+          </Button>
         </div>
-        {warnings.length > 0 && (
-          <div className="mb-2 mt-2 text-warning">
-            {warnings.map((w, idx) => (
-              <small className="d-block info-output" key={`${idx}-${w}`}>{w}</small>
-            ))}
-          </div>
-        )}
-        {(hasComplianceScore || hasPerformanceScore || hasFinalScore || aiDecision) && (
-          <div className="mb-2">
-            <small className="d-block text-muted">Quality Compliance Score: {hasComplianceScore ? `${complianceScore}/100` : '—'}</small>
-            <small className="d-block text-muted">
-              Performance Potential Score: {hasPerformanceScore ? `${performanceScore}/100` : '—'}
-              {performanceConfidence ? ` (${performanceConfidence})` : ''}
-            </small>
-            <small className="d-block text-muted">AI Decision: {aiDecision || '—'}</small>
-            <small className="d-block text-muted">Final Score (Gate): {hasFinalScore ? `${finalScore}%` : '—'}</small>
-            {aiDecisionReasons.map((reason, idx) => (
-              <small className="d-block text-muted" key={`${idx}-${reason}`}>Reason: {reason}</small>
-            ))}
-          </div>
-        )}
-        {complianceChecks.length > 0 && (
-          <div className="mb-2">
-            {complianceChecks.map((check) => {
-              const label = String(check?.label || check?.id || 'Check')
-              const awarded = Number(check?.awarded || 0)
-              const weight = Number(check?.weight || 0)
-              const note = String(check?.note || '').trim()
-              return (
-                <small className="d-block text-muted" key={String(check?.id || label)}>
-                  Compliance - {label}: {awarded}/{weight}{note ? ` - ${note}` : ''}
+        {(warnings.length > 0 || hasComplianceScore || hasPerformanceScore || hasFinalScore || aiDecision || complianceChecks.length > 0 || performanceChecks.length > 0) && (
+          <div className="report-quality mt-2">
+            {warnings.length > 0 && (
+              <div className="report-quality-warnings mb-2 text-warning">
+                {warnings.map((w, idx) => (
+                  <small className="d-block info-output" key={`${idx}-${w}`}>{w}</small>
+                ))}
+              </div>
+            )}
+            {(hasComplianceScore || hasPerformanceScore || hasFinalScore || aiDecision) && (
+              <div className="report-quality-summary mb-2">
+                <small className="d-block text-muted">Quality Compliance Score: {hasComplianceScore ? `${complianceScore}/100` : '—'}</small>
+                <small className="d-block text-muted">
+                  Performance Potential Score: {hasPerformanceScore ? `${performanceScore}/100` : '—'}
+                  {performanceConfidence ? ` (${performanceConfidence})` : ''}
                 </small>
-              )
-            })}
-          </div>
-        )}
-        {performanceChecks.length > 0 && (
-          <div className="mb-2">
-            {performanceChecks.map((check) => {
-              const label = String(check?.label || check?.id || 'Check')
-              const awarded = Number(check?.awarded || 0)
-              const weight = Number(check?.weight || 0)
-              const note = String(check?.note || '').trim()
-              return (
-                <small className="d-block text-muted" key={`perf-${String(check?.id || label)}`}>
-                  Potential - {label}: {awarded}/{weight}{note ? ` - ${note}` : ''}
-                </small>
-              )
-            })}
+                <small className="d-block text-muted">AI Decision: {aiDecision || '—'}</small>
+                <small className="d-block text-muted">Final Score (Gate): {hasFinalScore ? `${finalScore}%` : '—'}</small>
+                {aiDecisionReasons.map((reason, idx) => (
+                  <small className="d-block text-muted" key={`${idx}-${reason}`}>Reason: {reason}</small>
+                ))}
+              </div>
+            )}
+            {complianceChecks.length > 0 && (
+              <div className="report-quality-compliance mb-2">
+                {complianceChecks.map((check) => {
+                  const label = String(check?.label || check?.id || 'Check')
+                  const awarded = Number(check?.awarded || 0)
+                  const weight = Number(check?.weight || 0)
+                  const note = String(check?.note || '').trim()
+                  return (
+                    <small className="d-block text-muted" key={String(check?.id || label)}>
+                      Compliance - {label}: {awarded}/{weight}{note ? ` - ${note}` : ''}
+                    </small>
+                  )
+                })}
+              </div>
+            )}
+            {performanceChecks.length > 0 && (
+              <div className="report-quality-potential mb-2">
+                {performanceChecks.map((check) => {
+                  const label = String(check?.label || check?.id || 'Check')
+                  const awarded = Number(check?.awarded || 0)
+                  const weight = Number(check?.weight || 0)
+                  const note = String(check?.note || '').trim()
+                  return (
+                    <small className="d-block text-muted" key={`perf-${String(check?.id || label)}`}>
+                      Potential - {label}: {awarded}/{weight}{note ? ` - ${note}` : ''}
+                    </small>
+                  )
+                })}
+              </div>
+            )}
           </div>
         )}
        

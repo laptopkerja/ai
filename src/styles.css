@@ -143,7 +143,7 @@ textarea.form-control {
 /* Allow long preset labels to wrap inside instant preset dropdown button */
 .generate-form .preset-toggle {
   white-space: normal !important;
-  line-height: 1.3;
+  line-height: 1.5;
   text-align: left;
   word-break: break-word;
   overflow-wrap: anywhere;
@@ -1472,8 +1472,11 @@ border-bottom: 1px solid #80808024;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .tmdb-finder-page .tmdb-image-grid.is-backdrop-grid {
+  .tmdb-finder-page .tmdb-browse-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .form-check-label {
+    font-size: .50rem !important;
   }
 }
 
@@ -1749,8 +1752,9 @@ td.td-score {
 }
 
 .pre-end {
-  border-bottom: 1px solid #ffd700;
-
+  font-style: oblique;
+   white-space: pre-wrap;
+    margin-bottom: 0.75rem;
 }
 .btns-result {
   position: fixed;
@@ -1758,12 +1762,18 @@ td.td-score {
     right: 25px;
 }
 .btn-salin {
-  color: var(--bs-secondary-color);
-  background-color: var(--bs-info-bg-subtle);
-  border-color: var(--bs-info-border-subtle);
+  color: var(--bs-btn-active-color) !important;
 }
 .btn-salin:hover {
   color: var(--bs-info);
   background-color: rgb(0, 89, 255);
   border-color: var(--bs-info-border-subtle);
+}
+.btn-ulang:hover {
+  color: var(var(--bs-card-color)) !important;
+}
+
+.report-quality {
+  border-top: 1px solid rgba(255, 215, 0, 0.35);
+  padding-top: .5rem;
 }
