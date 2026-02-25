@@ -212,6 +212,16 @@ function hasFilledTmdbValue(value) {
   return String(value || '').trim().length > 0
 }
 
+function isSparseTmdbDetailMovieOrTv(movieOrTv) {
+  if (!movieOrTv || typeof movieOrTv !== 'object') return true
+  const hasOverview = String(movieOrTv.overview || '').trim().length > 0
+  const hasTagline = String(movieOrTv.tagline || '').trim().length > 0
+  const hasWatchProviders = Array.isArray(movieOrTv.watch_providers_id)
+    && movieOrTv.watch_providers_id.some((item) => String(item || '').trim())
+  // Sparse berarti ketiganya kosong; biasanya indikasi detail belum tersinkron penuh.
+  return !hasOverview && !hasTagline && !hasWatchProviders
+}
+
 function createCandidateCapability(item) {
   return {
     hasPoster: !!String(item?.posterUrl || '').trim(),
@@ -1412,6 +1422,20 @@ export default function TmdbFinderPage() {
         setSelectedCandidateKey(key)
         setSelectedImages([])
         await fetchTmdbDetail(first)
+      } else {
+        const activeInRows = rows.find((item) => createCandidateKey(item) === selectedCandidateKey) || null
+        const shouldHydrateActive = !!activeInRows && isSparseTmdbDetailMovieOrTv(detailData?.movieOrTv)
+        const shouldHydrateFirst = !activeInRows && !detailData
+
+        if (shouldHydrateActive) {
+          await fetchTmdbDetail(activeInRows)
+        } else if (shouldHydrateFirst) {
+          const first = rows[0]
+          const key = createCandidateKey(first)
+          setSelectedCandidateKey(key)
+          setSelectedImages([])
+          await fetchTmdbDetail(first)
+        }
       }
     } catch (err) {
       setError(mapApiError(err, 'Gagal memuat kategori TMDB'))
