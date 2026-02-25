@@ -17,8 +17,8 @@ import {
   writeTmdbGenerateSelection
 } from '../lib/tmdbSelection'
 
-const TMDB_LANG_OPTIONS = ['en-US', 'id-ID', 'ja-JP', 'ko-KR']
-const TMDB_REGION_OPTIONS = ['ID', 'US', 'GB', 'JP', 'KR', 'IN', 'MY', 'SG']
+const TMDB_LANG_OPTIONS = ['en-US', 'id-ID', 'es-ES', 'ar-SA', 'hi-IN', 'ja-JP', 'ko-KR']
+const TMDB_REGION_OPTIONS = ['US', 'ID', 'GB', 'JP', 'KR', 'IN', 'MY', 'SG']
 const TMDB_FACT_LOCK_LABELS = {
   title: 'Title',
   tagline: 'Tagline',
@@ -107,6 +107,7 @@ const TMDB_BROWSE_DEFAULT = { mediaType: 'movie', category: 'popular' }
 const TMDB_BROWSE_PAGE_WINDOW = 5
 const TMDB_BROWSE_STATE_STORAGE_KEY = 'tmdb_finder_browse_state_v1'
 const TMDB_BROWSE_ACCORDION_STATE_STORAGE_KEY = 'tmdb_finder_browse_accordion_state_v1'
+const TMDB_SEARCH_PAGE_STATE_STORAGE_KEY = 'tmdb_finder_search_page_state_v1'
 const TMDB_SCOPE_HELP_TEXT = [
   'Series: membahas seluruh serial (all season), tanpa season/episode spesifik.',
   'Season: membahas 1 season terpilih dan semua episodenya.',
@@ -482,6 +483,25 @@ function writeTmdbBrowseAccordionOpenState(isOpen) {
   } catch (e) {}
 }
 
+function readTmdbSearchPageState() {
+  if (typeof window === 'undefined') return 1
+  try {
+    const raw = Number(window.localStorage.getItem(TMDB_SEARCH_PAGE_STATE_STORAGE_KEY) || '1')
+    if (!Number.isFinite(raw)) return 1
+    return Math.max(1, Math.floor(raw))
+  } catch (e) {
+    return 1
+  }
+}
+
+function writeTmdbSearchPageState(page) {
+  if (typeof window === 'undefined') return
+  try {
+    const safe = Math.max(1, Math.floor(Number(page || 1) || 1))
+    window.localStorage.setItem(TMDB_SEARCH_PAGE_STATE_STORAGE_KEY, String(safe))
+  } catch (e) {}
+}
+
 export default function TmdbFinderPage() {
   const navigate = useNavigate()
   const location = useLocation()
@@ -489,12 +509,13 @@ export default function TmdbFinderPage() {
   const initialSelection = useMemo(() => readTmdbGenerateSelection(), [])
   const initialBrowseState = useMemo(() => readTmdbBrowseState(), [])
   const initialBrowseAccordionOpen = useMemo(() => readTmdbBrowseAccordionOpenState(), [])
+  const initialSearchPage = useMemo(() => readTmdbSearchPageState(), [])
   const seededQuery = String(location?.state?.seedQuery || '').trim()
 
   const [mediaType, setMediaType] = useState(initialSelection?.entityType || initialPrefs.mediaType || 'multi')
-  const [query, setQuery] = useState(seededQuery || initialPrefs.query || initialSelection?.query || '')
-  const [year, setYear] = useState(initialPrefs.year || initialSelection?.year || '')
-  const [region, setRegion] = useState(initialSelection?.region || initialPrefs.region || 'ID')
+  const [query, setQuery] = useState(seededQuery || '')
+  const [year, setYear] = useState('')
+  const [region, setRegion] = useState(initialSelection?.region || initialPrefs.region || 'US')
   const [language, setLanguage] = useState(initialSelection?.language || initialPrefs.language || 'en-US')
   const [referenceScope, setReferenceScope] = useState(
     normalizeReferenceScope(initialSelection?.referenceScope || initialPrefs.referenceScope || 'series')
@@ -538,6 +559,7 @@ export default function TmdbFinderPage() {
   const [scopeHelpToastVisible, setScopeHelpToastVisible] = useState(false)
   const [floatingAlerts, setFloatingAlerts] = useState([])
   const candidateProbeRequestRef = useRef(0)
+  const languageRegionRefreshReadyRef = useRef(false)
   const tvEpisodeOptionsCacheRef = useRef(new Map())
   const floatingAlertIdRef = useRef(0)
   const floatingAlertTimersRef = useRef({})
@@ -571,24 +593,70 @@ export default function TmdbFinderPage() {
   const [browseAccordionOpen, setBrowseAccordionOpen] = useState(initialBrowseAccordionOpen)
   const [cardDataMode, setCardDataMode] = useState('browse')
   const [searchPager, setSearchPager] = useState({
-    page: 1,
+    page: initialSearchPage,
     totalPages: 1,
     totalResults: 0,
     maxPage: 500
   })
 
+  const latestUiContextRef = useRef(null)
+  latestUiContextRef.current = {
+    cardDataMode,
+    query,
+    selectedCandidateKey,
+    browseMediaType: browsePicker?.mediaType,
+    browseCategory: browsePicker?.category
+  }
+
   useEffect(() => {
     writeTmdbFinderPrefs({
       enabled: true,
       mediaType,
-      query,
-      year,
+      query: '',
+      year: '',
       region,
       language,
       referenceScope,
       spoilerLevel
     })
-  }, [language, mediaType, query, referenceScope, region, spoilerLevel, year])
+  }, [language, mediaType, referenceScope, region, spoilerLevel])
+
+  useEffect(() => {
+    if (!languageRegionRefreshReadyRef.current) {
+      languageRegionRefreshReadyRef.current = true
+      return
+    }
+    const refreshTimer = setTimeout(async () => {
+      const ctx = latestUiContextRef.current || {}
+      const activeMode = String(ctx.cardDataMode || '').trim().toLowerCase()
+      const activeQuery = String(ctx.query || '').trim()
+      const preferredCandidateKey = String(ctx.selectedCandidateKey || '').trim()
+      setError('')
+      setNotice(`Memuat ulang data untuk ${language} / ${region}...`)
+      if (activeMode === 'search' && activeQuery) {
+        await handleSearch({
+          page: 1,
+          silent: true,
+          preferCandidateKey: preferredCandidateKey,
+          isAutoRefresh: true
+        })
+        return
+      }
+      await handleBrowseCategory(
+        ctx.browseMediaType || browsePicker?.mediaType || 'movie',
+        ctx.browseCategory || browsePicker?.category || 'popular',
+        {
+          autoSelect: true,
+          page: 1,
+          silent: true,
+          preferCandidateKey: preferredCandidateKey,
+          isAutoRefresh: true
+        }
+      )
+    }, 350)
+    return () => clearTimeout(refreshTimer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [language, region])
 
   useEffect(() => {
     const stateObj = location?.state && typeof location.state === 'object' ? location.state : null
@@ -1164,6 +1232,10 @@ export default function TmdbFinderPage() {
     writeTmdbBrowseAccordionOpenState(browseAccordionOpen)
   }, [browseAccordionOpen])
 
+  useEffect(() => {
+    writeTmdbSearchPageState(searchPager.page)
+  }, [searchPager.page])
+
   function handleBrowseAccordionSelect(eventKey) {
     setBrowseAccordionOpen(String(eventKey || '') === 'tmdb-browse')
   }
@@ -1172,9 +1244,12 @@ export default function TmdbFinderPage() {
     const parsedInput = parseTmdbQueryInput(query)
     const cleanQuery = String(parsedInput.query || '').trim()
     const parsedTmdbId = normalizePositiveInt(parsedInput.tmdbId)
-    const requestedPage = Math.max(1, Number(options?.page || 1) || 1)
+    const requestedPage = Math.max(1, Number(options?.page || searchPager.page || 1) || 1)
+    const silent = options && options.silent === true
+    const preferredCandidateKey = String(options?.preferCandidateKey || '').trim()
+    const isAutoRefresh = options && options.isAutoRefresh === true
     if (!cleanQuery && !parsedTmdbId) {
-      setError('Judul Film/Series wajib diisi sebelum cari TMDB.')
+      if (!silent) setError('Judul Film/Series wajib diisi sebelum cari TMDB.')
       return
     }
     const requestId = candidateProbeRequestRef.current + 1
@@ -1182,7 +1257,7 @@ export default function TmdbFinderPage() {
     setCardDataMode('search')
     setSearching(true)
     setError('')
-    setNotice('')
+    if (!silent) setNotice('')
     setCandidates([])
     setCandidateCapabilities({})
     setProbingCandidateMeta(false)
@@ -1237,8 +1312,11 @@ export default function TmdbFinderPage() {
           setNotice('ID TMDB valid tetapi kandidat tidak bisa dipetakan.')
           return
         }
-        const first = rows[0]
-        const key = createCandidateKey(first)
+        const preferred = preferredCandidateKey
+          ? rows.find((item) => createCandidateKey(item) === preferredCandidateKey)
+          : null
+        const target = preferred || rows[0]
+        const key = createCandidateKey(target)
         setSelectedCandidateKey(key)
         setDetailData(detailPayload)
         const detailTvScope = normalizeTvScopeContext(detailPayload?.tvContext || {})
@@ -1263,6 +1341,13 @@ export default function TmdbFinderPage() {
             .slice(0, TMDB_MAX_SELECTED_IMAGES)
           return filtered
         })
+        if (isAutoRefresh) {
+          setNotice(
+            preferred
+              ? `Data diperbarui sesuai ${language}/${region}. Kandidat aktif dipertahankan.`
+              : `Data diperbarui sesuai ${language}/${region}. Kandidat aktif disesuaikan.`
+          )
+        }
         return
       }
 
@@ -1313,14 +1398,28 @@ export default function TmdbFinderPage() {
       }, {})
       setCandidateCapabilities(baseCapabilities)
       if (!rows.length) {
-        setNotice('TMDB tidak menemukan kandidat untuk query ini.')
+        setNotice(
+          isAutoRefresh
+            ? `Tidak ada hasil untuk ${language}/${region}. Coba language/region lain.`
+            : 'TMDB tidak menemukan kandidat untuk query ini.'
+        )
         return
       }
       hydrateCandidateCapabilities(rows, requestId)
-      const first = rows[0]
-      const key = createCandidateKey(first)
+      const preferred = preferredCandidateKey
+        ? rows.find((item) => createCandidateKey(item) === preferredCandidateKey)
+        : null
+      const target = preferred || rows[0]
+      const key = createCandidateKey(target)
       setSelectedCandidateKey(key)
-      await fetchTmdbDetail(first)
+      await fetchTmdbDetail(target)
+      if (isAutoRefresh) {
+        setNotice(
+          preferred
+            ? `Data diperbarui sesuai ${language}/${region}. Kandidat aktif dipertahankan.`
+            : `Data diperbarui sesuai ${language}/${region}. Kandidat aktif disesuaikan.`
+        )
+      }
     } catch (err) {
       setError(mapApiError(err, 'Gagal mencari TMDB'))
     } finally {
@@ -1332,6 +1431,8 @@ export default function TmdbFinderPage() {
     const safeMediaType = normalizeBrowseMediaType(nextMediaType)
     const safeCategory = normalizeBrowseCategory(safeMediaType, nextCategory)
     const requestedPage = Math.max(1, Number(options?.page || 1) || 1)
+    const preferredCandidateKey = String(options?.preferCandidateKey || '').trim()
+    const isAutoRefresh = options && options.isAutoRefresh === true
     const requestId = candidateProbeRequestRef.current + 1
     candidateProbeRequestRef.current = requestId
 
@@ -1411,17 +1512,31 @@ export default function TmdbFinderPage() {
         setSelectedCandidateKey('')
         setDetailData(null)
         setSelectedImages([])
-        if (!silent) setNotice('Kategori TMDB ini belum punya hasil untuk language/region saat ini.')
+        setNotice(
+          isAutoRefresh
+            ? `Tidak ada hasil kategori ini untuk ${language}/${region}. Coba language/region lain.`
+            : 'Kategori TMDB ini belum punya hasil untuk language/region saat ini.'
+        )
         return
       }
 
       hydrateCandidateCapabilities(rows, requestId)
       if (autoSelect) {
-        const first = rows[0]
-        const key = createCandidateKey(first)
+        const preferred = preferredCandidateKey
+          ? rows.find((item) => createCandidateKey(item) === preferredCandidateKey)
+          : null
+        const target = preferred || rows[0]
+        const key = createCandidateKey(target)
         setSelectedCandidateKey(key)
         setSelectedImages([])
-        await fetchTmdbDetail(first)
+        await fetchTmdbDetail(target)
+        if (isAutoRefresh) {
+          setNotice(
+            preferred
+              ? `Data diperbarui sesuai ${language}/${region}. Kandidat aktif dipertahankan.`
+              : `Data diperbarui sesuai ${language}/${region}. Kandidat aktif disesuaikan.`
+          )
+        }
       } else {
         const activeInRows = rows.find((item) => createCandidateKey(item) === selectedCandidateKey) || null
         const shouldHydrateActive = !!activeInRows && isSparseTmdbDetailMovieOrTv(detailData?.movieOrTv)

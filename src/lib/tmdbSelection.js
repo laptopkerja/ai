@@ -32,8 +32,8 @@ const TMDB_FACT_LOCK_FIELDS_DISABLED_FOR_MOVIE = new Set(['networks'])
 const TMDB_DEFAULT_PREFS = {
   enabled: true,
   mediaType: 'multi',
-  region: 'ID',
-  language: 'id-ID',
+  region: 'US',
+  language: 'en-US',
   query: '',
   year: '',
   referenceScope: 'series',
@@ -61,12 +61,12 @@ function normalizeMediaType(raw) {
 
 function normalizeRegion(raw) {
   const value = String(raw || '').trim().toUpperCase()
-  return /^[A-Z]{2}$/.test(value) ? value : 'ID'
+  return /^[A-Z]{2}$/.test(value) ? value : 'US'
 }
 
 function normalizeLanguage(raw) {
   const value = String(raw || '').trim()
-  return /^[a-z]{2}-[A-Z]{2}$/.test(value) ? value : 'id-ID'
+  return /^[a-z]{2}-[A-Z]{2}$/.test(value) ? value : 'en-US'
 }
 
 function normalizeYear(raw) {
@@ -226,8 +226,8 @@ function normalizeSearchMeta(raw) {
   const countRaw = Number(raw.count)
   const count = Number.isFinite(countRaw) ? Math.max(0, Math.min(10, Math.floor(countRaw))) : 0
   const query = String(raw.query || '').trim()
-  const languageCode = normalizeLanguage(raw.languageCode || raw.language || 'id-ID')
-  const region = normalizeRegion(raw.region || 'ID')
+  const languageCode = normalizeLanguage(raw.languageCode || raw.language || 'en-US')
+  const region = normalizeRegion(raw.region || 'US')
   const keySource = String(raw.keySource || '').trim() || null
   return {
     count,
