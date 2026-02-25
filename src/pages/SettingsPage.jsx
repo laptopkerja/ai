@@ -10,6 +10,7 @@ import {
   probeApiCandidates,
   saveApiRuntimeConfig
 } from '../lib/apiRuntime'
+import { mapAlertVariantToToastBg, resolveToastBehavior } from '../lib/toastBehavior'
 
 const PROVIDERS = ['Gemini', 'OpenAI', 'OpenRouter', 'Groq', 'Cohere AI', 'DeepSeek', 'Hugging Face']
 const FREE_ONLY_PREFS_STORAGE_KEY = 'provider_free_only_by_provider_v1'
@@ -149,15 +150,22 @@ export default function SettingsPage() {
   }, [freeOnlyByProvider])
 
   function showToast(message, options = {}) {
+    const behavior = resolveToastBehavior(options)
     setToastState({
       show: true,
       bg: options.bg || 'secondary',
       message,
-      autohide: options.autohide ?? true,
-      delay: options.delay ?? 2600,
+      autohide: behavior.autohide,
+      delay: behavior.delay,
       mode: options.mode || 'message'
     })
   }
+
+  useEffect(() => {
+    if (!notice?.message) return
+    showToast(notice.message, { bg: mapAlertVariantToToastBg(notice.variant) })
+    setNotice(null)
+  }, [notice]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function closeToast() {
     setToastState((prev) => ({ ...prev, show: false }))
@@ -688,7 +696,6 @@ export default function SettingsPage() {
     <Card>
       <Card.Body>
         <h4 className="mb-3">Settings</h4>
-        {notice && <Alert variant={notice.variant}>{notice.message}</Alert>}
 
         <Card className="mb-3">
           <Card.Body className="py-3">

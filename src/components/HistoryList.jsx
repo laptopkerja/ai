@@ -13,6 +13,7 @@ import {
   upsertLocalDraft
 } from '../lib/generationStorage'
 import { apiFetch } from '../lib/apiRuntime'
+import { resolveToastBehavior } from '../lib/toastBehavior'
 const PAGE_SIZE_OPTIONS = [13, 25, 50, 100]
 const HISTORY_ACTION_ICON_SIZE = 25
 
@@ -356,12 +357,13 @@ export default function HistoryList() {
   )
 
   function showToast(message, options = {}) {
+    const behavior = resolveToastBehavior(options)
     setToastState({
       show: true,
       bg: options.bg || 'secondary',
       message,
-      autohide: options.autohide ?? true,
-      delay: options.delay ?? 2600,
+      autohide: behavior.autohide,
+      delay: behavior.delay,
       mode: options.mode || 'message'
     })
   }
@@ -409,6 +411,13 @@ export default function HistoryList() {
   useEffect(() => {
     if (page > totalPages) setPage(totalPages)
   }, [page, totalPages])
+
+  useEffect(() => {
+    const text = String(warn || '').trim()
+    if (!text) return
+    showToast(text, { bg: 'warning' })
+    setWarn(null)
+  }, [warn]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setPage(1)
@@ -761,8 +770,6 @@ export default function HistoryList() {
 
   return (
     <>
-      {warn && <Alert variant="warning">{warn}</Alert>}
-
       <Row className="g-2 mb-3">
         <Col xs={12} md={3}>
           <Form.Label>Cari</Form.Label>

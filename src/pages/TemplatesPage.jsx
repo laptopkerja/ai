@@ -6,6 +6,7 @@ import validateTemplate from '../lib/validateTemplate'
 import normalizePreset from '../lib/normalizePreset'
 import lintPresetAgainstPlatformContract from '../lib/presetPlatformLint'
 import { sortPresetsForUi } from '../lib/presetOrdering'
+import { resolveToastBehavior } from '../lib/toastBehavior'
 import PresetEditor from '../components/PresetEditor'
 import { supabase } from '../supabase/client'
 import { apiAxios } from '../lib/apiRuntime'
@@ -345,12 +346,13 @@ export default function TemplatesPage() {
   }, [versionsById, historyTarget])
 
   function showToast(message, options = {}) {
+    const behavior = resolveToastBehavior(options)
     setToastState({
       show: true,
       bg: options.bg || 'secondary',
       message,
-      autohide: options.autohide ?? true,
-      delay: options.delay ?? 2600,
+      autohide: behavior.autohide,
+      delay: behavior.delay,
       mode: options.mode || 'message'
     })
   }

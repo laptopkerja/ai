@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
-import { Form, Button, Row, Col, Spinner, Alert, Dropdown, Accordion, Badge } from 'react-bootstrap'
+import { Form, Button, Row, Col, Spinner, Dropdown, Accordion, Badge, Toast, ToastContainer } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Icon } from '@iconify/react'
@@ -1316,8 +1316,24 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
   return (
     
     <Form onSubmit={handleSubmit(onSubmit)} className="generate-form">
-      {modelLoadAlert && <Alert variant="warning">{modelLoadAlert}</Alert>}
-      {error && <Alert variant="danger">{error}</Alert>}
+      <ToastContainer position="middle-center" className="p-2 templates-toast-center">
+        {modelLoadAlert && (
+          <Toast show bg="warning" autohide={false} onClose={() => setModelLoadAlert(null)}>
+            <Toast.Header closeButton>
+              <strong className="me-auto">Generate</strong>
+            </Toast.Header>
+            <Toast.Body className="text-dark">{modelLoadAlert}</Toast.Body>
+          </Toast>
+        )}
+        {error && (
+          <Toast show bg="danger" autohide={false} onClose={() => setError(null)}>
+            <Toast.Header closeButton>
+              <strong className="me-auto">Generate</strong>
+            </Toast.Header>
+            <Toast.Body className="text-white">{error}</Toast.Body>
+          </Toast>
+        )}
+      </ToastContainer>
        <Row className="mb-3">
         <Col md={4}>
           <Form.Label>Mode</Form.Label>

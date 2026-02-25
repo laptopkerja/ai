@@ -563,6 +563,8 @@ export default function TmdbFinderPage() {
   const tvEpisodeOptionsCacheRef = useRef(new Map())
   const floatingAlertIdRef = useRef(0)
   const floatingAlertTimersRef = useRef({})
+  const lastErrorFloatingRef = useRef('')
+  const lastNoticeFloatingRef = useRef('')
   const initialBrowseLoadedRef = useRef(false)
   const [browseLoading, setBrowseLoading] = useState(false)
   const [browseItems, setBrowseItems] = useState([])
@@ -724,19 +726,59 @@ export default function TmdbFinderPage() {
     }
   }
 
-  function pushFloatingAlert(message, variant = 'warning', durationMs = 3600) {
+  function resolveFloatingAlertBehavior(variant, optionsOrDuration) {
+    const level = String(variant || 'warning').trim().toLowerCase()
+    const stickyByLevel = level === 'warning' || level === 'danger'
+    const hasDurationNumber = Number.isFinite(Number(optionsOrDuration))
+    const options = optionsOrDuration && typeof optionsOrDuration === 'object' ? optionsOrDuration : {}
+    const hasExplicitAutohide = typeof options.autohide === 'boolean'
+    const hasExplicitDuration = hasDurationNumber || Number.isFinite(Number(options.durationMs))
+
+    const autohide = hasExplicitAutohide
+      ? options.autohide
+      : !stickyByLevel
+    const duration = hasExplicitDuration
+      ? Math.max(0, Math.round(hasDurationNumber ? Number(optionsOrDuration) : Number(options.durationMs)))
+      : (autohide ? (level === 'success' ? 3000 : 2800) : 0)
+    return { autohide, duration }
+  }
+
+  function pushFloatingAlert(message, variant = 'warning', optionsOrDuration) {
     const text = String(message || '').trim()
     if (!text) return
+    const behavior = resolveFloatingAlertBehavior(variant, optionsOrDuration)
     const id = floatingAlertIdRef.current + 1
     floatingAlertIdRef.current = id
     setFloatingAlerts((prev) => [...prev, { id, message: text, variant }].slice(-4))
-    if (durationMs > 0) {
+    if (behavior.autohide && behavior.duration > 0) {
       const timer = setTimeout(() => {
         removeFloatingAlert(id)
-      }, durationMs)
+      }, behavior.duration)
       floatingAlertTimersRef.current[id] = timer
     }
   }
+
+  useEffect(() => {
+    const text = String(error || '').trim()
+    if (!text) {
+      lastErrorFloatingRef.current = ''
+      return
+    }
+    if (lastErrorFloatingRef.current === text) return
+    lastErrorFloatingRef.current = text
+    pushFloatingAlert(text, 'danger')
+  }, [error]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const text = String(notice || '').trim()
+    if (!text) {
+      lastNoticeFloatingRef.current = ''
+      return
+    }
+    if (lastNoticeFloatingRef.current === text) return
+    lastNoticeFloatingRef.current = text
+    pushFloatingAlert(text, 'info')
+  }, [notice]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function showScopeHelpToast() {
     setScopeHelpToastVisible(true)
@@ -2075,8 +2117,6 @@ export default function TmdbFinderPage() {
         </div>
       </div>
 
-      {error && <Alert variant="danger" className="py-2">{error}</Alert>}
-      {notice && <Alert variant="info" className="py-2">{notice}</Alert>}
       {!!floatingAlerts.length && (
         <div className="tmdb-floating-alerts" aria-live="polite" aria-atomic="true">
           {floatingAlerts.map((item) => (
