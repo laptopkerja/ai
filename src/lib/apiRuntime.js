@@ -427,6 +427,27 @@ export function humanizeApiError(err, options = {}) {
     return `Preset ditolak${platformSuffix}: ${problemText}.${warningText}${tipText}`
   }
 
+  if (status === 400 && (code === 'PROVIDER_AUTH_ERROR' || classification === 'auth')) {
+    return joinSentence(
+      message || 'Autentikasi ke provider gagal',
+      'API key provider kemungkinan tidak valid, nonaktif, atau salah akun. Buka Settings, simpan ulang key, lalu klik Test provider.'
+    )
+  }
+
+  if (status === 400 && (code === 'PROVIDER_MODEL_NOT_FOUND' || classification === 'model')) {
+    return joinSentence(
+      message || 'Model provider tidak ditemukan',
+      'Pilih model lain atau refresh daftar model dari provider.'
+    )
+  }
+
+  if (status === 400 && (code === 'PROVIDER_BAD_REQUEST' || classification === 'bad_request')) {
+    return joinSentence(
+      message || 'Request ke provider tidak valid',
+      'Periksa konfigurasi model/provider lalu coba lagi.'
+    )
+  }
+
   if (status === 502 || status === 504 || classification === 'timeout' || classification === 'json_invalid') {
     if (classification === 'json_invalid') {
       return joinSentence(

@@ -5119,7 +5119,8 @@ app.post('/api/generate', sensitiveAuthMiddleware, async (req, res) => {
           retryable: e?.retryable === true || providerDetails.retryable === true,
           status: Number(providerDetails.status || 0) || null,
           provider: provider || null,
-          model: model || null
+          model: model || null,
+          keySource: genPayload?.keySource || null
         }
         throw providerErr
       }
@@ -5287,9 +5288,20 @@ app.post('/api/generate', sensitiveAuthMiddleware, async (req, res) => {
       const details = isPlainObject(err?.details) ? err.details : undefined
       const classification = String(details?.classification || '').toLowerCase()
       let status = 502
+      let code = 'PROVIDER_API_ERROR'
       if (classification === 'timeout') status = 504
       else if (classification === 'rate_limit') status = 429
-      return sendError(res, status, 'PROVIDER_API_ERROR', err.message || 'Provider call failed', details)
+      else if (classification === 'auth') {
+        status = 400
+        code = 'PROVIDER_AUTH_ERROR'
+      } else if (classification === 'model') {
+        status = 400
+        code = 'PROVIDER_MODEL_NOT_FOUND'
+      } else if (classification === 'bad_request') {
+        status = 400
+        code = 'PROVIDER_BAD_REQUEST'
+      }
+      return sendError(res, status, code, err.message || 'Provider call failed', details)
     }
     console.error(err)
     return sendError(res, 500, 'INTERNAL_ERROR', 'Server error')
