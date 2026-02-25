@@ -1514,7 +1514,7 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
             <Form.Check
               type="switch"
               id="use-tmdb-generate"
-              label="Use TMDB"
+              label="TMDB"
               className="tmdb-switch"
               {...register('useTmdb')}
             />
@@ -1526,15 +1526,11 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
               disabled={!useTmdb}
               onClick={openTmdbFinder}
             >
-              Buka TMDB Finder
+              TMDB Finder
             </Button>
             {useTmdb && tmdbSelection?.tmdbId && (
               <>
-                <span className="tmdb-bridge-summary" title={tmdbSummaryText}>
-                  {tmdbSummaryText}
-                </span>
-                <span className="tmdb-bridge-badge">{tmdbSelectedImagesCount} gambar</span>
-                <Button
+              <Button
                   type="button"
                   size="sm"
                   variant="outline-danger"
@@ -1543,12 +1539,17 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
                 >
                   Lepas
                 </Button>
+                <span className="tmdb-bridge-summary" title={tmdbSummaryText}>
+                  {tmdbSummaryText}
+                </span>
+                <span className="tmdb-bridge-badge">{tmdbSelectedImagesCount} img</span>
+                
               </>
             )}
           </div>
           {useTmdb && !tmdbSelection?.tmdbId && (
             <small className="text-muted d-block mt-1 tmdb-bridge-empty">
-              TMDB belum dipilih. Klik <strong>Buka TMDB Finder</strong> untuk cari Movie/TV + pilih detail dan gambar.
+              On TMDB. untuk Movie/TV + detail dan gambar.
             </small>
           )}
           {useTmdb && tmdbSelection?.tmdbId && (

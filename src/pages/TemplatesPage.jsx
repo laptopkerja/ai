@@ -737,7 +737,7 @@ export default function TemplatesPage() {
     <Card>
       <Card.Body>
         <div className="d-flex justify-content-between align-items-center mb-2">
-          <h5 className="mb-0">Templates & Presets</h5>
+          <h5 className="mb-0 templates-title-compact">Templates & Presets</h5>
           <div>
             <input id="tmpl-import" type="file" accept="application/json" style={{ display: 'none' }} onChange={importFile} />
             <Button size="sm" variant="outline-secondary" className="me-2" onClick={() => document.getElementById('tmpl-import').click()}>Import</Button>
@@ -818,8 +818,7 @@ export default function TemplatesPage() {
           <Col xs={12}>
             <div className="d-flex align-items-center justify-content-between">
               <small className="text-muted">
-                Menampilkan {pagedTemplates.length} dari {filteredTemplates.length} template
-                {paginationEnabled ? ` · Page ${page}/${totalPages}` : ''}
+                Page {page}/{totalPages} · showing {pagedTemplates.length}/{filteredTemplates.length}
               </small>
               <Button size="sm" variant="outline-secondary" onClick={resetFilters}>Reset Filter</Button>
             </div>
@@ -841,8 +840,8 @@ export default function TemplatesPage() {
                 <Col xs={10}>
                   <div><strong>{preset.title}</strong></div>
                   <div className="text-muted small">{preset.description || preset.topic || '-'}</div>
-                  <div className="small text-muted">
-                    Last action: {preset._lastAction || 'edit'} · by {resolvePresetOwnerLabel(preset)} · {formatDateTime(resolvePresetActionTime(preset))}
+                  <div className="small text-muted templates-last-action-meta">
+                    {preset._lastAction || 'edit'} : {resolvePresetOwnerLabel(preset)} · {formatDateTime(resolvePresetActionTime(preset))}
                   </div>
                   <div className="mt-1">
                     {preset.platform && <Badge bg="danger" className="me-1">{preset.platform}</Badge>}

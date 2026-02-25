@@ -83,7 +83,7 @@ body { padding-bottom: 40px; }
     }
 
     /* Reduce vertical spacing for compact layout */
-    .generate-form .form-label { font-size: 0.95rem; }
+    .generate-form .form-label { font-size: 0.75rem; }
     .generate-form .form-select, .generate-form .form-control { font-size: 0.95rem; }
     .form-select-sm {
   font-size: .800rem !important;
@@ -730,6 +730,13 @@ textarea.form-control {
     font-size: .78rem;
     min-height: 36px;
     padding-right: 1.45rem;
+  }
+  .templates-title-compact {
+    width: min-content;
+  }
+  .templates-last-action-meta {
+    font-size: .70rem;
+    color: #3473cf;
   }
 }
 

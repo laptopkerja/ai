@@ -5,7 +5,7 @@ Dokumen ini adalah acuan bersama untuk flashback progres refactor/audit/perbaika
 ## Metadata
 - Repo: `content-py2`
 - Branch kerja: `dev`
-- Commit implementasi audit terakhir: `4e7d1ae6`
+- Commit implementasi audit terakhir: `ed3d833d`
 - Tanggal update: `2026-02-25`
 - Fokus: sinkron kontrak platform, stabilitas migrasi Vercel, kebersihan changeset
 
@@ -53,6 +53,27 @@ Dokumen ini adalah acuan bersama untuk flashback progres refactor/audit/perbaika
   - File terkait: `src/pages/SettingsPage.jsx`
 - [ ] Rapikan sisa perubahan UI in-progress di working tree agar deploy tidak ikut membawa perubahan yang belum final.
 
+### Audit Lanjutan File In-Progress (GenerateForm / Templates / styles)
+- [x] **GenerateForm copywriting cleanup**
+  - Implementasi:
+    - Helper TMDB diringkas sesuai keputusan owner menjadi: `On TMDB. untuk Movie/TV + detail dan gambar.`
+    - Badge jumlah gambar dipertahankan sebagai `img` (disetujui owner untuk ringkas).
+
+- [x] **TemplatesPage microcopy & readability consistency**
+  - Implementasi:
+    - Format summary disamakan menjadi: `Page x/y · showing a/b`.
+  - Catatan keputusan owner:
+    - Format ringkas metadata aksi (`edit : owner · waktu`) **dipertahankan sengaja**.
+
+- [x] **Styles cleanup & naming semantics**
+  - Implementasi:
+    - Komentar eksperimen pada `.tmdb-bridge-summary` sudah dihapus (rule aktif kembali jelas).
+    - Class ad-hoc diganti jadi semantik:
+      - `.tempe` -> `.templates-title-compact`
+      - `.cred` -> `.templates-last-action-meta`
+  - Catatan keputusan owner:
+    - Ukuran `.generate-form .form-label = 0.75rem` **dipertahankan sengaja**.
+
 ## Audit Migrasi Render -> Vercel
 
 ### Selesai Diverifikasi
@@ -95,10 +116,9 @@ Dokumen ini adalah acuan bersama untuk flashback progres refactor/audit/perbaika
 - `0084973b`, `05db7ea1` - SPA/Vercel route fix
 
 ## Rekomendasi Tahap Berikutnya (Prioritas)
-1. P1: Bersihkan working tree & repo hygiene (`.gitignore`, keputusan `dist`).
-2. P1: Hardening `apiRuntime` production fallback behavior.
-3. P2: Rapikan text/placeholder deploy lama (Render -> Vercel terminology).
-4. P2: Tambah smoke test script khusus Vercel production endpoint.
+1. P1: Finalisasi 3 file in-progress (`GenerateForm`, `TemplatesPage`, `styles`) sesuai checklist audit lanjutan.
+2. P1: Setelah finalisasi, pastikan `git status` bersih lalu jalankan `npm run quality`.
+3. P2: Tambah smoke test script khusus Vercel production endpoint.
 
 ---
 Dokumen ini harus diupdate setiap kali ada:
