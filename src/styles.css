@@ -15,11 +15,22 @@ body { padding-bottom: 40px; }
 }
 
 .nav-avatar-toggle {
-  display: flex !important;
   align-items: center;
   justify-content: center;
   border: 0 !important;
   box-shadow: none !important;
+}
+
+@media (max-width: 991.98px) {
+  .nav-mobile-menu-toggle {
+    display: inline-flex !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .nav-mobile-menu-toggle {
+    display: none !important;
+  }
 }
 
 .nav-avatar-image,
@@ -549,6 +560,10 @@ textarea.form-control {
 .st-dt {
   font-size: 13px;
   color: var(--bs-secondary-color);
+}
+span.templates-source-badge svg {
+  margin-top: -4px;
+    margin-bottom: -2px;
 }
 .templates-toast-center {
   z-index: 1080;

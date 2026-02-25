@@ -237,6 +237,7 @@ const TEAM_PRESET_VERSION_TABLE = 'team_preset_versions'
 const TEAM_INTEGRATION_KEY_TABLE = 'team_integration_keys'
 const TMDB_INTEGRATION_KEY_NAME = 'tmdb_api_key'
 const TEAM_PRESET_VERSION_LIMIT = Math.max(5, Number(process.env.TEAM_PRESET_VERSION_LIMIT || 20))
+const TEAM_PRESET_SEED_MARKER_ID = '__team_presets_seeded__'
 const TEAM_PRESET_ALLOWED_ACTIONS = new Set(['create', 'edit', 'clone', 'import', 'rollback', 'seed'])
 const DASHBOARD_ALERT_TABLE = 'dashboard_alerts'
 const DASHBOARD_SNAPSHOT_TABLE = 'dashboard_snapshots'
@@ -2824,6 +2825,7 @@ function mapTeamPresetRow(row) {
   )
   return {
     ...normalized,
+    _storageSource: 'supabase',
     _teamVersion: Number(row.version || 1),
     _lastAction: lastAction,
     _lastActionAt: lastActionAt,
@@ -2837,6 +2839,46 @@ function mapTeamPresetRow(row) {
   }
 }
 
+function isSeedMarkerPresetId(presetId) {
+  return String(presetId || '').trim() === TEAM_PRESET_SEED_MARKER_ID
+}
+
+async function hasTeamPresetSeedMarker(client = supabaseAdmin) {
+  if (!client) return { exists: false, error: null }
+  const { data, error } = await client
+    .from(TEAM_PRESET_TABLE)
+    .select('preset_id')
+    .eq('preset_id', TEAM_PRESET_SEED_MARKER_ID)
+    .maybeSingle()
+  if (error) return { exists: false, error }
+  return { exists: !!data?.preset_id, error: null }
+}
+
+function buildTeamPresetSeedMarkerRow(seedPreset, actorUser, actorDisplayName, nowIso) {
+  const normalizedSeed = normalizePreset(seedPreset)
+  const markerPreset = normalizePreset({
+    ...normalizedSeed,
+    id: TEAM_PRESET_SEED_MARKER_ID,
+    title: 'Seed Marker',
+    label: 'Seed Marker'
+  })
+  return {
+    preset_id: TEAM_PRESET_SEED_MARKER_ID,
+    title: 'Seed Marker',
+    preset: markerPreset,
+    version: 1,
+    created_by_user_id: actorUser?.id || null,
+    created_by_display_name: actorDisplayName || null,
+    updated_by_user_id: actorUser?.id || null,
+    updated_by_display_name: actorDisplayName || null,
+    last_action: 'seed',
+    last_action_at: nowIso,
+    last_cloned_from_preset_id: null,
+    created_at: nowIso,
+    updated_at: nowIso
+  }
+}
+
 async function listTeamPresetsFromSupabase() {
   if (!supabaseAdmin) return { rows: [], error: null }
   const { data, error } = await supabaseAdmin
@@ -2845,7 +2887,10 @@ async function listTeamPresetsFromSupabase() {
     .order('updated_at', { ascending: false })
     .limit(1000)
   if (error) return { rows: [], error }
-  const rows = (Array.isArray(data) ? data : []).map((row) => mapTeamPresetRow(row)).filter(Boolean)
+  const rows = (Array.isArray(data) ? data : [])
+    .filter((row) => !isSeedMarkerPresetId(row?.preset_id))
+    .map((row) => mapTeamPresetRow(row))
+    .filter(Boolean)
   return { rows, error: null }
 }
 
@@ -2961,10 +3006,27 @@ async function upsertTeamPresetVersionSnapshot(teamRow, action, actorUser, actor
 
 async function seedTeamPresetsIfNeeded(actorUser, options = {}) {
   if (!supabaseAdmin) return { rows: [], error: null }
+  const markerState = await hasTeamPresetSeedMarker(supabaseAdmin)
+  if (markerState.error) return { rows: [], error: markerState.error }
+
   const current = Array.isArray(options?.existingRows)
     ? { rows: options.existingRows, error: null }
     : await listTeamPresetsFromSupabase()
   if (current.error) return current
+  if (markerState.exists) return current
+  if (Array.isArray(current.rows) && current.rows.length > 0) {
+    const actorDisplayName = await resolveActorDisplayName(actorUser)
+    const nowIso = new Date().toISOString()
+    const markerBase = normalizePreset(current.rows[0])
+    if (markerBase?.id) {
+      const markerRow = buildTeamPresetSeedMarkerRow(markerBase, actorUser, actorDisplayName, nowIso)
+      const { error: markerErr } = await supabaseAdmin
+        .from(TEAM_PRESET_TABLE)
+        .upsert([markerRow], { onConflict: 'preset_id' })
+      if (markerErr) return { rows: [], error: markerErr }
+    }
+    return current
+  }
 
   const seedsRaw = readStoredPresets()
   if (!Array.isArray(seedsRaw) || !seedsRaw.length) return current
@@ -2998,6 +3060,10 @@ async function seedTeamPresetsIfNeeded(actorUser, options = {}) {
       created_at: nowIso,
       updated_at: nowIso
     }))
+
+  if (seedPresets.length) {
+    insertRows.push(buildTeamPresetSeedMarkerRow(seedPresets[0], actorUser, actorDisplayName, nowIso))
+  }
 
   const { error: seedErr } = await supabaseAdmin
     .from(TEAM_PRESET_TABLE)

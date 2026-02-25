@@ -25,6 +25,8 @@ const TEAM_PRESET_VIEW_META_KEYS = [
   '_createdByDisplayName',
   '_lastClonedFromPresetId'
 ]
+const TEMPLATE_SOURCE_LOCAL = 'local'
+const TEMPLATE_SOURCE_SUPABASE = 'supabase'
 
 export const PRESETS = [
   {
@@ -84,7 +86,22 @@ export const PRESETS = [
   }
 ]
 
-function normalizePresetForView(rawPreset) {
+function normalizeTemplateSource(value, fallback = TEMPLATE_SOURCE_LOCAL) {
+  const key = String(value || '').trim().toLowerCase()
+  if (key === TEMPLATE_SOURCE_SUPABASE) return TEMPLATE_SOURCE_SUPABASE
+  if (key === TEMPLATE_SOURCE_LOCAL) return TEMPLATE_SOURCE_LOCAL
+  return fallback
+}
+
+function resolveTemplateSourceLabel(sourceKey) {
+  return sourceKey === TEMPLATE_SOURCE_SUPABASE ? 'Supabase' : 'Draft Lokal'
+}
+
+function resolveTemplateSourceIcon(sourceKey) {
+  return sourceKey === TEMPLATE_SOURCE_SUPABASE ? 'devicon:supabase' : 'icon-park-outline:browser-chrome'
+}
+
+function normalizePresetForView(rawPreset, explicitSource = null) {
   const normalized = normalizePreset(rawPreset)
   if (!normalized) return null
   const source = rawPreset && typeof rawPreset === 'object' ? rawPreset : {}
@@ -106,6 +123,10 @@ function normalizePresetForView(rawPreset) {
   if (!next._lastActionAt && source.last_action_at) {
     next._lastActionAt = source.last_action_at
   }
+  next._storageSource = normalizeTemplateSource(
+    explicitSource || source._storageSource || source.storage_source || source.storageSource || '',
+    TEMPLATE_SOURCE_LOCAL
+  )
 
   return next
 }
@@ -113,12 +134,12 @@ function normalizePresetForView(rawPreset) {
 function loadStoredTemplates() {
   try {
     const raw = localStorage.getItem(TEMPLATE_STORAGE_KEY)
-    if (!raw) return PRESETS.map((item) => normalizePresetForView(item))
+    if (!raw) return PRESETS.map((item) => normalizePresetForView(item, TEMPLATE_SOURCE_LOCAL))
     const parsed = JSON.parse(raw)
-    if (!Array.isArray(parsed)) return PRESETS.map((item) => normalizePresetForView(item))
-    return parsed.map((item) => normalizePresetForView(item)).filter(Boolean)
+    if (!Array.isArray(parsed)) return PRESETS.map((item) => normalizePresetForView(item, TEMPLATE_SOURCE_LOCAL))
+    return parsed.map((item) => normalizePresetForView(item, TEMPLATE_SOURCE_LOCAL)).filter(Boolean)
   } catch (err) {
-    return PRESETS.map((item) => normalizePresetForView(item))
+    return PRESETS.map((item) => normalizePresetForView(item, TEMPLATE_SOURCE_LOCAL))
   }
 }
 
@@ -411,6 +432,7 @@ export default function TemplatesPage() {
     async function load() {
       try {
         const headers = await buildAuthHeaders()
+        const sourceKey = Object.keys(headers).length ? TEMPLATE_SOURCE_SUPABASE : TEMPLATE_SOURCE_LOCAL
         const requestConfig = Object.keys(headers).length ? { headers } : {}
         const resp = await apiAxios({
           method: 'get',
@@ -418,7 +440,7 @@ export default function TemplatesPage() {
           ...requestConfig
         })
         if (mounted && resp.data?.ok && Array.isArray(resp.data.data)) {
-          setTemplates(resp.data.data.map((item) => normalizePresetForView(item)).filter(Boolean))
+          setTemplates(resp.data.data.map((item) => normalizePresetForView(item, sourceKey)).filter(Boolean))
           return
         }
       } catch (e) {
@@ -430,9 +452,9 @@ export default function TemplatesPage() {
         if (!existing) {
           const response = await fetch('/example-format-template-converted-by-script.json')
           if (response.ok) {
-            const items = await response.json()
-            if (Array.isArray(items) && items.length) {
-              const normalized = items.map((item) => normalizePresetForView(item)).filter(Boolean)
+          const items = await response.json()
+          if (Array.isArray(items) && items.length) {
+              const normalized = items.map((item) => normalizePresetForView(item, TEMPLATE_SOURCE_LOCAL)).filter(Boolean)
               if (mounted) setTemplates(normalized)
               localStorage.setItem(TEMPLATE_STORAGE_KEY, JSON.stringify(normalized))
             }
@@ -489,7 +511,7 @@ export default function TemplatesPage() {
     }
 
     const action = editing ? 'edit' : (cloneSourceId ? 'clone' : 'create')
-    let persisted = normalizedPayload
+    let persisted = normalizePresetForView(normalizedPayload, TEMPLATE_SOURCE_LOCAL)
 
     try {
       const headers = await buildAuthHeaders()
@@ -501,7 +523,7 @@ export default function TemplatesPage() {
           data: { preset: normalizedPayload, action: 'edit' },
           ...requestConfig
         })
-        if (resp.data?.ok && resp.data.data) persisted = normalizePresetForView(resp.data.data)
+        if (resp.data?.ok && resp.data.data) persisted = normalizePresetForView(resp.data.data, TEMPLATE_SOURCE_SUPABASE)
         setTemplates((prev) => mergeById(prev, persisted, editing))
         showToast('Template berhasil diperbarui', { bg: 'success' })
       } else {
@@ -511,21 +533,21 @@ export default function TemplatesPage() {
           data: { preset: normalizedPayload, action, cloneFromPresetId: cloneSourceId || null },
           ...requestConfig
         })
-        if (resp.data?.ok && resp.data.data) persisted = normalizePresetForView(resp.data.data)
+        if (resp.data?.ok && resp.data.data) persisted = normalizePresetForView(resp.data.data, TEMPLATE_SOURCE_SUPABASE)
         setTemplates((prev) => mergeById(prev, persisted))
         showToast('Template baru berhasil disimpan', { bg: 'success' })
       }
     } catch (err) {
       const apiMessage = mapApiError(err)
       if (editing) {
-        persisted = normalizePreset({
+        persisted = normalizePresetForView({
           ...normalizedPayload,
           version: bumpPatchVersion(templates.find((item) => item.id === editing)?.version || normalizedPayload.version),
           meta: {
             ...(normalizedPayload.meta || {}),
             updatedAt: new Date().toISOString()
           }
-        })
+        }, TEMPLATE_SOURCE_LOCAL)
         setTemplates((prev) => mergeById(prev, persisted, editing))
         showToast(`${apiMessage}. Template disimpan lokal (fallback).`, { bg: 'warning' })
       } else {
@@ -647,10 +669,10 @@ export default function TemplatesPage() {
               data: { preset: item, action: 'import' },
               ...requestConfig
             })
-            if (resp.data?.ok && resp.data.data) persisted.push(normalizePresetForView(resp.data.data))
-            else persisted.push(item)
+            if (resp.data?.ok && resp.data.data) persisted.push(normalizePresetForView(resp.data.data, TEMPLATE_SOURCE_SUPABASE))
+            else persisted.push(normalizePresetForView(item, TEMPLATE_SOURCE_LOCAL))
           } catch (err) {
-            persisted.push(item)
+            persisted.push(normalizePresetForView(item, TEMPLATE_SOURCE_LOCAL))
           }
         }
 
@@ -694,7 +716,7 @@ export default function TemplatesPage() {
     const presetId = historyTarget.id
     const rollbackPayload = normalizePreset({ ...(snapshot.preset || {}), id: presetId })
     setRollingBack(true)
-    let persisted = rollbackPayload
+    let persisted = normalizePresetForView(rollbackPayload, TEMPLATE_SOURCE_LOCAL)
 
     try {
       const headers = await buildAuthHeaders()
@@ -705,18 +727,18 @@ export default function TemplatesPage() {
         data: { snapshotId: snapshot.snapshotId },
         ...requestConfig
       })
-      if (resp.data?.ok && resp.data.data) persisted = normalizePresetForView(resp.data.data)
+      if (resp.data?.ok && resp.data.data) persisted = normalizePresetForView(resp.data.data, TEMPLATE_SOURCE_SUPABASE)
       showToast('Rollback berhasil', { bg: 'success' })
     } catch (err) {
       const current = templates.find((item) => item.id === presetId)
-      persisted = normalizePreset({
+      persisted = normalizePresetForView({
         ...rollbackPayload,
         version: bumpPatchVersion(current?.version || rollbackPayload.version),
         meta: {
           ...(rollbackPayload.meta || {}),
           updatedAt: new Date().toISOString()
         }
-      })
+      }, TEMPLATE_SOURCE_LOCAL)
       showToast(`${mapApiError(err)}. Rollback lokal dijalankan.`, { bg: 'warning' })
     } finally {
       setTemplates((prev) => mergeById(prev, persisted, presetId))
@@ -838,6 +860,11 @@ export default function TemplatesPage() {
         <ListGroup>
           {pagedTemplates.map((preset) => (
             <ListGroup.Item key={preset.id}>
+              {(() => {
+                const sourceKey = normalizeTemplateSource(preset?._storageSource, TEMPLATE_SOURCE_LOCAL)
+                const sourceLabel = resolveTemplateSourceLabel(sourceKey)
+                const sourceIcon = resolveTemplateSourceIcon(sourceKey)
+                return (
               <Row className="align-items-center">
                 <Col xs={10}>
                   <div><strong>{preset.title}</strong></div>
@@ -846,6 +873,13 @@ export default function TemplatesPage() {
                     {preset._lastAction || 'edit'} : {resolvePresetOwnerLabel(preset)} · {formatDateTime(resolvePresetActionTime(preset))}
                   </div>
                   <div className="mt-1">
+                    <Badge
+                      bg={sourceKey === TEMPLATE_SOURCE_SUPABASE ? 'success' : 'secondary'}
+                      className="me-1 templates-source-badge"
+                      title={`Source: ${sourceLabel}`}
+                    >
+                      <Icon icon={sourceIcon} width="14" height="14" />
+                    </Badge>
                     {preset.platform && <Badge bg="danger" className="me-1">{preset.platform}</Badge>}
                     {preset.language && <Badge bg="warning" text="dark" className="me-1">{preset.language === 'Indonesia' ? 'ID' : 'EN'}</Badge>}
                     <Badge bg="light" text="dark" className="me-1">v{preset.version || '1.0.0'}</Badge>
@@ -914,6 +948,8 @@ export default function TemplatesPage() {
                   </Button>
                 </Col>
               </Row>
+                )
+              })()}
             </ListGroup.Item>
           ))}
         </ListGroup>
