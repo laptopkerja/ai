@@ -5,10 +5,14 @@ const API_BASE_SECONDARY_STORAGE_KEY = 'api_base_secondary_v1'
 const API_ALLOW_LOCAL_FALLBACK_STORAGE_KEY = 'api_allow_local_fallback_v1'
 const API_LAST_HEALTHY_STORAGE_KEY = 'api_last_healthy_v1'
 const RETRYABLE_STATUS = new Set([408, 429, 502, 503, 504])
+const IS_DEV_RUNTIME = !!import.meta.env.DEV
+const DEV_DEFAULT_API_BASE = 'http://localhost:3000'
+const NO_API_BASE_CONFIG_ERROR =
+  'Backend URL belum dikonfigurasi. Isi VITE_API_URL (production) atau set Backend Routing di Settings.'
 
-const ENV_PRIMARY_API_BASE = normalizeApiBase(import.meta.env.VITE_API_URL || 'http://localhost:3000')
+const ENV_PRIMARY_API_BASE = normalizeApiBase(import.meta.env.VITE_API_URL || (IS_DEV_RUNTIME ? DEV_DEFAULT_API_BASE : ''))
 const ENV_SECONDARY_API_BASE = normalizeApiBase(import.meta.env.VITE_API_URL_SECONDARY || '')
-const ENV_LOCAL_API_BASE = normalizeApiBase(import.meta.env.VITE_LOCAL_API_URL || 'http://localhost:3000')
+const ENV_LOCAL_API_BASE = normalizeApiBase(import.meta.env.VITE_LOCAL_API_URL || (IS_DEV_RUNTIME ? DEV_DEFAULT_API_BASE : ''))
 
 function hasWindow() {
   return typeof window !== 'undefined'
@@ -203,7 +207,7 @@ export function getApiRuntimeConfig() {
     localFallback: ENV_LOCAL_API_BASE,
     override: normalizeApiBase(readStorage(API_BASE_OVERRIDE_STORAGE_KEY)),
     secondary: normalizeApiBase(readStorage(API_BASE_SECONDARY_STORAGE_KEY)),
-    allowLocalFallback: readBooleanStorage(API_ALLOW_LOCAL_FALLBACK_STORAGE_KEY, true),
+    allowLocalFallback: readBooleanStorage(API_ALLOW_LOCAL_FALLBACK_STORAGE_KEY, IS_DEV_RUNTIME),
     lastHealthyBase: normalizeApiBase(readStorage(API_LAST_HEALTHY_STORAGE_KEY))
   }
 }
@@ -228,7 +232,7 @@ export function getApiBaseCandidates({ includeLocalFallback = true, configOverri
 
 export function getCurrentApiBase() {
   const candidates = getApiBaseCandidates()
-  return candidates[0] || ENV_PRIMARY_API_BASE || ENV_LOCAL_API_BASE
+  return candidates[0] || ''
 }
 
 export async function probeApiBase(base, { timeoutMs = 2500 } = {}) {
@@ -268,6 +272,18 @@ export async function probeApiBase(base, { timeoutMs = 2500 } = {}) {
 
 export async function probeApiCandidates(configOverride = null, { timeoutMs = 2500, includeLocalFallback = true } = {}) {
   const candidates = getApiBaseCandidates({ includeLocalFallback, configOverride })
+  if (!candidates.length) {
+    return {
+      ok: false,
+      activeBase: '',
+      checked: [{
+        ok: false,
+        base: '',
+        status: 0,
+        error: NO_API_BASE_CONFIG_ERROR
+      }]
+    }
+  }
   const checked = []
   for (const base of candidates) {
     const item = await probeApiBase(base, { timeoutMs })
@@ -286,6 +302,9 @@ export async function apiFetch(path, init = {}, options = {}) {
   const includeLocalFallback = options.includeLocalFallback !== false
   const configOverride = options.configOverride || null
   const candidates = getApiBaseCandidates({ includeLocalFallback, configOverride })
+  if (!candidates.length) {
+    throw new Error(NO_API_BASE_CONFIG_ERROR)
+  }
   const requestPath = withLeadingSlash(path)
 
   let lastError = null
@@ -437,6 +456,9 @@ export async function apiAxios(requestConfig = {}, options = {}) {
   const includeLocalFallback = options.includeLocalFallback !== false
   const configOverride = options.configOverride || null
   const candidates = getApiBaseCandidates({ includeLocalFallback, configOverride })
+  if (!candidates.length) {
+    throw new Error(NO_API_BASE_CONFIG_ERROR)
+  }
 
   const rawUrl = String(requestConfig.url || '').trim()
   if (/^https?:\/\//i.test(rawUrl)) {

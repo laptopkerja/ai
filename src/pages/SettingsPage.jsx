@@ -827,7 +827,7 @@ export default function SettingsPage() {
                 <Form.Label>Primary URL (Override)</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder={initialApiConfig.envPrimary || 'https://api-utama.onrender.com'}
+                  placeholder={initialApiConfig.envPrimary || 'https://api-backend.vercel.app'}
                   value={apiRouteConfig.override}
                   onChange={(e) => setApiRouteConfig((prev) => ({ ...prev, override: e.target.value }))}
                 />
@@ -836,7 +836,7 @@ export default function SettingsPage() {
                 <Form.Label>Secondary URL (Optional)</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder={initialApiConfig.envSecondary || 'https://api-cadangan.onrender.com'}
+                  placeholder={initialApiConfig.envSecondary || 'https://api-backup.vercel.app'}
                   value={apiRouteConfig.secondary}
                   onChange={(e) => setApiRouteConfig((prev) => ({ ...prev, secondary: e.target.value }))}
                 />

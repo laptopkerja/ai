@@ -4,3 +4,28 @@
 .env.backup
 .env.*
 !.env.example
+
+# dependencies & cache
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+
+# build output
+dist/
+coverage/
+
+# deployment tool cache
+.vercel/
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
