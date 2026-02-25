@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import validateTemplate from '../shared/lib/validateTemplate.js'
+import lintPresetAgainstPlatformContract from '../src/lib/presetPlatformLint.js'
 
 function loadJson(rel) {
   const p = path.resolve(process.cwd(), rel)
@@ -25,12 +26,17 @@ for (const f of files) {
   arr.forEach((item, idx) => {
     try {
       const errs = validateTemplate(item)
-      if (errs.length) {
+      const lint = lintPresetAgainstPlatformContract(item)
+      if (errs.length || lint.errors.length) {
         hadError = true
         console.log(`- Item ${idx} id=${item.id || '<no-id>'} -> INVALID:`)
         errs.forEach(e => console.log(`   • ${e}`))
+        lint.errors.forEach((e) => console.log(`   • [platform-lint] ${e}`))
       } else {
         console.log(`- Item ${idx} id=${item.id || '<no-id>'} -> OK`)
+        if (lint.warnings.length) {
+          lint.warnings.forEach((w) => console.log(`   • [warning] ${w}`))
+        }
       }
     } catch (e) {
       hadError = true

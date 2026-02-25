@@ -1,3 +1,8 @@
+import {
+  resolvePlatformOutputContract as resolveSharedPlatformOutputContract,
+  BLOGGER_SEO_CONTRACT
+} from '../../shared/lib/platformContracts.js'
+
 function safeString(value) {
   return String(value || '').trim()
 }
@@ -185,191 +190,7 @@ const CONTENT_LENGTH_PROFILE = {
   long: { sceneCount: 7, totalSec: 60 }
 }
 
-const STAGE_1_PLATFORMS = new Set(['TikTok', 'Instagram Reels', 'YouTube Short', 'Threads'])
-const STAGE_2_PLATFORMS = new Set([
-  'YouTube Long',
-  'Facebook Reels',
-  'WhatsApp Status',
-  'WhatsApp Channel',
-  'Telegram',
-  'Shopee',
-  'Pinterest',
-  'Tokopedia',
-  'Lazada',
-  'LinkedIn',
-  'X (Twitter)',
-  'SoundCloud',
-  'Blog Blogger'
-])
-
-const DEFAULT_PLATFORM_OUTPUT_CONTRACT = {
-  hookMin: 18,
-  hookMax: 180,
-  descriptionMinSentences: 1,
-  descriptionMaxSentences: 3,
-  descriptionMaxChars: 260,
-  hashtagMin: 3,
-  hashtagMax: 8,
-  requireCtaInDescription: false,
-  ctaStyle: 'soft'
-}
-
-const PLATFORM_OUTPUT_CONTRACTS = {
-  TikTok: {
-    hookMax: 130,
-    hashtagMin: 4,
-    hashtagMax: 8,
-    requireCtaInDescription: true,
-    ctaStyle: 'comment_share_save'
-  },
-  'Instagram Reels': {
-    hookMax: 140,
-    hashtagMin: 4,
-    hashtagMax: 8,
-    requireCtaInDescription: true,
-    ctaStyle: 'comment_share'
-  },
-  'YouTube Short': {
-    hookMax: 140,
-    hashtagMin: 3,
-    hashtagMax: 7,
-    requireCtaInDescription: true,
-    ctaStyle: 'comment_follow'
-  },
-  Threads: {
-    hookMax: 170,
-    descriptionMaxSentences: 4,
-    descriptionMaxChars: 320,
-    hashtagMin: 0,
-    hashtagMax: 3,
-    requireCtaInDescription: true,
-    ctaStyle: 'reply_debate'
-  },
-  'YouTube Long': {
-    hookMax: 180,
-    descriptionMaxSentences: 4,
-    descriptionMaxChars: 360,
-    hashtagMin: 2,
-    hashtagMax: 8,
-    requireCtaInDescription: true,
-    ctaStyle: 'watch_comment'
-  },
-  'Facebook Reels': {
-    hookMax: 150,
-    hashtagMin: 3,
-    hashtagMax: 7,
-    requireCtaInDescription: true,
-    ctaStyle: 'comment_share'
-  },
-  'WhatsApp Status': {
-    hookMax: 120,
-    descriptionMaxSentences: 2,
-    descriptionMaxChars: 180,
-    hashtagMin: 0,
-    hashtagMax: 2,
-    requireCtaInDescription: false,
-    ctaStyle: 'reply_contact'
-  },
-  'WhatsApp Channel': {
-    hookMax: 120,
-    descriptionMaxSentences: 2,
-    descriptionMaxChars: 170,
-    hashtagMin: 0,
-    hashtagMax: 1,
-    requireCtaInDescription: true,
-    ctaStyle: 'react_forward'
-  },
-  Telegram: {
-    hookMax: 135,
-    descriptionMaxSentences: 3,
-    descriptionMaxChars: 240,
-    hashtagMin: 0,
-    hashtagMax: 3,
-    requireCtaInDescription: true,
-    ctaStyle: 'reply_vote'
-  },
-  Shopee: {
-    hookMax: 130,
-    hashtagMin: 3,
-    hashtagMax: 8,
-    requireCtaInDescription: true,
-    ctaStyle: 'checkout_comment'
-  },
-  Tokopedia: {
-    hookMax: 130,
-    hashtagMin: 3,
-    hashtagMax: 8,
-    requireCtaInDescription: true,
-    ctaStyle: 'checkout_comment'
-  },
-  Lazada: {
-    hookMax: 130,
-    hashtagMin: 3,
-    hashtagMax: 8,
-    requireCtaInDescription: true,
-    ctaStyle: 'checkout_comment'
-  },
-  Pinterest: {
-    hookMax: 150,
-    hashtagMin: 2,
-    hashtagMax: 6,
-    requireCtaInDescription: false,
-    ctaStyle: 'save_pin'
-  },
-  LinkedIn: {
-    hookMax: 170,
-    descriptionMaxSentences: 4,
-    descriptionMaxChars: 340,
-    hashtagMin: 1,
-    hashtagMax: 5,
-    requireCtaInDescription: true,
-    ctaStyle: 'comment_follow'
-  },
-  'X (Twitter)': {
-    hookMax: 120,
-    descriptionMaxSentences: 2,
-    descriptionMaxChars: 240,
-    hashtagMin: 0,
-    hashtagMax: 3,
-    requireCtaInDescription: true,
-    ctaStyle: 'reply_repost'
-  },
-  SoundCloud: {
-    hookMax: 130,
-    descriptionMaxSentences: 3,
-    descriptionMaxChars: 260,
-    hashtagMin: 2,
-    hashtagMax: 6,
-    requireCtaInDescription: true,
-    ctaStyle: 'listen_follow'
-  },
-  'Blog Blogger': {
-    hookMax: 180,
-    descriptionMinSentences: 1,
-    descriptionMaxSentences: 2,
-    descriptionMaxChars: 180,
-    hashtagMin: 0,
-    hashtagMax: 4,
-    requireCtaInDescription: false,
-    ctaStyle: 'read_comment'
-  }
-}
-
-const BLOGGER_ARTICLE_CONTRACT = {
-  minWords: 900,
-  targetMinWords: 1300,
-  targetMaxWords: 1700,
-  maxWords: 2200,
-  metaDescriptionMinChars: 140,
-  metaDescriptionMaxChars: 160,
-  minHeadings: 4,
-  minFaqItems: 3,
-  minInternalLinks: 2,
-  maxInternalLinks: 5,
-  minExternalReferences: 1,
-  maxExternalReferences: 3,
-  featuredSnippetMaxChars: 320
-}
+const BLOGGER_ARTICLE_CONTRACT = BLOGGER_SEO_CONTRACT
 
 function isBloggerPlatform(platform) {
   return safeString(platform).toLowerCase() === 'blog blogger'
@@ -503,19 +324,15 @@ function normalizeBloggerPublishPack({ slug, internalLinks, externalReferences, 
 
 function resolvePlatformContract(platform) {
   const normalized = safeString(platform) || 'TikTok'
-  const specific = PLATFORM_OUTPUT_CONTRACTS[normalized] || {}
-  const merged = {
-    ...DEFAULT_PLATFORM_OUTPUT_CONTRACT,
-    ...specific
-  }
-  const min = clampNumber(merged.hashtagMin, 0, 12, DEFAULT_PLATFORM_OUTPUT_CONTRACT.hashtagMin)
-  const max = clampNumber(merged.hashtagMax, min, 12, DEFAULT_PLATFORM_OUTPUT_CONTRACT.hashtagMax)
+  const resolved = resolveSharedPlatformOutputContract(normalized)
+  const min = clampNumber(resolved.hashtagMin, 0, 12, 3)
+  const max = clampNumber(resolved.hashtagMax, min, 12, 8)
   return {
-    ...merged,
+    ...resolved,
     platform: normalized,
     hashtagMin: min,
     hashtagMax: max,
-    stage: STAGE_1_PLATFORMS.has(normalized) ? 1 : (STAGE_2_PLATFORMS.has(normalized) ? 2 : 2)
+    stage: clampNumber(resolved.stage, 1, 2, 2)
   }
 }
 

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Form, Row, Col, Button, InputGroup, Badge, Alert } from 'react-bootstrap'
 import validateTemplate from '../lib/validateTemplate'
 import lintPresetAgainstPlatformContract from '../lib/presetPlatformLint'
+import { CANONICAL_PLATFORMS, resolvePlatformAllowedLength } from '../../shared/lib/platformContracts.js'
 
 function deepClone(value) {
   return JSON.parse(JSON.stringify(value))
@@ -40,26 +41,6 @@ function detectCtaSignal(text, language) {
     ? [/save/i, /comment/i, /share/i, /try/i, /learn more/i, /check/i, /reply/i, /react/i, /vote/i, /follow/i, /forward/i]
     : [/simpan/i, /komentar/i, /bagikan/i, /coba/i, /cek/i, /lihat/i, /balas/i, /reaksi/i, /vote/i, /ikuti/i, /forward/i]
   return patterns.some((re) => re.test(source))
-}
-
-const PLATFORM_ALLOWED_LENGTH = {
-  TikTok: ['short', 'medium'],
-  'Instagram Reels': ['short', 'medium'],
-  'YouTube Short': ['short', 'medium'],
-  Threads: ['short', 'medium'],
-  'YouTube Long': ['medium', 'long'],
-  'Facebook Reels': ['short', 'medium'],
-  'WhatsApp Status': ['short'],
-  'WhatsApp Channel': ['short', 'medium'],
-  Telegram: ['short', 'medium', 'long'],
-  Shopee: ['short', 'medium'],
-  Tokopedia: ['short', 'medium'],
-  Lazada: ['short', 'medium'],
-  LinkedIn: ['short', 'medium', 'long'],
-  'X (Twitter)': ['short', 'medium'],
-  SoundCloud: ['short', 'medium'],
-  'Blog Blogger': ['medium', 'long'],
-  Pinterest: ['short', 'medium']
 }
 
 const TARGET_AUDIO_SEC_BY_LENGTH = {
@@ -322,6 +303,13 @@ export default function PresetEditor({ initialData = {}, onSave, onCancel }) {
   }
 
   const requiredStatus = useMemo(() => getRequiredStatus(state), [state])
+  const platformOptions = useMemo(() => {
+    const current = safeString(state.platform)
+    if (current && !CANONICAL_PLATFORMS.includes(current)) {
+      return [current, ...CANONICAL_PLATFORMS]
+    }
+    return CANONICAL_PLATFORMS
+  }, [state.platform])
   const previewPayload = useMemo(() => buildPayloadFromState(state), [state])
   const schemaErrors = useMemo(() => validateTemplate(previewPayload), [previewPayload])
   const presetLint = useMemo(() => lintPresetAgainstPlatformContract(previewPayload), [previewPayload])
@@ -376,9 +364,7 @@ export default function PresetEditor({ initialData = {}, onSave, onCancel }) {
       }
     }
 
-    const allowedLength = Array.isArray(PLATFORM_ALLOWED_LENGTH[next.platform]) && PLATFORM_ALLOWED_LENGTH[next.platform].length
-      ? PLATFORM_ALLOWED_LENGTH[next.platform]
-      : ['short', 'medium', 'long']
+    const allowedLength = resolvePlatformAllowedLength(next.platform)
     if (!next.contentStructure || typeof next.contentStructure !== 'object') {
       next.contentStructure = { length: allowedLength[0], format: 'text', placeholders: [] }
       changes.push(`Content length diset ${allowedLength[0]}.`)
@@ -629,7 +615,12 @@ export default function PresetEditor({ initialData = {}, onSave, onCancel }) {
           <Col md={6}>
             <Form.Group className="mb-2">
               <Form.Label>Platform <Badge bg="danger">Wajib</Badge></Form.Label>
-              <Form.Control value={state.platform} onChange={(e) => set('platform', e.target.value)} />
+              <Form.Select value={state.platform} onChange={(e) => set('platform', e.target.value)}>
+                <option value="">Pilih platform</option>
+                {platformOptions.map((platform) => (
+                  <option key={platform} value={platform}>{platform}</option>
+                ))}
+              </Form.Select>
             </Form.Group>
           </Col>
           <Col md={6}>

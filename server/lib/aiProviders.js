@@ -1,3 +1,9 @@
+import {
+  resolvePlatformOutputContract as resolveSharedPlatformOutputContract,
+  normalizeCtaStyleForPrompt,
+  BLOGGER_SEO_CONTRACT
+} from '../../shared/lib/platformContracts.js'
+
 const DEFAULT_MODEL_BY_PROVIDER = {
   Gemini: 'gemini-1.5-flash',
   OpenAI: 'gpt-4o-mini',
@@ -52,48 +58,6 @@ function resolveProviderRequestConfig(provider) {
     retryCount,
     retryBackoffMs
   }
-}
-
-const DEFAULT_PLATFORM_OUTPUT_HINT = {
-  hookMin: 18,
-  hookMax: 180,
-  descriptionMinSentences: 1,
-  descriptionMaxSentences: 3,
-  descriptionMaxChars: 260,
-  hashtagMin: 3,
-  hashtagMax: 8,
-  requireCtaInDescription: false,
-  ctaStyle: 'soft'
-}
-
-const PLATFORM_OUTPUT_HINTS = {
-  TikTok: { hookMax: 130, hashtagMin: 4, hashtagMax: 8, requireCtaInDescription: true, ctaStyle: 'comment/share/save' },
-  'Instagram Reels': { hookMax: 140, hashtagMin: 4, hashtagMax: 8, requireCtaInDescription: true, ctaStyle: 'comment/share' },
-  'YouTube Short': { hookMax: 140, hashtagMin: 3, hashtagMax: 7, requireCtaInDescription: true, ctaStyle: 'comment/follow' },
-  Threads: { hookMax: 170, descriptionMaxSentences: 4, descriptionMaxChars: 320, hashtagMin: 0, hashtagMax: 3, requireCtaInDescription: true, ctaStyle: 'reply/debate' },
-  'YouTube Long': { hookMax: 180, descriptionMaxSentences: 4, descriptionMaxChars: 360, hashtagMin: 2, hashtagMax: 8, requireCtaInDescription: true, ctaStyle: 'watch/comment' },
-  'Facebook Reels': { hookMax: 150, hashtagMin: 3, hashtagMax: 7, requireCtaInDescription: true, ctaStyle: 'comment/share' },
-  'WhatsApp Status': { hookMax: 120, descriptionMaxSentences: 2, descriptionMaxChars: 180, hashtagMin: 0, hashtagMax: 2, requireCtaInDescription: false, ctaStyle: 'reply' },
-  'WhatsApp Channel': { hookMax: 120, descriptionMaxSentences: 2, descriptionMaxChars: 170, hashtagMin: 0, hashtagMax: 1, requireCtaInDescription: true, ctaStyle: 'react/forward' },
-  Telegram: { hookMax: 135, descriptionMaxSentences: 3, descriptionMaxChars: 240, hashtagMin: 0, hashtagMax: 3, requireCtaInDescription: true, ctaStyle: 'reply/vote' },
-  LinkedIn: { hookMax: 170, descriptionMaxSentences: 4, descriptionMaxChars: 340, hashtagMin: 1, hashtagMax: 5, requireCtaInDescription: true, ctaStyle: 'comment/follow' },
-  'X (Twitter)': { hookMax: 120, descriptionMaxSentences: 2, descriptionMaxChars: 240, hashtagMin: 0, hashtagMax: 3, requireCtaInDescription: true, ctaStyle: 'reply/repost' },
-  SoundCloud: { hookMax: 130, descriptionMaxSentences: 3, descriptionMaxChars: 260, hashtagMin: 2, hashtagMax: 6, requireCtaInDescription: true, ctaStyle: 'listen/follow' },
-  'Blog Blogger': { hookMax: 180, descriptionMaxSentences: 4, descriptionMaxChars: 420, hashtagMin: 0, hashtagMax: 4, requireCtaInDescription: true, ctaStyle: 'read/comment' },
-  Shopee: { hookMax: 130, hashtagMin: 3, hashtagMax: 8, requireCtaInDescription: true, ctaStyle: 'checkout/comment' },
-  Tokopedia: { hookMax: 130, hashtagMin: 3, hashtagMax: 8, requireCtaInDescription: true, ctaStyle: 'checkout/comment' },
-  Lazada: { hookMax: 130, hashtagMin: 3, hashtagMax: 8, requireCtaInDescription: true, ctaStyle: 'checkout/comment' },
-  Pinterest: { hookMax: 150, hashtagMin: 2, hashtagMax: 6, requireCtaInDescription: false, ctaStyle: 'save pin' }
-}
-
-const BLOGGER_SEO_WORD_CONTRACT = {
-  minWords: 900,
-  targetMinWords: 1300,
-  targetMaxWords: 1700,
-  maxWords: 2200,
-  metaDescriptionMinChars: 140,
-  metaDescriptionMaxChars: 160,
-  faqMinItems: 3
 }
 
 function safeString(value) {
@@ -647,23 +611,22 @@ function normalizeProviderOutput(parsed, fallback, platform) {
 
 function resolvePlatformOutputHint(platform) {
   const normalized = safeString(platform)
-  const merged = {
-    ...DEFAULT_PLATFORM_OUTPUT_HINT,
-    ...(PLATFORM_OUTPUT_HINTS[normalized] || {})
-  }
-  const min = Math.max(0, Math.min(12, Number(merged.hashtagMin)))
-  const max = Math.max(min, Math.min(12, Number(merged.hashtagMax)))
+  const resolved = resolveSharedPlatformOutputContract(normalized)
+  const min = Math.max(0, Math.min(12, Number(resolved.hashtagMin)))
+  const max = Math.max(min, Math.min(12, Number(resolved.hashtagMax)))
   return {
-    ...merged,
+    ...resolved,
     platform: normalized || 'Unknown',
     hashtagMin: min,
-    hashtagMax: max
+    hashtagMax: max,
+    requireCtaInDescription: !!resolved.requireCtaInDescription,
+    ctaStyle: normalizeCtaStyleForPrompt(resolved.ctaStyle || 'soft')
   }
 }
 
 function buildBloggerSystemPrompt(language, platform) {
   const lang = safeString(language) || 'Indonesia'
-  const seo = BLOGGER_SEO_WORD_CONTRACT
+  const seo = BLOGGER_SEO_CONTRACT
   return [
     `You are an expert SEO content strategist writing in ${lang}.`,
     'Platform output contract: Blog Blogger (article-first).',
@@ -683,7 +646,7 @@ function buildBloggerSystemPrompt(language, platform) {
     'Mandatory Blogger SEO rules:',
     `- narrator word count MUST be between ${seo.minWords}-${seo.maxWords}; target ${seo.targetMinWords}-${seo.targetMaxWords}.`,
     '- narrator must include clear structure: intro, 4-6 subheadings (H2/H3 style allowed), practical steps, and closing CTA.',
-    `- narrator must include FAQ section with at least ${seo.faqMinItems} Q&A items.`,
+    `- narrator must include FAQ section with at least ${seo.minFaqItems} Q&A items.`,
     '- narrator must naturally include the primary topic keyword in intro and at least one subheading.',
     `- description length MUST be ${seo.metaDescriptionMinChars}-${seo.metaDescriptionMaxChars} chars and include the main keyword naturally.`,
     '- avoid forbidden wording: 100%, pasti untung, garansi hasil, cepat kaya, auto viral, bocoran rahasia.'
@@ -735,7 +698,7 @@ function buildSystemPrompt(language, platform) {
 function buildBloggerUserPrompt({ prompt, platform, topic }) {
   const platformText = safeString(platform) || 'Blog Blogger'
   const topicText = safeString(topic) || 'General article topic'
-  const seo = BLOGGER_SEO_WORD_CONTRACT
+  const seo = BLOGGER_SEO_CONTRACT
   return [
     `Platform: ${platformText}`,
     `Topic: ${topicText}`,

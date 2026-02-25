@@ -686,14 +686,14 @@
     "cta": [
       {
         "type": "primary",
-        "text": "Call to action"
+        "text": "Komentar, bagikan, lalu simpan kalau kamu mau lanjutan."
       }
     ],
     "audio": {
       "recommendation": "",
       "style": "",
       "mood": "",
-      "lengthSec": 0
+      "lengthSec": 30
     },
     "constraints": {
       "forbiddenWords": [],
@@ -755,14 +755,14 @@
     "cta": [
       {
         "type": "primary",
-        "text": "Cek link di bio untuk pre-order"
+        "text": "Komentar, bagikan, lalu simpan kalau kamu mau lanjutan."
       }
     ],
     "audio": {
       "recommendation": "Viral TikTok upbeat/orchestral drop",
       "style": "upbeat",
       "mood": "energetic",
-      "lengthSec": 8
+      "lengthSec": 30
     },
     "constraints": {
       "forbiddenWords": [
@@ -846,14 +846,14 @@
     "cta": [
       {
         "type": "primary",
-        "text": "Beli Sekarang"
+        "text": "Komentar kebutuhanmu dulu sebelum checkout."
       }
     ],
     "audio": {
       "recommendation": "Bright promo jingle",
       "style": "upbeat",
       "mood": "energetic",
-      "lengthSec": 10
+      "lengthSec": 30
     },
     "constraints": {
       "forbiddenWords": [
@@ -933,14 +933,14 @@
     "cta": [
       {
         "type": "primary",
-        "text": "Coba Sekarang"
+        "text": "Komentar, bagikan, lalu simpan kalau kamu mau lanjutan."
       }
     ],
     "audio": {
       "recommendation": "Energetic pop beat",
       "style": "pop",
       "mood": "fun",
-      "lengthSec": 8
+      "lengthSec": 30
     },
     "constraints": {
       "forbiddenWords": [],

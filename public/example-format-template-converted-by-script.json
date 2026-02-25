@@ -7,11 +7,22 @@
     "description": "Template viral TikTok untuk iPhone 17 Pro Max — highlight battery, layar, kamera, dan warna.",
     "platform": "TikTok",
     "category": "Tech",
-    "tags": ["iphone","apple","tech","viral"],
+    "tags": [
+      "iphone",
+      "apple",
+      "tech",
+      "viral"
+    ],
     "engine": "generic",
     "strategy": {
-      "goals": ["increase_views","drive_engagement"],
-      "emotionTriggers": ["curiosity","hype"],
+      "goals": [
+        "increase_views",
+        "drive_engagement"
+      ],
+      "emotionTriggers": [
+        "curiosity",
+        "hype"
+      ],
       "targetAudience": "tech_enthusiasts"
     },
     "contentStructure": {
@@ -20,15 +31,49 @@
       "placeholders": []
     },
     "language": "Indonesia",
-    "keywords": ["iPhone 17 Pro Max","Apple Intelligence","baterai terpanjang","Cosmic Orange","kamera revolusioner"],
-    "hashtags": { "strategy": "mix", "count": 7 },
-    "cta": [
-      { "type": "primary", "text": "Cek link di bio untuk pre-order" }
+    "keywords": [
+      "iPhone 17 Pro Max",
+      "Apple Intelligence",
+      "baterai terpanjang",
+      "Cosmic Orange",
+      "kamera revolusioner"
     ],
-    "audio": { "recommendation": "Viral TikTok upbeat/orchestral drop", "style": "upbeat", "mood": "energetic", "lengthSec": 8 },
-    "constraints": { "forbiddenWords": ["murah","norak","jelek"], "variationCount": 2 },
-    "analytics": { "trackingEnabled": false },
-    "examples": [ { "input": {}, "output": "Voiceover: Bukan sekadar HP, ini statement! 🚀 Siap-siap terkejut sama iPhone 17 Pro Max!" } ],
-    "meta": { "createdAt": "2026-02-19T10:46:50.668Z", "createdBy": "imported" }
+    "hashtags": {
+      "strategy": "mix",
+      "count": 7
+    },
+    "cta": [
+      {
+        "type": "primary",
+        "text": "Komentar, bagikan, lalu simpan kalau kamu mau lanjutan."
+      }
+    ],
+    "audio": {
+      "recommendation": "Viral TikTok upbeat/orchestral drop",
+      "style": "upbeat",
+      "mood": "energetic",
+      "lengthSec": 30
+    },
+    "constraints": {
+      "forbiddenWords": [
+        "murah",
+        "norak",
+        "jelek"
+      ],
+      "variationCount": 2
+    },
+    "analytics": {
+      "trackingEnabled": false
+    },
+    "examples": [
+      {
+        "input": {},
+        "output": "Voiceover: Bukan sekadar HP, ini statement! 🚀 Siap-siap terkejut sama iPhone 17 Pro Max!"
+      }
+    ],
+    "meta": {
+      "createdAt": "2026-02-19T10:46:50.668Z",
+      "createdBy": "imported"
+    }
   }
 ]
