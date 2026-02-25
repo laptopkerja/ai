@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Outlet, useNavigate, Link } from 'react-router-dom'
+import { Outlet, useNavigate, Link, useLocation } from 'react-router-dom'
 import { Navbar, Container, Nav, Button, Dropdown, Image, Form, Offcanvas } from 'react-bootstrap'
 import { supabase } from '../supabase/client'
 import { resolveAvatarDisplayUrl } from '../lib/avatarStorage'
@@ -9,6 +9,7 @@ export default function ProtectedLayout() {
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState(null)
   const [avatarUrl, setAvatarUrl] = useState('')
+  const [offcanvasOpen, setOffcanvasOpen] = useState(false)
   const [theme, setTheme] = useState(() => {
     if (typeof window === 'undefined') return 'light'
     const saved = window.localStorage.getItem(THEME_STORAGE_KEY)
@@ -16,6 +17,7 @@ export default function ProtectedLayout() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   })
   const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     let mounted = true
@@ -63,35 +65,74 @@ export default function ProtectedLayout() {
 
   async function handleLogout() {
     await supabase.auth.signOut()
+    setOffcanvasOpen(false)
     navigate('/auth')
   }
+
+  function openMobileMenu() {
+    setOffcanvasOpen(true)
+  }
+
+  function closeMobileMenu() {
+    setOffcanvasOpen(false)
+  }
+
+  function handleMenuNavigate() {
+    closeMobileMenu()
+  }
+
+  useEffect(() => {
+    closeMobileMenu()
+  }, [location.pathname])
 
   if (loading) return <div className="p-4">Loading...</div>
   const initials = (user?.email || 'U').charAt(0).toUpperCase()
 
   return (
     <>
-      <Navbar bg={theme === 'dark' ? 'dark' : 'light'} data-bs-theme={theme} expand="lg" className="mb-3" collapseOnSelect>
+      <Navbar
+        bg={theme === 'dark' ? 'dark' : 'light'}
+        data-bs-theme={theme}
+        expand="lg"
+        className="mb-3"
+        collapseOnSelect
+        expanded={offcanvasOpen}
+        onToggle={(nextExpanded) => setOffcanvasOpen(!!nextExpanded)}
+      >
         <Container>
           <Navbar.Brand as={Link} to="/dashboard" className="app-brand">
             <img src="/brand-icon.svg" alt="AI Content" className="app-brand-icon" />
             <span className="app-brand-text">AI Content</span>
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="main-navbar-offcanvas" />
+          <Button
+            type="button"
+            variant="light"
+            className="p-0 border-0 bg-transparent nav-avatar-toggle nav-mobile-menu-toggle d-lg-none"
+            onClick={openMobileMenu}
+            aria-controls="main-navbar-offcanvas"
+            aria-label="Buka menu"
+          >
+            {avatarUrl ? (
+              <Image src={avatarUrl} roundedCircle className="nav-avatar-image" />
+            ) : (
+              <span className="nav-avatar-fallback">{initials}</span>
+            )}
+          </Button>
           <Navbar.Offcanvas
             id="main-navbar-offcanvas"
             aria-labelledby="main-navbar-offcanvas-label"
             placement="end"
+            onHide={closeMobileMenu}
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title id="main-navbar-offcanvas-label">Menu</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="me-auto">
-                <Nav.Link as={Link} to="/dashboard">Dashboard</Nav.Link>
-                <Nav.Link as={Link} to="/generate">Generate</Nav.Link>
-                <Nav.Link as={Link} to="/history">History</Nav.Link>
-                <Nav.Link as={Link} to="/templates">Templates</Nav.Link>
+                <Nav.Link as={Link} to="/dashboard" onClick={handleMenuNavigate}>Dashboard</Nav.Link>
+                <Nav.Link as={Link} to="/generate" onClick={handleMenuNavigate}>Generate</Nav.Link>
+                <Nav.Link as={Link} to="/history" onClick={handleMenuNavigate}>History</Nav.Link>
+                <Nav.Link as={Link} to="/templates" onClick={handleMenuNavigate}>Templates</Nav.Link>
               </Nav>
               <Dropdown align="end">
                 <Dropdown.Toggle as={Button} variant="light" className="p-0 border-0 bg-transparent nav-avatar-toggle">
@@ -102,8 +143,8 @@ export default function ProtectedLayout() {
                   )}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
-                  <Dropdown.Item as={Link} to="/settings">Settings</Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/profile" onClick={handleMenuNavigate}>Profile</Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/settings" onClick={handleMenuNavigate}>Settings</Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.ItemText className="nav-theme-item">
                     <span>{theme === 'dark' ? 'Dark Mode' : 'Light Mode'}</span>

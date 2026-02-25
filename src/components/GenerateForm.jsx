@@ -560,6 +560,25 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
   }, [location?.key])
 
   useEffect(() => {
+    const stateObj = location?.state && typeof location.state === 'object' ? location.state : null
+    const marker = Number(stateObj?.tmdbSelectionUpdatedAt || 0)
+    if (!marker) return
+
+    const latestSelection = readTmdbGenerateSelection()
+    const hasSelection = Number.isInteger(Number(latestSelection?.tmdbId)) && Number(latestSelection?.tmdbId) > 0
+    if (hasSelection && !useTmdb) {
+      setValue('useTmdb', true, { shouldDirty: true, shouldTouch: true })
+    }
+
+    const nextState = { ...stateObj }
+    delete nextState.tmdbSelectionUpdatedAt
+    navigate(location.pathname, {
+      replace: true,
+      state: Object.keys(nextState).length ? nextState : null
+    })
+  }, [location.pathname, location.state, navigate, setValue, useTmdb])
+
+  useEffect(() => {
     try {
       if (typeof window === 'undefined') return
       window.localStorage.setItem(TMDB_DETAIL_ACCORDION_STORAGE_KEY, tmdbDetailAccordionOpen ? '1' : '0')

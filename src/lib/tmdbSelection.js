@@ -30,7 +30,7 @@ const TMDB_FACT_LOCK_FIELDS_DISABLED_FOR_TV = new Set(['budget', 'revenue'])
 const TMDB_FACT_LOCK_FIELDS_DISABLED_FOR_MOVIE = new Set(['networks'])
 
 const TMDB_DEFAULT_PREFS = {
-  enabled: true,
+  enabled: false,
   mediaType: 'multi',
   region: 'US',
   language: 'en-US',
