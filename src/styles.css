@@ -1499,7 +1499,7 @@ border-bottom: 1px solid #80808024;
   }
 
   .tmdb-finder-page .tmdb-browse-card.is-active {
-    box-shadow: 0 0 0 .1rem rgba(13, 110, 253, .2);
+    box-shadow: 0 0 1px 1px rgb(43 127 253);
   }
 
   .tmdb-finder-page .tmdb-browse-chip {
@@ -1515,7 +1515,7 @@ border-bottom: 1px solid #80808024;
 
   .tmdb-finder-page .tmdb-browse-card:hover {
     transform: none;
-    box-shadow: none;
+    /* box-shadow: none; */
   }
 }
 

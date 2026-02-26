@@ -113,6 +113,10 @@ const TMDB_SCOPE_HELP_TEXT = [
   'Season: membahas 1 season terpilih dan semua episodenya.',
   'Episode: membahas 1 episode spesifik dalam season terpilih.'
 ]
+const TMDB_CROP_POSTER_PREVIEW_WIDTH = 400
+const TMDB_CROP_POSTER_PREVIEW_HEIGHT = 600
+const TMDB_CROP_POSTER_DOWNLOAD_WIDTH = 1280
+const TMDB_CROP_POSTER_DOWNLOAD_HEIGHT = 1920
 
 function createCandidateKey(item) {
   const type = String(item?.mediaType || '').trim().toLowerCase()
@@ -260,6 +264,112 @@ async function mapWithConcurrency(items, worker, concurrency = 3) {
 
   await Promise.all(Array.from({ length: Math.min(safeConcurrency, list.length) }, () => runWorker()))
   return result
+}
+
+function buildTmdbImageCandidateUrls(item = {}, { preferPreview = false, originalOnly = false } = {}) {
+  const safeItem = item && typeof item === 'object' ? item : {}
+  const ordered = originalOnly
+    ? [safeItem.url, safeItem.downloadFallbackUrl]
+    : (
+        preferPreview
+          ? [safeItem.previewUrl, safeItem.url, safeItem.downloadUrl, safeItem.downloadFallbackUrl]
+          : [safeItem.downloadUrl, safeItem.downloadFallbackUrl, safeItem.url, safeItem.previewUrl]
+      )
+  return Array.from(new Set(
+    ordered
+      .map((value) => String(value || '').trim())
+      .filter(Boolean)
+  ))
+}
+
+async function cropImageBlobToPosterBlob(
+  blob,
+  { outputWidth = TMDB_CROP_POSTER_PREVIEW_WIDTH, outputHeight = TMDB_CROP_POSTER_PREVIEW_HEIGHT } = {}
+) {
+  if (!(blob instanceof Blob) || blob.size <= 0) return null
+  if (typeof window === 'undefined' || typeof document === 'undefined') return null
+  const sourceObjectUrl = window.URL.createObjectURL(blob)
+  try {
+    const image = await new Promise((resolve, reject) => {
+      const img = new Image()
+      img.decoding = 'async'
+      img.onload = () => resolve(img)
+      img.onerror = () => reject(new Error('IMAGE_LOAD_FAILED'))
+      img.src = sourceObjectUrl
+    })
+    const srcWidth = Number(image?.naturalWidth || image?.width || 0)
+    const srcHeight = Number(image?.naturalHeight || image?.height || 0)
+    if (!Number.isFinite(srcWidth) || !Number.isFinite(srcHeight) || srcWidth <= 0 || srcHeight <= 0) {
+      return null
+    }
+
+    const safeOutputWidth = Number.isFinite(Number(outputWidth)) && Number(outputWidth) > 0
+      ? Math.floor(Number(outputWidth))
+      : TMDB_CROP_POSTER_PREVIEW_WIDTH
+    const safeOutputHeight = Number.isFinite(Number(outputHeight)) && Number(outputHeight) > 0
+      ? Math.floor(Number(outputHeight))
+      : TMDB_CROP_POSTER_PREVIEW_HEIGHT
+    const targetRatio = safeOutputWidth / safeOutputHeight
+    const sourceRatio = srcWidth / srcHeight
+    let cropWidth = srcWidth
+    let cropHeight = srcHeight
+    if (sourceRatio > targetRatio) {
+      cropWidth = Math.max(1, Math.round(srcHeight * targetRatio))
+    } else if (sourceRatio < targetRatio) {
+      cropHeight = Math.max(1, Math.round(srcWidth / targetRatio))
+    }
+    const sourceX = Math.max(0, Math.floor((srcWidth - cropWidth) / 2))
+    const sourceY = Math.max(0, Math.floor((srcHeight - cropHeight) / 2))
+
+    const canvas = document.createElement('canvas')
+    canvas.width = safeOutputWidth
+    canvas.height = safeOutputHeight
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return null
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = 'high'
+    ctx.drawImage(
+      image,
+      sourceX,
+      sourceY,
+      cropWidth,
+      cropHeight,
+      0,
+      0,
+      safeOutputWidth,
+      safeOutputHeight
+    )
+
+    const targetMime = String(blob.type || '').toLowerCase().includes('png')
+      ? 'image/png'
+      : 'image/jpeg'
+    const quality = targetMime === 'image/jpeg' ? 0.92 : undefined
+    const croppedBlob = await new Promise((resolve) => {
+      canvas.toBlob(resolve, targetMime, quality)
+    })
+    return croppedBlob instanceof Blob && croppedBlob.size > 0 ? croppedBlob : null
+  } finally {
+    window.URL.revokeObjectURL(sourceObjectUrl)
+  }
+}
+
+async function fetchTmdbBackdropAsPosterCropBlob(item, options = {}) {
+  const urls = buildTmdbImageCandidateUrls(item, options)
+  const outputWidth = Number(options?.outputWidth || 0)
+  const outputHeight = Number(options?.outputHeight || 0)
+  for (let i = 0; i < urls.length; i += 1) {
+    const imageUrl = urls[i]
+    try {
+      const resp = await fetch(imageUrl) // eslint-disable-line no-await-in-loop
+      if (!resp.ok) continue // eslint-disable-line no-continue
+      const sourceBlob = await resp.blob() // eslint-disable-line no-await-in-loop
+      const croppedBlob = await cropImageBlobToPosterBlob(sourceBlob, { outputWidth, outputHeight }) // eslint-disable-line no-await-in-loop
+      if (croppedBlob) return croppedBlob
+    } catch (err) {
+      continue
+    }
+  }
+  return null
 }
 
 function buildCandidateFromTmdbDetailPayload(payload, { fallbackMediaType = 'multi', fallbackTitle = '', tmdbId = null } = {}) {
@@ -632,6 +742,8 @@ export default function TmdbFinderPage() {
 
   const latestUiContextRef = useRef(null)
   const candidateCapabilityCacheRef = useRef(new Map())
+  const backdropCropPreviewCacheRef = useRef(new Map())
+  const [, setBackdropCropPreviewVersion] = useState(0)
   latestUiContextRef.current = {
     cardDataMode,
     query,
@@ -1983,6 +2095,7 @@ export default function TmdbFinderPage() {
   useEffect(() => {
     if (activeImageTab === 'poster' && detailPosterOptions.length > 0) return
     if (activeImageTab === 'backdrop' && detailBackdropOptions.length > 0) return
+    if (activeImageTab === 'backdrop-crop' && detailBackdropOptions.length > 0) return
     if (detailPosterOptions.length > 0) {
       setActiveImageTab('poster')
       return
@@ -1993,6 +2106,79 @@ export default function TmdbFinderPage() {
     }
     setActiveImageTab('poster')
   }, [activeImageTab, detailBackdropOptions.length, detailPosterOptions.length])
+  useEffect(() => {
+    const cache = backdropCropPreviewCacheRef.current
+    const validKeys = new Set(
+      detailBackdropOptions
+        .map((item) => String(item?.url || '').trim())
+        .filter(Boolean)
+    )
+    cache.forEach((value, key) => {
+      if (validKeys.has(key)) return
+      if (typeof value === 'string' && value.startsWith('blob:')) {
+        try {
+          window.URL.revokeObjectURL(value)
+        } catch (err) {}
+      }
+      cache.delete(key)
+    })
+  }, [detailBackdropOptions])
+  useEffect(() => {
+    if (activeImageTab !== 'backdrop-crop') return
+    let cancelled = false
+    const cache = backdropCropPreviewCacheRef.current
+
+    async function ensureCropPreview(item) {
+      const key = String(item?.url || '').trim()
+      if (!key) return
+      const cached = cache.get(key)
+      if (typeof cached === 'string') return
+      if (cached && typeof cached.then === 'function') return
+      const task = fetchTmdbBackdropAsPosterCropBlob(item, {
+        originalOnly: true,
+        outputWidth: TMDB_CROP_POSTER_PREVIEW_WIDTH,
+        outputHeight: TMDB_CROP_POSTER_PREVIEW_HEIGHT
+      })
+      cache.set(key, task)
+      try {
+        const croppedBlob = await task
+        if (!(croppedBlob instanceof Blob) || croppedBlob.size <= 0) {
+          cache.delete(key)
+          return
+        }
+        const objectUrl = window.URL.createObjectURL(croppedBlob)
+        if (cancelled) {
+          window.URL.revokeObjectURL(objectUrl)
+          cache.delete(key)
+          return
+        }
+        cache.set(key, objectUrl)
+        setBackdropCropPreviewVersion((prev) => prev + 1)
+      } catch (err) {
+        cache.delete(key)
+      }
+    }
+
+    detailBackdropOptions.forEach((item) => {
+      void ensureCropPreview(item)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [activeImageTab, detailBackdropOptions])
+  useEffect(() => {
+    return () => {
+      const cache = backdropCropPreviewCacheRef.current
+      cache.forEach((value) => {
+        if (typeof value === 'string' && value.startsWith('blob:')) {
+          try {
+            window.URL.revokeObjectURL(value)
+          } catch (err) {}
+        }
+      })
+      cache.clear()
+    }
+  }, [])
   const detailOverviewPosterUrl = useMemo(() => {
     const isTv = String(detailData?.entityType || detailSelectedCandidate?.mediaType || '').trim().toLowerCase() === 'tv'
     if (isTv) {
@@ -2104,9 +2290,10 @@ export default function TmdbFinderPage() {
   const episodeControlEnabled = isTvDetail && tvScopeKey === 'episode'
   const showSeasonScopedDetails = isTvDetail && (tvDetailScopeKey === 'season' || tvDetailScopeKey === 'episode')
   const showEpisodeScopedDetails = isTvDetail && tvDetailScopeKey === 'episode'
-  const handleDownloadTmdbImage = async (item, event) => {
+  const handleDownloadTmdbImage = async (item, event, options = {}) => {
     event?.preventDefault?.()
     event?.stopPropagation?.()
+    const cropPosterFromBackdrop = options?.cropPosterFromBackdrop === true
     const rawEntityType = String(
       detailData?.entityType || detailSelectedCandidate?.mediaType || selectionPayload?.entityType || 'movie'
     ).trim().toLowerCase()
@@ -2119,6 +2306,41 @@ export default function TmdbFinderPage() {
       ? selectedYear
       : ((/^\d{4}/.test(releaseDate) ? releaseDate.slice(0, 4) : 'unknown-year'))
     const fileBase = [safeEntityType, safeTitle, safeYear].filter(Boolean).join('-')
+
+    if (cropPosterFromBackdrop) {
+      try {
+        const croppedBlob = await fetchTmdbBackdropAsPosterCropBlob(item, {
+          originalOnly: true,
+          outputWidth: TMDB_CROP_POSTER_DOWNLOAD_WIDTH,
+          outputHeight: TMDB_CROP_POSTER_DOWNLOAD_HEIGHT
+        })
+        if (croppedBlob instanceof Blob && croppedBlob.size > 0) {
+          const objectUrl = window.URL.createObjectURL(croppedBlob)
+          const extension = String(croppedBlob.type || '').toLowerCase().includes('png') ? 'png' : 'jpg'
+          const anchor = document.createElement('a')
+          anchor.href = objectUrl
+          anchor.download = `${fileBase}-crop-poster-1280x1920.${extension}`
+          document.body.appendChild(anchor)
+          anchor.click()
+          anchor.remove()
+          window.URL.revokeObjectURL(objectUrl)
+          setNotice('Backdrop original berhasil di-crop ke 1280x1920 dan diunduh.')
+          return
+        }
+      } catch (err) {}
+
+      const cacheKey = String(item?.url || '').trim()
+      const cachedPreview = cacheKey ? backdropCropPreviewCacheRef.current.get(cacheKey) : null
+      if (typeof cachedPreview === 'string' && cachedPreview.startsWith('blob:')) {
+        window.open(cachedPreview, '_blank', 'noopener,noreferrer')
+        setNotice('Versi crop preview dibuka di tab baru. Simpan manual jika perlu.')
+        return
+      }
+
+      setNotice('Gagal membuat crop backdrop. Silakan coba lagi.')
+      return
+    }
+
     const direct1280Url = String(item?.downloadUrl || '').trim()
     const fallbackUrl = String(item?.downloadFallbackUrl || item?.url || '').trim()
     const candidateUrls = Array.from(new Set([direct1280Url, fallbackUrl].filter(Boolean)))
@@ -2157,23 +2379,35 @@ export default function TmdbFinderPage() {
       setNotice('Gagal download otomatis. Gambar dibuka di tab baru, lalu simpan manual.')
     }
   }
-  const renderTmdbImageTab = (items, groupKey, emptyLabel) => {
+  const renderTmdbImageTab = (items, groupKey, emptyLabel, options = {}) => {
     if (!Array.isArray(items) || !items.length) {
       return <small className="text-muted tmdb-image-tab-empty">{emptyLabel}</small>
     }
+    const forcePosterAspect = options?.forcePosterAspect === true
+    const gridClass = groupKey === 'backdrop' && !forcePosterAspect
+      ? 'is-backdrop-grid'
+      : 'is-poster-grid'
     return (
       <div className="tmdb-image-group-scroll">
-        <div className={`tmdb-image-grid ${groupKey === 'backdrop' ? 'is-backdrop-grid' : 'is-poster-grid'}`}>
+        <div className={`tmdb-image-grid ${gridClass}`}>
           {items.map((item, idx) => {
             const source = String(item?.source || '').trim().toLowerCase()
-            const sourceClass = source === 'backdrop' ? 'is-backdrop' : 'is-poster'
+            const sourceClass = forcePosterAspect
+              ? 'is-poster tmdb-image-item-crop-backdrop'
+              : (source === 'backdrop' ? 'is-backdrop' : 'is-poster')
             const url = String(item?.url || '').trim()
-            const previewUrl = String(item?.previewUrl || url).trim()
+            const basePreviewUrl = String(item?.previewUrl || url).trim()
+            const cropCacheValue = forcePosterAspect && url
+              ? backdropCropPreviewCacheRef.current.get(url)
+              : null
+            const previewUrl = forcePosterAspect && typeof cropCacheValue === 'string'
+              ? cropCacheValue
+              : basePreviewUrl
             const active = selectedImageUrlSet.has(url)
             return (
               <div
-                key={`${groupKey}-${url}-${idx}`}
-                className={`tmdb-image-item ${sourceClass} ${active ? 'is-active' : ''}`}
+                  key={`${groupKey}-${url}-${idx}`}
+                  className={`tmdb-image-item ${sourceClass} ${active ? 'is-active' : ''}`}
                 role="button"
                 tabIndex={0}
                 onClick={() => toggleImageSelection(url)}
@@ -2194,13 +2428,13 @@ export default function TmdbFinderPage() {
                     fetchPriority="low"
                   />
                 ) : (
-                  <span>No Image</span>
+                  <span>{forcePosterAspect ? 'Generating crop 400x600...' : 'No Image'}</span>
                 )}
                 <button
                   type="button"
                   className="tmdb-image-download"
-                  onClick={(event) => handleDownloadTmdbImage(item, event)}
-                  title="Download 1280p"
+                  onClick={(event) => handleDownloadTmdbImage(item, event, { cropPosterFromBackdrop: forcePosterAspect })}
+                  title={forcePosterAspect ? 'Download Crop Poster 1280x1920' : 'Download 1280p'}
                 >
                   <Icon icon="line-md:downloading" width="20" height="20" />
                 </button>
@@ -2829,13 +3063,20 @@ export default function TmdbFinderPage() {
                   <div className="mb-2 d-flex justify-content-between align-items-center">
                     <strong>Pilih Referensi Gambar (max {TMDB_MAX_SELECTED_IMAGES})</strong>
                     <small className="text-muted">
-                      {selectedImages.length}/{TMDB_MAX_SELECTED_IMAGES} dipilih · Poster {detailPosterOptions.length} · Backdrop {detailBackdropOptions.length}
+                      {selectedImages.length}/{TMDB_MAX_SELECTED_IMAGES} dipilih · Poster {detailPosterOptions.length} · Backdrop {detailBackdropOptions.length} · Cropdrop {detailBackdropOptions.length}
                     </small>
                   </div>
                   <div className="tmdb-image-tabs">
                     <Tab.Container
                       activeKey={activeImageTab}
-                      onSelect={(key) => setActiveImageTab(key === 'backdrop' ? 'backdrop' : 'poster')}
+                      onSelect={(key) => {
+                        const normalized = String(key || '').trim().toLowerCase()
+                        if (normalized === 'backdrop' || normalized === 'backdrop-crop') {
+                          setActiveImageTab(normalized)
+                          return
+                        }
+                        setActiveImageTab('poster')
+                      }}
                     >
                       <>
                         <Nav variant="tabs" className="tmdb-image-tabs-nav mb-2">
@@ -2851,11 +3092,26 @@ export default function TmdbFinderPage() {
                               <span className="tmdb-image-tab-count">{detailBackdropOptions.length}</span>
                             </Nav.Link>
                           </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link eventKey="backdrop-crop">
+                              Cropdrop
+                              <span className="tmdb-image-tab-count">{detailBackdropOptions.length}</span>
+                            </Nav.Link>
+                          </Nav.Item>
                         </Nav>
                         <Tab.Content>
                           {activeImageTab === 'backdrop' ? (
                             <Tab.Pane eventKey="backdrop" active>
                               {renderTmdbImageTab(detailBackdropOptions, 'backdrop', 'Tidak ada backdrop.')}
+                            </Tab.Pane>
+                          ) : activeImageTab === 'backdrop-crop' ? (
+                            <Tab.Pane eventKey="backdrop-crop" active>
+                              {renderTmdbImageTab(
+                                detailBackdropOptions,
+                                'backdrop-crop',
+                                'Tidak ada backdrop untuk di-crop.',
+                                { forcePosterAspect: true }
+                              )}
                             </Tab.Pane>
                           ) : (
                             <Tab.Pane eventKey="poster" active>
