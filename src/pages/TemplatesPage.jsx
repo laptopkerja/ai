@@ -858,16 +858,20 @@ export default function TemplatesPage() {
         )}
 
         <ListGroup>
-          {pagedTemplates.map((preset) => (
+          {pagedTemplates.map((preset, idx) => (
             <ListGroup.Item key={preset.id}>
               {(() => {
+                const presetNumber = pageStartIndex + idx + 1
                 const sourceKey = normalizeTemplateSource(preset?._storageSource, TEMPLATE_SOURCE_LOCAL)
                 const sourceLabel = resolveTemplateSourceLabel(sourceKey)
                 const sourceIcon = resolveTemplateSourceIcon(sourceKey)
                 return (
               <Row className="align-items-center">
                 <Col xs={10}>
-                  <div><strong>{preset.title}</strong></div>
+                  <div className="d-flex align-items-center gap-2">
+                    <Badge bg="dark">#{presetNumber}</Badge>
+                    <strong>{preset.title}</strong>
+                  </div>
                   <div className="text-muted small">{preset.description || preset.topic || '-'}</div>
                   <div className="small text-muted templates-last-action-meta">
                     {preset._lastAction || 'edit'} : {resolvePresetOwnerLabel(preset)} · {formatDateTime(resolvePresetActionTime(preset))}
