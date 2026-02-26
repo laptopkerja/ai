@@ -863,6 +863,9 @@ span.templates-source-badge svg {
   display: block;
   overflow: hidden;
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  content-visibility: auto;
+  contain-intrinsic-size: 220px 320px;
+  contain: layout paint style;
 }
 
 .tmdb-finder-page .tmdb-browse-card:hover {
@@ -1341,6 +1344,9 @@ border-bottom: 1px solid #80808024;
   background: transparent;
   aspect-ratio: 2 / 3;
   cursor: pointer;
+  content-visibility: auto;
+  contain-intrinsic-size: 140px 210px;
+  contain: layout paint style;
 }
 
 .tmdb-finder-page .tmdb-image-item.is-backdrop {
@@ -1442,7 +1448,7 @@ border-bottom: 1px solid #80808024;
 
 @media (max-width: 768px) {
   .tmdb-finder-page .tmdb-browse-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .tmdb-finder-page .tmdb-search-controls .tmdb-search-submit-col {
@@ -1479,6 +1485,37 @@ border-bottom: 1px solid #80808024;
   .tmdb-finder-page .tmdb-tv-scope-card .tmdb-tv-scope-episode-col {
     flex: 0 0 50%;
     max-width: 50%;
+  }
+
+  .tmdb-finder-page .tmdb-browse-card {
+    transition: none;
+    box-shadow: none;
+  }
+
+  .tmdb-finder-page .tmdb-browse-card:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: rgba(76, 92, 113, .55);
+  }
+
+  .tmdb-finder-page .tmdb-browse-card.is-active {
+    box-shadow: 0 0 0 .1rem rgba(13, 110, 253, .2);
+  }
+
+  .tmdb-finder-page .tmdb-browse-chip {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .tmdb-finder-page .tmdb-browse-card {
+    transition: none;
+  }
+
+  .tmdb-finder-page .tmdb-browse-card:hover {
+    transform: none;
+    box-shadow: none;
   }
 }
 
@@ -1648,7 +1685,7 @@ td.td-score {
   -webkit-box-orient: vertical;
 }
 .tmdb-finder-page .tmdb-image-grid {
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
 }
 }
 

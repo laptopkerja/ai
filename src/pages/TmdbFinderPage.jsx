@@ -1966,6 +1966,10 @@ export default function TmdbFinderPage() {
 
   const selectionPayload = buildSelectionPayload()
   const detailSelectedCandidate = candidates.find((item) => createCandidateKey(item) === selectedCandidateKey) || null
+  const selectedImageUrlSet = useMemo(
+    () => new Set((Array.isArray(selectedImages) ? selectedImages : []).map((x) => String(x?.url || '').trim()).filter(Boolean)),
+    [selectedImages]
+  )
   const detailImageOptions = useMemo(() => {
     return (Array.isArray(detailData?.imageOptions) ? detailData.imageOptions : [])
       .filter((item) => String(item?.url || '').trim())
@@ -2165,7 +2169,7 @@ export default function TmdbFinderPage() {
             const sourceClass = source === 'backdrop' ? 'is-backdrop' : 'is-poster'
             const url = String(item?.url || '').trim()
             const previewUrl = String(item?.previewUrl || url).trim()
-            const active = selectedImages.some((x) => String(x?.url || '') === url)
+            const active = selectedImageUrlSet.has(url)
             return (
               <div
                 key={`${groupKey}-${url}-${idx}`}
@@ -2187,6 +2191,7 @@ export default function TmdbFinderPage() {
                     alt={`${groupKey}-${idx + 1}`}
                     loading="lazy"
                     decoding="async"
+                    fetchPriority="low"
                   />
                 ) : (
                   <span>No Image</span>
@@ -2415,6 +2420,7 @@ export default function TmdbFinderPage() {
                             alt={item.title || `browse-${idx + 1}`}
                             loading="lazy"
                             decoding="async"
+                            fetchPriority="low"
                           />
                         ) : (
                           <span>No Poster</span>
