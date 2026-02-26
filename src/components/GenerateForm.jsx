@@ -259,6 +259,630 @@ const PRESETS = [
 
 const MAX_IMAGE_REFERENCES = 5
 const MAX_UPLOAD_IMAGE_MB = 2
+const CHECKLIST_DOMAIN_OPTIONS = [
+  { value: 'general', label: 'General' },
+  { value: 'beauty_affiliate', label: 'Beauty / Affiliate' },
+  { value: 'movie_tv_tmdb', label: 'Movie / TV (TMDB)' },
+  { value: 'blog_seo', label: 'Blog / SEO' },
+  { value: 'gadget', label: 'Gadget / Elektronik' },
+  { value: 'fashion', label: 'Fashion' },
+  { value: 'mom_baby', label: 'Ibu & Bayi' },
+  { value: 'food_grocery', label: 'Food / Grocery' },
+  { value: 'sports', label: 'Olahraga' },
+  { value: 'automotive', label: 'Otomotif' },
+  { value: 'health_personal_care', label: 'Kesehatan & Personal Care' }
+]
+const CHECKLIST_CORE_FIELDS = [
+  {
+    name: 'checklist_campaignGoal',
+    key: 'campaign_goal',
+    label: 'Campaign Goal',
+    placeholder: 'affiliate_conversion / awareness',
+    col: 6,
+    required: true
+  },
+  {
+    name: 'checklist_targetAudience',
+    key: 'target_audience',
+    label: 'Target Audience',
+    placeholder: 'oily skin pemula / movie fans 18-24',
+    col: 6,
+    required: true
+  },
+  {
+    name: 'checklist_keyMessage',
+    key: 'key_message',
+    label: 'Key Message',
+    placeholder: 'nilai utama yang ingin ditekankan',
+    col: 6,
+    required: true
+  },
+  {
+    name: 'checklist_ctaFocus',
+    key: 'cta_focus',
+    label: 'CTA Focus',
+    placeholder: 'comment-save / click checkout / follow',
+    col: 6,
+    required: true
+  },
+  {
+    name: 'checklist_disclosureConfirmed',
+    key: 'disclosure_confirmed',
+    label: 'Disclosure',
+    type: 'select',
+    options: [
+      { value: '', label: '(Pilih)' },
+      { value: 'yes', label: 'Yes' },
+      { value: 'no', label: 'No' }
+    ],
+    col: 4,
+    required: true
+  }
+]
+const CHECKLIST_DOMAIN_FIELDS = {
+  general: [
+    {
+      name: 'checklist_contentCategory',
+      key: 'content_category',
+      label: 'Content Category',
+      placeholder: 'edukasi / review / komparasi',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_productType',
+      key: 'product_type',
+      label: 'Product/Content Type',
+      placeholder: 'serum / lip tint / tutorial / review',
+      col: 4
+    },
+    {
+      name: 'checklist_mainConcern',
+      key: 'main_concern',
+      label: 'Main Concern',
+      placeholder: 'jerawat / shade / spoiler-safe angle',
+      col: 4
+    }
+  ],
+  beauty_affiliate: [
+    {
+      name: 'checklist_beautyCategory',
+      key: 'beauty_category',
+      label: 'Beauty Category',
+      type: 'select',
+      options: [
+        { value: '', label: '(Pilih)' },
+        { value: 'skincare', label: 'Skincare' },
+        { value: 'makeup', label: 'Make Up' },
+        { value: 'bodycare', label: 'Bodycare' },
+        { value: 'haircare', label: 'Haircare' },
+        { value: 'lipcare', label: 'Lipcare' }
+      ],
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_productType',
+      key: 'product_type',
+      label: 'Product Type',
+      placeholder: 'cushion / serum / lip tint',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_targetSkinLook',
+      key: 'target_skin_or_look',
+      label: 'Target Skin / Look',
+      placeholder: 'oily skin pemula / glass skin / no-makeup look',
+      col: 4
+    },
+    {
+      name: 'checklist_mainConcern',
+      key: 'main_concern',
+      label: 'Main Concern',
+      placeholder: 'shade abu-abu / pori / kusam',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_budgetRange',
+      key: 'budget_range',
+      label: 'Budget Range',
+      placeholder: '<100rb / 100-200rb / 200rb+',
+      col: 4
+    },
+    {
+      name: 'checklist_promoValidUntil',
+      key: 'promo_valid_until',
+      label: 'Promo Valid Until',
+      type: 'date',
+      col: 4
+    },
+    {
+      name: 'checklist_stockInfo',
+      key: 'stock_info',
+      label: 'Stock Info',
+      placeholder: '48 pcs / limited batch',
+      col: 4
+    }
+  ],
+  movie_tv_tmdb: [
+    {
+      name: 'checklist_contentAngle',
+      key: 'content_angle',
+      label: 'Content Angle',
+      placeholder: 'character focus / ending theories',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_spoilerLevel',
+      key: 'spoiler_level',
+      label: 'Spoiler Level',
+      type: 'select',
+      options: [
+        { value: '', label: '(Pilih)' },
+        { value: 'none', label: 'None' },
+        { value: 'light', label: 'Light' },
+        { value: 'full', label: 'Full' }
+      ],
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_referenceScope',
+      key: 'reference_scope',
+      label: 'Reference Scope',
+      type: 'select',
+      options: [
+        { value: '', label: '(Pilih)' },
+        { value: 'series', label: 'Series' },
+        { value: 'season', label: 'Season' },
+        { value: 'episode', label: 'Episode' }
+      ],
+      col: 4
+    },
+    {
+      name: 'checklist_factLockEnabled',
+      key: 'fact_lock_enabled',
+      label: 'Fact Lock',
+      type: 'select',
+      options: [
+        { value: '', label: '(Pilih)' },
+        { value: 'yes', label: 'Yes' },
+        { value: 'no', label: 'No' }
+      ],
+      col: 4,
+      required: true
+    }
+  ],
+  blog_seo: [
+    {
+      name: 'checklist_primaryKeyword',
+      key: 'primary_keyword',
+      label: 'Primary Keyword',
+      placeholder: 'skincare untuk kulit berminyak',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_searchIntent',
+      key: 'search_intent',
+      label: 'Search Intent',
+      placeholder: 'informational / transactional',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_targetWordCount',
+      key: 'target_word_count',
+      label: 'Target Word Count',
+      type: 'number',
+      min: 200,
+      col: 4
+    },
+    {
+      name: 'checklist_internalLinkTarget',
+      key: 'internal_link_target',
+      label: 'Internal Link Target',
+      placeholder: 'guide skincare pemula',
+      col: 6
+    }
+  ],
+  gadget: [
+    {
+      name: 'checklist_gadgetCategory',
+      key: 'gadget_category',
+      label: 'Gadget Category',
+      type: 'select',
+      options: [
+        { value: '', label: '(Pilih)' },
+        { value: 'smartphone', label: 'Smartphone' },
+        { value: 'smartwatch', label: 'Smartwatch' },
+        { value: 'jam_tangan_digital', label: 'Jam Tangan Digital' },
+        { value: 'earbuds', label: 'Earbuds / Audio' },
+        { value: 'laptop_pc', label: 'Laptop / PC' },
+        { value: 'camera_creator', label: 'Camera / Creator Gear' }
+      ],
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_productType',
+      key: 'product_type',
+      label: 'Product Type',
+      placeholder: 'earbuds / smartphone / smartwatch',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_useCase',
+      key: 'use_case',
+      label: 'Use Case',
+      placeholder: 'gaming / daily office / content creator',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_priceRange',
+      key: 'price_range',
+      label: 'Price Range',
+      placeholder: '<1jt / 1-3jt / 3jt+',
+      col: 4
+    },
+    {
+      name: 'checklist_keySpecs',
+      key: 'key_specs',
+      label: 'Key Specs',
+      placeholder: '8GB RAM, 5000mAh, ANC',
+      col: 6
+    }
+  ],
+  fashion: [
+    {
+      name: 'checklist_fashionCategory',
+      key: 'fashion_category',
+      label: 'Fashion Category',
+      type: 'select',
+      options: [
+        { value: '', label: '(Pilih)' },
+        { value: 'apparel', label: 'Apparel' },
+        { value: 'sepatu', label: 'Sepatu' },
+        { value: 'tas', label: 'Tas' },
+        { value: 'accessories', label: 'Accessories' }
+      ],
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_fashionSegment',
+      key: 'fashion_segment',
+      label: 'Segment',
+      type: 'select',
+      options: [
+        { value: '', label: '(Pilih)' },
+        { value: 'pria', label: 'Pria' },
+        { value: 'wanita', label: 'Wanita' },
+        { value: 'anak', label: 'Anak' },
+        { value: 'bayi_balita', label: 'Bayi / Balita' },
+        { value: 'unisex', label: 'Unisex' }
+      ],
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_styleReference',
+      key: 'style_reference',
+      label: 'Style Reference',
+      placeholder: 'korean style / streetwear / formal',
+      col: 4
+    },
+    {
+      name: 'checklist_itemType',
+      key: 'item_type',
+      label: 'Item Type',
+      placeholder: 'outer / dress / sneakers / tas wanita',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_sizeRange',
+      key: 'size_range',
+      label: 'Size Range',
+      placeholder: 'S-XL / all size',
+      col: 4
+    }
+  ],
+  mom_baby: [
+    {
+      name: 'checklist_momBabyCategory',
+      key: 'mom_baby_category',
+      label: 'Mom & Baby Category',
+      type: 'select',
+      options: [
+        { value: '', label: '(Pilih)' },
+        { value: 'stroller', label: 'Stroller / Kereta Bayi' },
+        { value: 'susu_formula', label: 'Susu Formula' },
+        { value: 'pakaian_bayi', label: 'Pakaian Bayi' },
+        { value: 'popok', label: 'Popok' },
+        { value: 'perlengkapan_mandi', label: 'Perlengkapan Mandi' },
+        { value: 'mainan_edukasi', label: 'Mainan Edukasi' }
+      ],
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_productType',
+      key: 'product_type',
+      label: 'Product Type',
+      placeholder: 'stroller compact / susu 1+ / pakaian bayi',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_ageRange',
+      key: 'age_range',
+      label: 'Age Range',
+      placeholder: '0-6 bulan / 1-3 tahun',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_safetyNote',
+      key: 'safety_note',
+      label: 'Safety Note',
+      placeholder: 'bahan BPA-free / sertifikasi SNI',
+      col: 6
+    }
+  ],
+  food_grocery: [
+    {
+      name: 'checklist_foodCategory',
+      key: 'food_category',
+      label: 'Food Category',
+      type: 'select',
+      options: [
+        { value: '', label: '(Pilih)' },
+        { value: 'makanan_ringan', label: 'Makanan Ringan' },
+        { value: 'makanan_instan', label: 'Makanan Instan' },
+        { value: 'snack', label: 'Snack' },
+        { value: 'bahan_pokok', label: 'Bahan Pokok' },
+        { value: 'kebutuhan_anak_bayi', label: 'Kebutuhan Anak/Bayi' }
+      ],
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_productType',
+      key: 'product_type',
+      label: 'Product Type',
+      placeholder: 'mie instan / snack kentang / beras',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_tasteBenefit',
+      key: 'taste_or_benefit',
+      label: 'Taste / Benefit',
+      placeholder: 'gurih pedas / hemat / praktis',
+      col: 4
+    },
+    {
+      name: 'checklist_expiryInfo',
+      key: 'expiry_info',
+      label: 'Expiry Info',
+      placeholder: 'exp > 9 bulan',
+      col: 4,
+      required: true
+    }
+  ],
+  sports: [
+    {
+      name: 'checklist_sportsCategory',
+      key: 'sports_category',
+      label: 'Sports Category',
+      type: 'select',
+      options: [
+        { value: '', label: '(Pilih)' },
+        { value: 'alat_fitness', label: 'Alat Fitness' },
+        { value: 'apparel_olahraga', label: 'Apparel Olahraga' },
+        { value: 'sepatu_olahraga', label: 'Sepatu Olahraga' },
+        { value: 'aksesoris_olahraga', label: 'Aksesoris Olahraga' }
+      ],
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_useCase',
+      key: 'use_case',
+      label: 'Use Case',
+      placeholder: 'lari / gym / futsal / yoga',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_levelSegment',
+      key: 'level_segment',
+      label: 'Level Segment',
+      placeholder: 'pemula / intermediate / advanced',
+      col: 4
+    }
+  ],
+  automotive: [
+    {
+      name: 'checklist_automotiveCategory',
+      key: 'automotive_category',
+      label: 'Automotive Category',
+      type: 'select',
+      options: [
+        { value: '', label: '(Pilih)' },
+        { value: 'aksesoris_mobil', label: 'Aksesoris Mobil' },
+        { value: 'aksesoris_motor', label: 'Aksesoris Motor' },
+        { value: 'oli_cairan', label: 'Oli / Cairan' },
+        { value: 'safety', label: 'Safety' }
+      ],
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_productType',
+      key: 'product_type',
+      label: 'Product Type',
+      placeholder: 'dashcam / holder / oli / lampu',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_compatibility',
+      key: 'compatibility',
+      label: 'Compatibility',
+      placeholder: 'mobil matic / motor matic 125cc',
+      col: 4,
+      required: true
+    }
+  ],
+  health_personal_care: [
+    {
+      name: 'checklist_healthCategory',
+      key: 'health_category',
+      label: 'Health Category',
+      type: 'select',
+      options: [
+        { value: '', label: '(Pilih)' },
+        { value: 'vitamin', label: 'Vitamin / Suplemen' },
+        { value: 'alat_kesehatan', label: 'Alat Kesehatan' },
+        { value: 'personal_care', label: 'Personal Care' },
+        { value: 'kebersihan', label: 'Kebersihan' }
+      ],
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_productType',
+      key: 'product_type',
+      label: 'Product Type',
+      placeholder: 'vitamin C / masker / hand sanitizer',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_mainConcern',
+      key: 'main_concern',
+      label: 'Main Concern',
+      placeholder: 'imun / jerawat / kebersihan harian',
+      col: 4,
+      required: true
+    },
+    {
+      name: 'checklist_healthDisclaimer',
+      key: 'health_disclaimer',
+      label: 'Health Disclaimer',
+      placeholder: 'bukan pengganti saran tenaga medis',
+      col: 6
+    }
+  ]
+}
+const CHECKLIST_PLATFORM_FIELDS = {
+  'TikTok': [
+    { name: 'checklist_pf_tiktokHook3s', key: 'hook_3s', label: 'Hook 3s', placeholder: 'masalah paling tajam di 3 detik awal', col: 4, required: true },
+    { name: 'checklist_pf_tiktokRetentionBeat', key: 'retention_beat', label: 'Retention Beat', placeholder: 'pattern interrupt detik 5-7', col: 4, required: true },
+    { name: 'checklist_pf_tiktokSaveCommentCta', key: 'save_comment_cta', label: 'Save/Comment CTA', placeholder: 'save dulu, komentar tipe kulitmu', col: 4, required: true }
+  ],
+  'YouTube Short': [
+    { name: 'checklist_pf_yshortHook5s', key: 'hook_5s', label: 'Hook 5s', placeholder: 'pain point + janji nilai', col: 4, required: true },
+    { name: 'checklist_pf_yshortTitleIntent', key: 'title_intent', label: 'Title Intent', placeholder: 'cara memilih ...', col: 4, required: true },
+    { name: 'checklist_pf_yshortRetentionFlow', key: 'retention_flow', label: 'Retention Flow', placeholder: 'teaser > value > CTA', col: 4, required: true }
+  ],
+  'YouTube Long': [
+    { name: 'checklist_pf_ylongTitleAngle', key: 'title_angle', label: 'Title Angle', placeholder: 'review jujur vs komparasi', col: 4, required: true },
+    { name: 'checklist_pf_ylongChapterPlan', key: 'chapter_plan', label: 'Chapter Plan', placeholder: '00:00 hook, 01:00 problem, ...', col: 4, required: true },
+    { name: 'checklist_pf_ylongWatchtimeTarget', key: 'watchtime_target', label: 'Watchtime Target', placeholder: 'avg view duration 35%+', col: 4, required: true }
+  ],
+  'Shopee': [
+    { name: 'checklist_pf_marketVariant', key: 'variant_focus', label: 'Variant Focus', placeholder: 'shade 02 natural / ukuran M', col: 4, required: true },
+    { name: 'checklist_priceNow', key: 'price_now', label: 'Price Now', placeholder: 'Rp129.000', col: 4, required: true },
+    { name: 'checklist_pf_marketVoucher', key: 'voucher_info', label: 'Voucher Info', placeholder: 'voucher 20rb min belanja 100rb', col: 4, required: true },
+    { name: 'checklist_platformStockInfo', key: 'stock_info_platform', label: 'Stock Info', placeholder: '48 pcs', col: 4, required: true }
+  ],
+  'Tokopedia': [
+    { name: 'checklist_pf_marketVariant', key: 'variant_focus', label: 'Variant Focus', placeholder: 'warna hitam / size 42', col: 4, required: true },
+    { name: 'checklist_priceNow', key: 'price_now', label: 'Price Now', placeholder: 'Rp229.000', col: 4, required: true },
+    { name: 'checklist_pf_tokpedOfficialStore', key: 'official_store_flag', label: 'Official Store', placeholder: 'yes / no', col: 4, required: true },
+    { name: 'checklist_platformStockInfo', key: 'stock_info_platform', label: 'Stock Info', placeholder: '31 pcs', col: 4, required: true }
+  ],
+  'Lazada': [
+    { name: 'checklist_pf_marketVariant', key: 'variant_focus', label: 'Variant Focus', placeholder: 'pack 3 / warna nude', col: 4, required: true },
+    { name: 'checklist_priceNow', key: 'price_now', label: 'Price Now', placeholder: 'Rp89.000', col: 4, required: true },
+    { name: 'checklist_pf_marketVoucher', key: 'voucher_info', label: 'Voucher Info', placeholder: 'flash sale + voucher toko', col: 4, required: true },
+    { name: 'checklist_platformStockInfo', key: 'stock_info_platform', label: 'Stock Info', placeholder: '72 pcs', col: 4, required: true }
+  ],
+  'Instagram Reels': [
+    { name: 'checklist_pf_igVisualStyle', key: 'visual_style', label: 'Visual Style', placeholder: 'clean aesthetic / before-after safe', col: 4, required: true },
+    { name: 'checklist_pf_igCaptionStyle', key: 'caption_style', label: 'Caption Style', placeholder: 'short conversational', col: 4, required: true },
+    { name: 'checklist_pf_igSaveShareCta', key: 'save_share_cta', label: 'Save/Share CTA', placeholder: 'save buat referensi belanja', col: 4, required: true }
+  ],
+  'Facebook Reels': [
+    { name: 'checklist_pf_fbBroadAngle', key: 'broad_angle', label: 'Broad Angle', placeholder: 'benefit yang mudah dipahami umum', col: 4, required: true },
+    { name: 'checklist_pf_fbCaptionClarity', key: 'caption_clarity', label: 'Caption Clarity', placeholder: 'ringkas + to the point', col: 4, required: true },
+    { name: 'checklist_pf_fbCommunityCta', key: 'community_cta', label: 'Community CTA', placeholder: 'tulis pengalamanmu di komentar', col: 4, required: true }
+  ],
+  'Pinterest': [
+    { name: 'checklist_pf_pinKeyword', key: 'pin_keyword', label: 'Pin Keyword', placeholder: 'capsule wardrobe korea', col: 4, required: true },
+    { name: 'checklist_pf_pinBoard', key: 'board_target', label: 'Board Target', placeholder: 'skincare ideas / outfit ideas', col: 4, required: true },
+    { name: 'checklist_pf_pinLinkType', key: 'link_destination_type', label: 'Link Destination', placeholder: 'blog / produk / landing page', col: 4, required: true }
+  ],
+  'WhatsApp Status': [
+    { name: 'checklist_pf_waStatusMessage', key: 'status_message_short', label: 'Status Message', placeholder: '1 kalimat singkat value utama', col: 4, required: true },
+    { name: 'checklist_pf_waStatusProof', key: 'trust_proof', label: 'Trust Proof', placeholder: 'rating / repeat order / testimoni', col: 4, required: true },
+    { name: 'checklist_pf_waStatusCta', key: 'direct_reply_cta', label: 'Direct Reply CTA', placeholder: 'chat untuk varian cocok', col: 4, required: true }
+  ],
+  'Threads': [
+    { name: 'checklist_pf_threadsOpener', key: 'opener_line', label: 'Opener Line', placeholder: 'kalimat pembuka yang mengundang diskusi', col: 4, required: true },
+    { name: 'checklist_pf_threadsPrompt', key: 'conversation_prompt', label: 'Conversation Prompt', placeholder: 'tanya preferensi audiens', col: 4, required: true },
+    { name: 'checklist_pf_threadsAngle', key: 'thread_angle', label: 'Thread Angle', placeholder: 'opini / pengalaman / edukasi', col: 4, required: true }
+  ],
+  'WhatsApp Channel': [
+    { name: 'checklist_pf_waChannelHeadline', key: 'channel_headline', label: 'Channel Headline', placeholder: 'update promo harian hemat', col: 4, required: true },
+    { name: 'checklist_pf_waChannelFreq', key: 'update_frequency', label: 'Update Frequency', placeholder: '1-2x per hari', col: 4, required: true },
+    { name: 'checklist_pf_waChannelCta', key: 'join_channel_cta', label: 'Join CTA', placeholder: 'ikuti channel untuk update', col: 4, required: true }
+  ],
+  'Telegram': [
+    { name: 'checklist_pf_tgFormat', key: 'telegram_post_format', label: 'Post Format', placeholder: 'bullet + CTA', col: 4, required: true },
+    { name: 'checklist_pf_tgValueOffer', key: 'value_offer', label: 'Value Offer', placeholder: 'ringkasan promo + rekomendasi', col: 4, required: true },
+    { name: 'checklist_pf_tgJoinCta', key: 'join_channel_cta', label: 'Join CTA', placeholder: 'join untuk drop promo berikutnya', col: 4, required: true }
+  ],
+  'LinkedIn': [
+    { name: 'checklist_pf_liProfessionalAngle', key: 'professional_angle', label: 'Professional Angle', placeholder: 'insight berbasis data / pengalaman', col: 4, required: true },
+    { name: 'checklist_pf_liProofPoint', key: 'proof_point', label: 'Proof Point', placeholder: 'hasil uji / case ringkas', col: 4, required: true },
+    { name: 'checklist_pf_liSoftCta', key: 'soft_cta', label: 'Soft CTA', placeholder: 'ajak diskusi di komentar', col: 4, required: true }
+  ],
+  'X (Twitter)': [
+    { name: 'checklist_pf_xHook', key: 'hook_line', label: 'Hook Line', placeholder: 'baris pembuka kuat', col: 4, required: true },
+    { name: 'checklist_pf_xFormat', key: 'tweet_format', label: 'Format', placeholder: 'single tweet / short thread', col: 4, required: true },
+    { name: 'checklist_pf_xPrompt', key: 'engagement_prompt', label: 'Engagement Prompt', placeholder: 'quote tweet pendapatmu', col: 4, required: true }
+  ],
+  'SoundCloud': [
+    { name: 'checklist_pf_scTrackHook', key: 'track_hook', label: 'Track Hook', placeholder: 'vibe utama audio', col: 4, required: true },
+    { name: 'checklist_pf_scAudienceTag', key: 'audience_tag', label: 'Audience Tag', placeholder: 'focus playlist target', col: 4, required: true },
+    { name: 'checklist_pf_scListenCta', key: 'listen_cta', label: 'Listen CTA', placeholder: 'denger full track di link bio', col: 4, required: true }
+  ],
+  'Blog Blogger': [
+    { name: 'checklist_pf_blogTitleFocus', key: 'seo_title_focus', label: 'SEO Title Focus', placeholder: 'judul dengan keyword utama', col: 4, required: true },
+    { name: 'checklist_pf_blogKeywordFocus', key: 'seo_keyword_focus', label: 'SEO Keyword Focus', placeholder: 'cluster keyword utama + turunan', col: 4, required: true },
+    { name: 'checklist_pf_blogMetaIntent', key: 'meta_intent', label: 'Meta Intent', placeholder: 'ringkasan untuk CTR search', col: 4, required: true }
+  ]
+}
+const ECOMMERCE_PLATFORMS = new Set(['Shopee', 'Tokopedia', 'Lazada'])
+const PRODUCT_HEAVY_DOMAINS = new Set([
+  'beauty_affiliate',
+  'gadget',
+  'fashion',
+  'mom_baby',
+  'food_grocery',
+  'sports',
+  'automotive',
+  'health_personal_care'
+])
 const PLATFORM_WIDTH_CH = {
   'TikTok': 10,
   'YouTube Short': 18,
@@ -288,6 +912,35 @@ const PROVIDER_WIDTH_CH = {
 }
 const FREE_ONLY_PREFS_STORAGE_KEY = 'provider_free_only_by_provider_v1'
 const TMDB_DETAIL_ACCORDION_STORAGE_KEY = 'tmdb_detail_accordion_open_v1'
+
+function cleanChecklistValue(raw) {
+  return String(raw || '').replace(/\s+/g, ' ').trim()
+}
+
+function getChecklistDomainLabel(rawDomain) {
+  const key = String(rawDomain || 'general').trim().toLowerCase()
+  const match = CHECKLIST_DOMAIN_OPTIONS.find((item) => item.value === key)
+  return match ? match.label : 'General'
+}
+
+function getChecklistPlatformLabel(rawPlatform) {
+  const key = String(rawPlatform || '').trim()
+  return key || '-'
+}
+
+function collectChecklistFieldNames() {
+  const names = new Set(['checklistEnabled', 'checklistDomain'])
+  CHECKLIST_CORE_FIELDS.forEach((field) => names.add(field.name))
+  Object.values(CHECKLIST_DOMAIN_FIELDS).forEach((fields) => {
+    (fields || []).forEach((field) => names.add(field.name))
+  })
+  Object.values(CHECKLIST_PLATFORM_FIELDS).forEach((fields) => {
+    (fields || []).forEach((field) => names.add(field.name))
+  })
+  return Array.from(names)
+}
+
+const ALL_CHECKLIST_FIELD_NAMES = collectChecklistFieldNames()
 
 function readFreeOnlyPrefsByProvider() {
   try {
@@ -334,7 +987,9 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
       model: 'gemini-2.5-flash',
       mode: 'Standard',
       preset: '',
-      useTmdb: tmdbPrefs.enabled !== false
+      useTmdb: tmdbPrefs.enabled !== false,
+      checklistEnabled: false,
+      checklistDomain: 'general'
     }
   })
   const [loading, setLoading] = useState(false)
@@ -350,6 +1005,9 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
   const length = watch('length')
   const topicValue = watch('topic')
   const useTmdb = watch('useTmdb')
+  const checklistEnabled = watch('checklistEnabled')
+  const checklistDomain = watch('checklistDomain')
+  const checklistWatchSignal = watch(ALL_CHECKLIST_FIELD_NAMES)
   const [templatePresets, setTemplatePresets] = useState([])
   const orderedTemplatePresets = useMemo(() => sortPresetsForUi(templatePresets), [templatePresets])
   const isTemplatePreset = mode === 'Instant' && String(preset || '').startsWith('template:')
@@ -417,6 +1075,22 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
   const modelPoolLabel = effectiveFreeOnlyForModelFetch
     ? 'Free only'
     : (hasImageRefsForCurrentInput && providerFreeOnlyPreference ? 'All models (auto for image refs)' : 'All models')
+  const activeDomainChecklistFields = useMemo(() => {
+    const domainKey = String(checklistDomain || 'general').trim().toLowerCase()
+    return CHECKLIST_DOMAIN_FIELDS[domainKey] || CHECKLIST_DOMAIN_FIELDS.general || []
+  }, [checklistDomain])
+  const activePlatformChecklistFields = useMemo(
+    () => CHECKLIST_PLATFORM_FIELDS[String(platform || '').trim()] || [],
+    [platform]
+  )
+  const activeChecklistFields = useMemo(
+    () => [...CHECKLIST_CORE_FIELDS, ...activeDomainChecklistFields, ...activePlatformChecklistFields],
+    [activeDomainChecklistFields, activePlatformChecklistFields]
+  )
+  const checklistGate = useMemo(
+    () => evaluateChecklistGate(getValues()),
+    [checklistEnabled, checklistDomain, platform, checklistWatchSignal, getValues]
+  )
 
   useEffect(() => {
     let mounted = true
@@ -690,11 +1364,128 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
     return items
   }
 
+  function getChecklistFieldBundle(values) {
+    const domainKey = String(values?.checklistDomain || 'general').trim().toLowerCase()
+    const platformKey = String(values?.platform || '').trim()
+    const coreFields = CHECKLIST_CORE_FIELDS
+    const domainFields = CHECKLIST_DOMAIN_FIELDS[domainKey] || CHECKLIST_DOMAIN_FIELDS.general || []
+    const platformFields = CHECKLIST_PLATFORM_FIELDS[platformKey] || []
+    const allFields = [...coreFields, ...domainFields, ...platformFields]
+    const fieldByName = new Map(allFields.map((field) => [field.name, field]))
+    return { domainKey, platformKey, coreFields, domainFields, platformFields, allFields, fieldByName }
+  }
+
+  function isChecklistFieldFilled(rawValue) {
+    if (rawValue == null) return false
+    if (typeof rawValue === 'number') return Number.isFinite(rawValue)
+    const text = cleanChecklistValue(rawValue)
+    return !!text
+  }
+
+  function resolveChecklistComboRequiredNames(values, bundle) {
+    const extra = []
+    const domainKey = String(bundle?.domainKey || 'general').trim().toLowerCase()
+    const platformKey = String(bundle?.platformKey || '').trim()
+
+    if (ECOMMERCE_PLATFORMS.has(platformKey) && PRODUCT_HEAVY_DOMAINS.has(domainKey)) {
+      extra.push('checklist_priceNow', 'checklist_platformStockInfo')
+    }
+    if (domainKey === 'movie_tv_tmdb' && values?.useTmdb !== false) {
+      extra.push('checklist_contentAngle', 'checklist_spoilerLevel')
+    }
+    if (platformKey === 'Blog Blogger' && domainKey !== 'blog_seo') {
+      extra.push('checklist_pf_blogKeywordFocus')
+    }
+
+    return Array.from(new Set(extra))
+      .filter((name) => bundle?.fieldByName?.has(name))
+  }
+
+  function evaluateChecklistGate(values) {
+    const enabled = !!values?.checklistEnabled
+    const bundle = getChecklistFieldBundle(values || {})
+    if (!enabled) {
+      return {
+        enabled: false,
+        pass: true,
+        missingLabels: [],
+        requiredTotal: 0,
+        filledRequired: 0,
+        domainLabel: getChecklistDomainLabel(bundle.domainKey),
+        platformLabel: getChecklistPlatformLabel(bundle.platformKey)
+      }
+    }
+
+    const requiredNames = new Set(
+      bundle.allFields
+        .filter((field) => field.required === true)
+        .map((field) => field.name)
+    )
+    resolveChecklistComboRequiredNames(values, bundle).forEach((name) => requiredNames.add(name))
+
+    const missingLabels = []
+    let filledRequired = 0
+    for (const name of requiredNames) {
+      const field = bundle.fieldByName.get(name)
+      if (!field) continue
+      if (isChecklistFieldFilled(values?.[name])) {
+        filledRequired += 1
+      } else {
+        missingLabels.push(field.label)
+      }
+    }
+
+    return {
+      enabled: true,
+      pass: missingLabels.length === 0,
+      missingLabels,
+      requiredTotal: requiredNames.size,
+      filledRequired,
+      domainLabel: getChecklistDomainLabel(bundle.domainKey),
+      platformLabel: getChecklistPlatformLabel(bundle.platformKey)
+    }
+  }
+
+  function buildChecklistPromptBlock(values) {
+    if (!values?.checklistEnabled) return ''
+    const bundle = getChecklistFieldBundle(values)
+    const gate = evaluateChecklistGate(values)
+    const lines = [
+      `- checklist_domain: ${gate.domainLabel}`,
+      `- checklist_platform: ${gate.platformLabel}`,
+      `- checklist_gate_required_filled: ${gate.filledRequired}/${gate.requiredTotal}`
+    ]
+
+    for (const field of bundle.allFields) {
+      const value = cleanChecklistValue(values?.[field.name])
+      if (!value) continue
+      lines.push(`- ${field.key}: ${value}`)
+    }
+
+    if (lines.length <= 3) return ''
+    return `Checklist terstruktur (jadikan constraint konten):\n${lines.join('\n')}`
+  }
+
+  function mergeInstructionParts(...parts) {
+    return parts
+      .map((x) => String(x || '').trim())
+      .filter(Boolean)
+      .join('\n\n')
+  }
+
   function validateBeforeGenerate(values) {
     const { cleanedTopic, combinedImageRefs } = resolveTopicAndImageRefs(values.topic)
+    const checklistPrompt = buildChecklistPromptBlock(values)
+    const checklistPreflight = evaluateChecklistGate(values)
+    if (checklistPreflight.enabled && !checklistPreflight.pass) {
+      const sampleMissing = checklistPreflight.missingLabels.slice(0, 6).join(', ')
+      const extraCount = Math.max(0, checklistPreflight.missingLabels.length - 6)
+      const suffix = extraCount > 0 ? ` (+${extraCount} field)` : ''
+      return `Checklist FAIL (${checklistPreflight.filledRequired}/${checklistPreflight.requiredTotal}). Lengkapi: ${sampleMissing}${suffix}`
+    }
     if (!(values.mode === 'Instant' && values.preset && values.preset.startsWith('template:'))) {
-      if (!cleanedTopic && !combinedImageRefs.length) {
-        return 'Isi Topik / Ide Konten atau tambahkan minimal 1 referensi gambar'
+      if (!cleanedTopic && !combinedImageRefs.length && !checklistPrompt) {
+        return 'Isi Topik / Ide Konten, checklist terstruktur, atau tambahkan minimal 1 referensi gambar'
       }
     }
     return null
@@ -1027,7 +1818,9 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
 
   function buildPayload(values) {
     const { cleanedTopic, combinedImageRefs } = resolveTopicAndImageRefs(values.topic)
-    const manualTopic = cleanedTopic || (combinedImageRefs.length ? 'Konten berbasis referensi gambar' : '')
+    const checklistPrompt = buildChecklistPromptBlock(values)
+    const promptTopic = mergeInstructionParts(cleanedTopic, checklistPrompt)
+    const manualTopic = promptTopic || (combinedImageRefs.length ? 'Konten berbasis referensi gambar' : '')
     const imageRefs = combinedImageRefs
     const imageRefField = imageRefs.length ? { imageReferences: imageRefs } : {}
     const tmdbField = buildTmdbField(values, cleanedTopic)
@@ -1042,7 +1835,7 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
           presetId: id,
           provider: values.provider,
           model: values.model,
-          ...(cleanedTopic ? { extraInstruction: cleanedTopic } : {}),
+          ...(promptTopic ? { extraInstruction: promptTopic } : {}),
           ...imageRefField,
           ...tmdbField
         },
@@ -1621,6 +2414,87 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
               )}
             </Row>
           )}
+
+          <div className="structured-checklist-wrap mt-2">
+            <div className="d-flex flex-wrap justify-content-between align-items-center gap-2">
+              <Form.Label className="mb-0">Checklist Terstruktur (Opsional)</Form.Label>
+              <Form.Check
+                type="switch"
+                id="checklist-enabled"
+                label={checklistEnabled ? 'ON' : 'OFF'}
+                {...register('checklistEnabled')}
+              />
+            </div>
+
+            {checklistEnabled && (
+              <div className="border rounded p-2 mt-2">
+                <Row className="g-2 align-items-end">
+                  <Col md={4}>
+                    <Form.Label className="mb-1">Domain</Form.Label>
+                    <Form.Select size="sm" {...register('checklistDomain')}>
+                      {CHECKLIST_DOMAIN_OPTIONS.map((item) => (
+                        <option key={item.value} value={item.value}>{item.label}</option>
+                      ))}
+                    </Form.Select>
+                  </Col>
+                  <Col md={8}>
+                    <small className="text-muted d-block">
+                      Isi field relevan untuk domain dan platform aktif. Checklist ini mencakup Beauty, Fashion, Mom/Baby, Food/Grocery, Gadget, Sports, Automotive, dan Health.
+                    </small>
+                    <small className={`d-block mt-1 ${checklistGate.pass ? 'text-success' : 'text-danger'}`}>
+                      Gate: {checklistGate.pass ? 'PASS' : 'FAIL'} ({checklistGate.filledRequired}/{checklistGate.requiredTotal} wajib terisi)
+                      {' · '}
+                      Platform: {checklistGate.platformLabel}
+                      {' · '}
+                      Domain: {checklistGate.domainLabel}
+                    </small>
+                    {!checklistGate.pass && checklistGate.missingLabels.length > 0 && (
+                      <small className="text-danger d-block mt-1">
+                        Kurang: {checklistGate.missingLabels.slice(0, 6).join(', ')}
+                        {checklistGate.missingLabels.length > 6 ? ` (+${checklistGate.missingLabels.length - 6} field)` : ''}
+                      </small>
+                    )}
+                  </Col>
+                </Row>
+
+                <Row className="g-2 mt-1">
+                  {activeChecklistFields.map((field) => (
+                    <Col md={field.col || 6} key={`${checklistDomain}-${platform}-${field.name}`}>
+                      <Form.Label className="mb-1">{field.label}</Form.Label>
+                      {field.type === 'select'
+                        ? (
+                          <Form.Select size="sm" {...register(field.name)}>
+                            {(field.options || []).map((opt) => (
+                              <option key={`${field.name}-${opt.value}`} value={opt.value}>{opt.label}</option>
+                            ))}
+                          </Form.Select>
+                          )
+                        : (
+                          <Form.Control
+                            size="sm"
+                            type={field.type || 'text'}
+                            min={field.type === 'number' && Number.isFinite(Number(field.min)) ? field.min : undefined}
+                            placeholder={field.placeholder || ''}
+                            {...register(field.name)}
+                          />
+                          )}
+                    </Col>
+                  ))}
+                </Row>
+
+                {mode === 'Instant' && String(preset || '').trim() && (
+                  <small className="text-muted d-block mt-2">
+                    Mode Instant + preset: checklist ini ditambahkan sebagai instruksi tambahan, kontrak preset tetap dipakai.
+                  </small>
+                )}
+              </div>
+            )}
+            {!checklistEnabled && (
+              <small className="text-muted d-block mt-2">
+                Checklist OFF: behavior lama tetap dipakai (Topik/Ide + Referensi Gambar + Preset/Standard).
+              </small>
+            )}
+          </div>
 
           <div className="tmdb-bridge-row mt-2">
             <Form.Check

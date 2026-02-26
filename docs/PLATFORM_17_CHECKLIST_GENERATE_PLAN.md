@@ -46,11 +46,11 @@ Owner: Codex + User
 - [x] U2. Tambah domain checklist dinamis (General, Beauty, Movie/TV, Blog/SEO, Gadget, Fashion).
 - [x] U3. Inject checklist ke prompt untuk mode Standard dan Instant.
 - [x] U4. Pertahankan fallback TMDB query dari topik asli (tidak tercampur checklist).
-- [ ] U5. Tambah profile karakter per 17 platform (field platform-specific).
-- [ ] U6. Tambah validasi wajib per platform (`preflight gate` sebelum generate).
-- [ ] U7. Tambah status gate visual `PASS/FAIL` + daftar field wajib yang kurang.
-- [ ] U8. Tambah mapping gabungan `platform + domain` untuk mandatory fields.
-- [ ] U9. Tambah dokumentasi matriks pass/fail checklist per 17 platform di status report.
+- [x] U5. Tambah profile karakter per 17 platform (field platform-specific).
+- [x] U6. Tambah validasi wajib per platform (`preflight gate` sebelum generate).
+- [x] U7. Tambah status gate visual `PASS/FAIL` + daftar field wajib yang kurang.
+- [x] U8. Tambah mapping gabungan `platform + domain` untuk mandatory fields.
+- [x] U9. Tambah dokumentasi matriks pass/fail checklist per 17 platform di status report.
 
 ## Definisi Gate PASS/FAIL
 Checklist gate dianggap `PASS` jika:
@@ -82,4 +82,3 @@ Jika ada satu syarat gagal, gate `FAIL` dan generate diblokir.
 3. Preflight validator checklist pass/fail
 4. Gate summary di UI
 5. Dokumen status implementasi (done/undone)
-
