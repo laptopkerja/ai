@@ -233,6 +233,35 @@ function createCandidateCapability(item) {
   }
 }
 
+function buildCandidateCapabilityCacheKey(item, languageCode = 'en-US', regionCode = 'US') {
+  const candidateKey = createCandidateKey(item)
+  if (!candidateKey) return ''
+  const lang = String(languageCode || '').trim().toLowerCase()
+  const region = String(regionCode || '').trim().toUpperCase()
+  if (!lang || !region) return ''
+  return `${candidateKey}:${lang}:${region}`
+}
+
+async function mapWithConcurrency(items, worker, concurrency = 3) {
+  const list = Array.isArray(items) ? items : []
+  if (!list.length) return []
+  const safeConcurrency = Math.max(1, Math.min(Number.isFinite(Number(concurrency)) ? Number(concurrency) : 3, 6))
+  const result = new Array(list.length)
+  let cursor = 0
+
+  async function runWorker() {
+    while (true) {
+      const idx = cursor
+      cursor += 1
+      if (idx >= list.length) return
+      result[idx] = await worker(list[idx], idx) // eslint-disable-line no-await-in-loop
+    }
+  }
+
+  await Promise.all(Array.from({ length: Math.min(safeConcurrency, list.length) }, () => runWorker()))
+  return result
+}
+
 function buildCandidateFromTmdbDetailPayload(payload, { fallbackMediaType = 'multi', fallbackTitle = '', tmdbId = null } = {}) {
   const safePayload = payload && typeof payload === 'object' ? payload : {}
   const movieOrTv = safePayload.movieOrTv && typeof safePayload.movieOrTv === 'object' ? safePayload.movieOrTv : {}
@@ -602,6 +631,7 @@ export default function TmdbFinderPage() {
   })
 
   const latestUiContextRef = useRef(null)
+  const candidateCapabilityCacheRef = useRef(new Map())
   latestUiContextRef.current = {
     cardDataMode,
     query,
@@ -909,12 +939,48 @@ export default function TmdbFinderPage() {
     }
   }
 
-  async function hydrateCandidateCapabilities(rows, requestId) {
+  async function hydrateCandidateCapabilities(rows, requestId, options = {}) {
     const list = Array.isArray(rows) ? rows : []
+    const eagerProbe = options && options.eager === true
     if (!list.length) {
       if (candidateProbeRequestRef.current === requestId) {
         setCandidateCapabilities({})
       }
+      setProbingCandidateMeta(false)
+      return
+    }
+
+    const nextMap = {}
+    const pendingProbe = []
+    list.forEach((item) => {
+      const key = createCandidateKey(item)
+      const base = createCandidateCapability(item)
+      if (!key) return
+      const cacheKey = buildCandidateCapabilityCacheKey(item, language, region)
+      const cached = cacheKey ? candidateCapabilityCacheRef.current.get(cacheKey) : null
+      if (cached) {
+        nextMap[key] = {
+          hasPoster: base.hasPoster || !!cached.hasPoster,
+          hasTrailer: !!cached.hasTrailer,
+          hasWatchProviders: !!cached.hasWatchProviders,
+          resolved: true
+        }
+        return
+      }
+      nextMap[key] = {
+        hasPoster: !!base.hasPoster,
+        hasTrailer: false,
+        hasWatchProviders: false,
+        resolved: false
+      }
+      if (eagerProbe && Number.isInteger(Number(item?.tmdbId))) {
+        pendingProbe.push({ key, item, base })
+      }
+    })
+    setCandidateCapabilities(nextMap)
+
+    if (!eagerProbe || !pendingProbe.length) {
+      setProbingCandidateMeta(false)
       return
     }
 
@@ -922,58 +988,62 @@ export default function TmdbFinderPage() {
     try {
       const headers = await buildAuthHeaders()
       const requestConfig = Object.keys(headers).length ? { headers } : {}
-      const checks = await Promise.all(list.map(async (item) => {
-        const key = createCandidateKey(item)
-        const base = createCandidateCapability(item)
-        if (!key) return null
-        if (!Number.isInteger(Number(item?.tmdbId))) {
-          return { key, ...base, resolved: true }
-        }
-        try {
-          const resp = await apiAxios({
-            method: 'post',
-            url: '/api/tmdb/detail',
-            data: {
-              tmdbId: Number(item.tmdbId),
-              mediaType: String(item.mediaType || mediaType || 'multi').trim().toLowerCase(),
-              region,
-              language
-            },
-            ...requestConfig
-          })
-          const payload = resp?.data?.data
-          const watchProviders = Array.isArray(payload?.movieOrTv?.watch_providers_id)
-            ? payload.movieOrTv.watch_providers_id.filter((x) => String(x || '').trim())
-            : []
-          const trailer = String(payload?.movieOrTv?.trailer || '').trim()
-          const imageOptions = Array.isArray(payload?.imageOptions) ? payload.imageOptions : []
-          const hasPosterFromDetail = imageOptions.some((x) => String(x?.url || '').trim())
-          const primaryGenre = resolvePrimaryGenre(payload?.movieOrTv?.genres)
-          return {
-            key,
-            hasPoster: base.hasPoster || hasPosterFromDetail,
-            hasTrailer: !!trailer,
-            hasWatchProviders: watchProviders.length > 0,
-            primaryGenre: primaryGenre || base.primaryGenre || '',
-            resolved: true
+      const checks = await mapWithConcurrency(
+        pendingProbe,
+        async ({ key, item, base }) => {
+          try {
+            const resp = await apiAxios({
+              method: 'post',
+              url: '/api/tmdb/detail',
+              data: {
+                tmdbId: Number(item.tmdbId),
+                mediaType: String(item.mediaType || mediaType || 'multi').trim().toLowerCase(),
+                region,
+                language
+              },
+              ...requestConfig
+            })
+            const payload = resp?.data?.data
+            const watchProviders = Array.isArray(payload?.movieOrTv?.watch_providers_id)
+              ? payload.movieOrTv.watch_providers_id.filter((x) => String(x || '').trim())
+              : []
+            const trailer = String(payload?.movieOrTv?.trailer || '').trim()
+            const imageOptions = Array.isArray(payload?.imageOptions) ? payload.imageOptions : []
+            const hasPosterFromDetail = imageOptions.some((x) => String(x?.url || '').trim())
+            const probed = {
+              hasPoster: base.hasPoster || hasPosterFromDetail,
+              hasTrailer: !!trailer,
+              hasWatchProviders: watchProviders.length > 0,
+              resolved: true
+            }
+            const cacheKey = buildCandidateCapabilityCacheKey(item, language, region)
+            if (cacheKey) {
+              candidateCapabilityCacheRef.current.set(cacheKey, {
+                hasPoster: probed.hasPoster,
+                hasTrailer: probed.hasTrailer,
+                hasWatchProviders: probed.hasWatchProviders
+              })
+            }
+            return { key, ...probed }
+          } catch (e) {
+            return { key, ...base, resolved: true }
           }
-        } catch (e) {
-          return { key, ...base, resolved: true }
-        }
-      }))
+        },
+        3
+      )
 
       if (candidateProbeRequestRef.current !== requestId) return
-      const nextMap = {}
+      const patchMap = {}
       checks.forEach((row) => {
         if (!row?.key) return
-        nextMap[row.key] = {
+        patchMap[row.key] = {
           hasPoster: !!row.hasPoster,
           hasTrailer: !!row.hasTrailer,
           hasWatchProviders: !!row.hasWatchProviders,
           resolved: row.resolved !== false
         }
       })
-      setCandidateCapabilities(nextMap)
+      setCandidateCapabilities((prev) => ({ ...(prev || {}), ...patchMap }))
     } finally {
       if (candidateProbeRequestRef.current === requestId) {
         setProbingCandidateMeta(false)
@@ -1104,6 +1174,32 @@ export default function TmdbFinderPage() {
       return true
     })
   }, [candidateCapabilities, candidateFilters, candidates])
+
+  useEffect(() => {
+    const shouldProbe = candidateFilters.hasTrailer || candidateFilters.hasWatchProviders
+    if (!shouldProbe) return
+    if (probingCandidateMeta || searching || browseLoading) return
+    if (!Array.isArray(candidates) || !candidates.length) return
+    const hasPending = candidates.some((item) => {
+      const key = createCandidateKey(item)
+      if (!key) return false
+      const cap = candidateCapabilities[key]
+      return !cap || cap.resolved !== true
+    })
+    if (!hasPending) return
+
+    const requestId = candidateProbeRequestRef.current + 1
+    candidateProbeRequestRef.current = requestId
+    hydrateCandidateCapabilities(candidates, requestId, { eager: true })
+  }, [
+    browseLoading,
+    candidateCapabilities,
+    candidateFilters.hasTrailer,
+    candidateFilters.hasWatchProviders,
+    candidates,
+    probingCandidateMeta,
+    searching
+  ])
   const isSearchCardMode = cardDataMode === 'search'
   const cardDisplayItems = filteredCandidates
 
@@ -1447,7 +1543,9 @@ export default function TmdbFinderPage() {
         )
         return
       }
-      hydrateCandidateCapabilities(rows, requestId)
+      hydrateCandidateCapabilities(rows, requestId, {
+        eager: candidateFilters.hasTrailer || candidateFilters.hasWatchProviders
+      })
       const preferred = preferredCandidateKey
         ? rows.find((item) => createCandidateKey(item) === preferredCandidateKey)
         : null
@@ -1562,7 +1660,9 @@ export default function TmdbFinderPage() {
         return
       }
 
-      hydrateCandidateCapabilities(rows, requestId)
+      hydrateCandidateCapabilities(rows, requestId, {
+        eager: candidateFilters.hasTrailer || candidateFilters.hasWatchProviders
+      })
       if (autoSelect) {
         const preferred = preferredCandidateKey
           ? rows.find((item) => createCandidateKey(item) === preferredCandidateKey)
@@ -1934,6 +2034,10 @@ export default function TmdbFinderPage() {
     }
   }, [detailData?.debug, selectionPayload])
   const payloadPreview = payloadPreviewMode === 'debug' ? payloadPreviewDebug : payloadPreviewStrict
+  const payloadPreviewJson = useMemo(
+    () => (payloadPreview ? JSON.stringify(payloadPreview, null, 2) : '{\n  "tmdb": null\n}'),
+    [payloadPreview]
+  )
   const tvContext = useMemo(
     () => normalizeTvScopeContext(detailData?.tvContext || {}),
     [detailData?.tvContext]
@@ -2078,7 +2182,12 @@ export default function TmdbFinderPage() {
                 title={active ? 'Hapus dari pilihan' : 'Pilih gambar ini'}
               >
                 {previewUrl ? (
-                  <img src={previewUrl} alt={`${groupKey}-${idx + 1}`} />
+                  <img
+                    src={previewUrl}
+                    alt={`${groupKey}-${idx + 1}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 ) : (
                   <span>No Image</span>
                 )}
@@ -2301,7 +2410,12 @@ export default function TmdbFinderPage() {
                     >
                       <div className="tmdb-browse-poster">
                         {item.posterUrl ? (
-                          <img src={item.posterUrl} alt={item.title || `browse-${idx + 1}`} />
+                          <img
+                            src={item.posterUrl}
+                            alt={item.title || `browse-${idx + 1}`}
+                            loading="lazy"
+                            decoding="async"
+                          />
                         ) : (
                           <span>No Poster</span>
                         )}
@@ -2733,12 +2847,15 @@ export default function TmdbFinderPage() {
                           </Nav.Item>
                         </Nav>
                         <Tab.Content>
-                          <Tab.Pane eventKey="poster">
-                            {renderTmdbImageTab(detailPosterOptions, 'poster', 'Tidak ada poster.')}
-                          </Tab.Pane>
-                          <Tab.Pane eventKey="backdrop">
-                            {renderTmdbImageTab(detailBackdropOptions, 'backdrop', 'Tidak ada backdrop.')}
-                          </Tab.Pane>
+                          {activeImageTab === 'backdrop' ? (
+                            <Tab.Pane eventKey="backdrop" active>
+                              {renderTmdbImageTab(detailBackdropOptions, 'backdrop', 'Tidak ada backdrop.')}
+                            </Tab.Pane>
+                          ) : (
+                            <Tab.Pane eventKey="poster" active>
+                              {renderTmdbImageTab(detailPosterOptions, 'poster', 'Tidak ada poster.')}
+                            </Tab.Pane>
+                          )}
                         </Tab.Content>
                       </>
                     </Tab.Container>
@@ -2770,7 +2887,7 @@ export default function TmdbFinderPage() {
                       </Button>
                     </div>
                     <pre className="tmdb-payload-preview-json">
-                      {payloadPreview ? JSON.stringify(payloadPreview, null, 2) : '{\n  "tmdb": null\n}'}
+                      {payloadPreviewJson}
                     </pre>
                   </div>
                 </>
