@@ -1,0 +1,18 @@
+platform,verdict,failed_items,allowed_lengths,contract_available,allowed_length_valid,hook_contract,description_contract,hashtag_contract,narrator_contract,audio_contract,decision_consistency,final_score_formula,api_generate_quality_meta,real_performance_ingest,real_performance_pass
+TikTok,PASS,,short|medium,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+YouTube Short,PASS,,short|medium,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+YouTube Long,PASS,,medium|long,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+Shopee,PASS,,short|medium,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+Tokopedia,PASS,,short|medium,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+Lazada,PASS,,short|medium,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+Instagram Reels,PASS,,short|medium,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+Facebook Reels,PASS,,short|medium,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+Pinterest,PASS,,short|medium,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+WhatsApp Status,PASS,,short,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+Threads,PASS,,short|medium,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+WhatsApp Channel,PASS,,short|medium,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+Telegram,PASS,,short|medium|long,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+LinkedIn,PASS,,short|medium|long,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+X (Twitter),PASS,,short|medium,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+SoundCloud,PASS,,short|medium,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS
+Blog Blogger,PASS,,medium|long,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS

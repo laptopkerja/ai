@@ -1,0 +1,3827 @@
+{
+  "auditVersion": "v1-platform17-checklist",
+  "generatedAt": "2026-02-26T13:15:49.505Z",
+  "includeApiSmoke": true,
+  "platforms": [
+    {
+      "platform": "TikTok",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short",
+        "medium"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short,medium"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=115.1"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=81, range=18-130"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=131, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=8, range=4-8"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=81, range=18-130"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=131, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=8, range=4-8"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "TikTok",
+          "supported": true,
+          "retentionRateMin": 38,
+          "ctrMin": 2.2,
+          "rankingLiveMax": 40,
+          "stage": 1
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "TikTok",
+          "status": "pass",
+          "completeness": 100,
+          "score": 115.1,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 43,
+              "target": 38,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 3,
+              "target": 2.2,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 36,
+              "target": 40,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "TikTok",
+            "supported": true,
+            "retentionRateMin": 38,
+            "ctrMin": 2.2,
+            "rankingLiveMax": 40,
+            "stage": 1
+          }
+        }
+      }
+    },
+    {
+      "platform": "YouTube Short",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short",
+        "medium"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short,medium"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=114.3"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=88, range=18-140"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=138, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=7, range=3-7"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=88, range=18-140"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=138, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=7, range=3-7"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "YouTube Short",
+          "supported": true,
+          "retentionRateMin": 42,
+          "ctrMin": 2.5,
+          "rankingLiveMax": 45,
+          "stage": 1
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "YouTube Short",
+          "status": "pass",
+          "completeness": 100,
+          "score": 114.3,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 47,
+              "target": 42,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 3.3,
+              "target": 2.5,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 41,
+              "target": 45,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "YouTube Short",
+            "supported": true,
+            "retentionRateMin": 42,
+            "ctrMin": 2.5,
+            "rankingLiveMax": 45,
+            "stage": 1
+          }
+        }
+      }
+    },
+    {
+      "platform": "YouTube Long",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "medium",
+        "long"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=medium,long"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=medium"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=115.6"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=87, range=18-180"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=137, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=8, range=2-8"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "long",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=87, range=18-180"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=137, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=8, range=2-8"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=7, expected=7"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=medium"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "YouTube Long",
+          "supported": true,
+          "retentionRateMin": 32,
+          "ctrMin": 3.2,
+          "rankingLiveMax": 55,
+          "stage": 2
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "YouTube Long",
+          "status": "pass",
+          "completeness": 100,
+          "score": 115.6,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 37,
+              "target": 32,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 4,
+              "target": 3.2,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 51,
+              "target": 55,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "YouTube Long",
+            "supported": true,
+            "retentionRateMin": 32,
+            "ctrMin": 3.2,
+            "rankingLiveMax": 55,
+            "stage": 2
+          }
+        }
+      }
+    },
+    {
+      "platform": "Shopee",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short",
+        "medium"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short,medium"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=118.1"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=81, range=18-130"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=131, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=8, range=3-8"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=81, range=18-130"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=131, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=8, range=3-8"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "Shopee",
+          "supported": true,
+          "retentionRateMin": 28,
+          "ctrMin": 2.8,
+          "rankingLiveMax": 30,
+          "stage": 2
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "Shopee",
+          "status": "pass",
+          "completeness": 100,
+          "score": 118.1,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 33,
+              "target": 28,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 3.6,
+              "target": 2.8,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 26,
+              "target": 30,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "Shopee",
+            "supported": true,
+            "retentionRateMin": 28,
+            "ctrMin": 2.8,
+            "rankingLiveMax": 30,
+            "stage": 2
+          }
+        }
+      }
+    },
+    {
+      "platform": "Tokopedia",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short",
+        "medium"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short,medium"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=118.1"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=84, range=18-130"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=134, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=8, range=3-8"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=84, range=18-130"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=134, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=8, range=3-8"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "Tokopedia",
+          "supported": true,
+          "retentionRateMin": 28,
+          "ctrMin": 2.8,
+          "rankingLiveMax": 30,
+          "stage": 2
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "Tokopedia",
+          "status": "pass",
+          "completeness": 100,
+          "score": 118.1,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 33,
+              "target": 28,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 3.6,
+              "target": 2.8,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 26,
+              "target": 30,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "Tokopedia",
+            "supported": true,
+            "retentionRateMin": 28,
+            "ctrMin": 2.8,
+            "rankingLiveMax": 30,
+            "stage": 2
+          }
+        }
+      }
+    },
+    {
+      "platform": "Lazada",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short",
+        "medium"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short,medium"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=118.1"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=81, range=18-130"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=131, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=8, range=3-8"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=81, range=18-130"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=131, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=8, range=3-8"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "Lazada",
+          "supported": true,
+          "retentionRateMin": 28,
+          "ctrMin": 2.8,
+          "rankingLiveMax": 30,
+          "stage": 2
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "Lazada",
+          "status": "pass",
+          "completeness": 100,
+          "score": 118.1,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 33,
+              "target": 28,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 3.6,
+              "target": 2.8,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 26,
+              "target": 30,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "Lazada",
+            "supported": true,
+            "retentionRateMin": 28,
+            "ctrMin": 2.8,
+            "rankingLiveMax": 30,
+            "stage": 2
+          }
+        }
+      }
+    },
+    {
+      "platform": "Instagram Reels",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short",
+        "medium"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short,medium"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=115.2"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=90, range=18-140"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=140, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=8, range=4-8"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=90, range=18-140"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=140, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=8, range=4-8"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "Instagram Reels",
+          "supported": true,
+          "retentionRateMin": 36,
+          "ctrMin": 2,
+          "rankingLiveMax": 45,
+          "stage": 1
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "Instagram Reels",
+          "status": "pass",
+          "completeness": 100,
+          "score": 115.2,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 41,
+              "target": 36,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 2.8,
+              "target": 2,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 41,
+              "target": 45,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "Instagram Reels",
+            "supported": true,
+            "retentionRateMin": 36,
+            "ctrMin": 2,
+            "rankingLiveMax": 45,
+            "stage": 1
+          }
+        }
+      }
+    },
+    {
+      "platform": "Facebook Reels",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short",
+        "medium"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short,medium"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=116.2"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=89, range=18-150"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=139, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=7, range=3-7"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=89, range=18-150"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=139, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=7, range=3-7"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "Facebook Reels",
+          "supported": true,
+          "retentionRateMin": 30,
+          "ctrMin": 1.6,
+          "rankingLiveMax": 50,
+          "stage": 2
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "Facebook Reels",
+          "status": "pass",
+          "completeness": 100,
+          "score": 116.2,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 35,
+              "target": 30,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 2.4,
+              "target": 1.6,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 46,
+              "target": 50,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "Facebook Reels",
+            "supported": true,
+            "retentionRateMin": 30,
+            "ctrMin": 1.6,
+            "rankingLiveMax": 50,
+            "stage": 2
+          }
+        }
+      }
+    },
+    {
+      "platform": "Pinterest",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short",
+        "medium"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short,medium"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=118.6"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=84, range=18-150"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=145, cta_required=no"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=6, range=2-6"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=84, range=18-150"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=145, cta_required=no"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=6, range=2-6"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "Pinterest",
+          "supported": true,
+          "retentionRateMin": 24,
+          "ctrMin": 1.4,
+          "rankingLiveMax": 35,
+          "stage": 2
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "Pinterest",
+          "status": "pass",
+          "completeness": 100,
+          "score": 118.6,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 29,
+              "target": 24,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 2.2,
+              "target": 1.4,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 31,
+              "target": 35,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "Pinterest",
+            "supported": true,
+            "retentionRateMin": 24,
+            "ctrMin": 1.4,
+            "rankingLiveMax": 35,
+            "stage": 2
+          }
+        }
+      }
+    },
+    {
+      "platform": "WhatsApp Status",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=114.4"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=90, range=18-120"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=151, cta_required=no"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=2, range=0-2"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "WhatsApp Status",
+          "supported": true,
+          "retentionRateMin": 40,
+          "ctrMin": 2.4,
+          "rankingLiveMax": 50,
+          "stage": 2
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "WhatsApp Status",
+          "status": "pass",
+          "completeness": 100,
+          "score": 114.4,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 45,
+              "target": 40,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 3.2,
+              "target": 2.4,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 46,
+              "target": 50,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "WhatsApp Status",
+            "supported": true,
+            "retentionRateMin": 40,
+            "ctrMin": 2.4,
+            "rankingLiveMax": 50,
+            "stage": 2
+          }
+        }
+      }
+    },
+    {
+      "platform": "Threads",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short",
+        "medium"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short,medium"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=116.2"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=82, range=18-170"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=132, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=3, range=0-3"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=82, range=18-170"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=132, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=3, range=0-3"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "Threads",
+          "supported": true,
+          "retentionRateMin": 31,
+          "ctrMin": 2.1,
+          "rankingLiveMax": 45,
+          "stage": 1
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "Threads",
+          "status": "pass",
+          "completeness": 100,
+          "score": 116.2,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 36,
+              "target": 31,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 2.9,
+              "target": 2.1,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 41,
+              "target": 45,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "Threads",
+            "supported": true,
+            "retentionRateMin": 31,
+            "ctrMin": 2.1,
+            "rankingLiveMax": 45,
+            "stage": 1
+          }
+        }
+      }
+    },
+    {
+      "platform": "WhatsApp Channel",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short",
+        "medium"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short,medium"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=114.9"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=91, range=18-120"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=141, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=1, range=0-1"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=91, range=18-120"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=141, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=1, range=0-1"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "WhatsApp Channel",
+          "supported": true,
+          "retentionRateMin": 38,
+          "ctrMin": 2.4,
+          "rankingLiveMax": 45,
+          "stage": 2
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "WhatsApp Channel",
+          "status": "pass",
+          "completeness": 100,
+          "score": 114.9,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 43,
+              "target": 38,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 3.2,
+              "target": 2.4,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 41,
+              "target": 45,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "WhatsApp Channel",
+            "supported": true,
+            "retentionRateMin": 38,
+            "ctrMin": 2.4,
+            "rankingLiveMax": 45,
+            "stage": 2
+          }
+        }
+      }
+    },
+    {
+      "platform": "Telegram",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short",
+        "medium",
+        "long"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short,medium,long"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=115.8"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=83, range=18-135"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=133, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=3, range=0-3"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=83, range=18-135"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=133, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=3, range=0-3"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "long",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=83, range=18-135"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=133, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=3, range=0-3"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=7, expected=7"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "Telegram",
+          "supported": true,
+          "retentionRateMin": 33,
+          "ctrMin": 2,
+          "rankingLiveMax": 45,
+          "stage": 2
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "Telegram",
+          "status": "pass",
+          "completeness": 100,
+          "score": 115.8,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 38,
+              "target": 33,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 2.8,
+              "target": 2,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 41,
+              "target": 45,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "Telegram",
+            "supported": true,
+            "retentionRateMin": 33,
+            "ctrMin": 2,
+            "rankingLiveMax": 45,
+            "stage": 2
+          }
+        }
+      }
+    },
+    {
+      "platform": "LinkedIn",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short",
+        "medium",
+        "long"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short,medium,long"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=117.9"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=83, range=18-170"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=133, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=5, range=1-5"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=83, range=18-170"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=133, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=5, range=1-5"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "long",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=83, range=18-170"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=133, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=5, range=1-5"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=7, expected=7"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "LinkedIn",
+          "supported": true,
+          "retentionRateMin": 27,
+          "ctrMin": 2.9,
+          "rankingLiveMax": 35,
+          "stage": 2
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "LinkedIn",
+          "status": "pass",
+          "completeness": 100,
+          "score": 117.9,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 32,
+              "target": 27,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 3.7,
+              "target": 2.9,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 31,
+              "target": 35,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "LinkedIn",
+            "supported": true,
+            "retentionRateMin": 27,
+            "ctrMin": 2.9,
+            "rankingLiveMax": 35,
+            "stage": 2
+          }
+        }
+      }
+    },
+    {
+      "platform": "X (Twitter)",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short",
+        "medium"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short,medium"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=118.2"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=86, range=18-120"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=136, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=3, range=0-3"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=86, range=18-120"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=136, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=3, range=0-3"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "X (Twitter)",
+          "supported": true,
+          "retentionRateMin": 22,
+          "ctrMin": 1.8,
+          "rankingLiveMax": 40,
+          "stage": 2
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "X (Twitter)",
+          "status": "pass",
+          "completeness": 100,
+          "score": 118.2,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 27,
+              "target": 22,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 2.6,
+              "target": 1.8,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 36,
+              "target": 40,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "X (Twitter)",
+            "supported": true,
+            "retentionRateMin": 22,
+            "ctrMin": 1.8,
+            "rankingLiveMax": 40,
+            "stage": 2
+          }
+        }
+      }
+    },
+    {
+      "platform": "SoundCloud",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "short",
+        "medium"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=short,medium"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=short"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=116"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "short",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=85, range=18-130"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=135, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=6, range=2-6"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=3, expected=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        },
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=85, range=18-130"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=135, cta_required=yes"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=6, range=2-6"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "scene_lines=5, expected=5"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "fields_present=5/5"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=94, expected=94"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 94,
+            "performancePotentialScore": 94,
+            "finalScore": 94
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=short"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "SoundCloud",
+          "supported": true,
+          "retentionRateMin": 35,
+          "ctrMin": 2.1,
+          "rankingLiveMax": 35,
+          "stage": 2
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "SoundCloud",
+          "status": "pass",
+          "completeness": 100,
+          "score": 116,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 40,
+              "target": 35,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 2.9,
+              "target": 2.1,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 31,
+              "target": 35,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "SoundCloud",
+            "supported": true,
+            "retentionRateMin": 35,
+            "ctrMin": 2.1,
+            "rankingLiveMax": 35,
+            "stage": 2
+          }
+        }
+      }
+    },
+    {
+      "platform": "Blog Blogger",
+      "verdict": "PASS",
+      "allowedLengths": [
+        "medium",
+        "long"
+      ],
+      "failedItems": [],
+      "checklist": [
+        {
+          "id": "contract_available",
+          "label": "Contract available",
+          "pass": true,
+          "note": "supported=true"
+        },
+        {
+          "id": "allowed_length_valid",
+          "label": "Allowed length valid",
+          "pass": true,
+          "note": "lengths=medium,long"
+        },
+        {
+          "id": "hook_contract",
+          "label": "Hook in contract range",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "description_contract",
+          "label": "Description contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "hashtag_contract",
+          "label": "Hashtag range pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "narrator_contract",
+          "label": "Narrator/SEO format pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "audio_contract",
+          "label": "Audio contract pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "decision_consistency",
+          "label": "Decision consistency pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "final_score_formula",
+          "label": "Final score formula pass",
+          "pass": true,
+          "note": "all allowed lengths"
+        },
+        {
+          "id": "api_generate_quality_meta",
+          "label": "API generate quality meta pass",
+          "pass": true,
+          "note": "ok length=medium"
+        },
+        {
+          "id": "real_performance_ingest",
+          "label": "Real performance ingest pass",
+          "pass": true,
+          "note": "normalizePlatformPerformanceItem=ok"
+        },
+        {
+          "id": "real_performance_pass",
+          "label": "Real performance evaluation pass",
+          "pass": true,
+          "note": "status=pass, score=116"
+        }
+      ],
+      "lengthAudits": [
+        {
+          "length": "medium",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=87, range=18-180"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=160, cta_required=no"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=4, range=0-4"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "words=958, headings=8, faq=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "blogger_audio_empty=yes"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=92.8, expected=92.8"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 92,
+            "performancePotentialScore": 94,
+            "finalScore": 92.8
+          }
+        },
+        {
+          "length": "long",
+          "checks": {
+            "hook_contract": {
+              "pass": true,
+              "note": "hook_length=87, range=18-180"
+            },
+            "description_contract": {
+              "pass": true,
+              "note": "sentences=2, chars=160, cta_required=no"
+            },
+            "hashtag_contract": {
+              "pass": true,
+              "note": "hashtags=4, range=0-4"
+            },
+            "narrator_contract": {
+              "pass": true,
+              "note": "words=958, headings=8, faq=3"
+            },
+            "audio_contract": {
+              "pass": true,
+              "note": "blogger_audio_empty=yes"
+            },
+            "decision_consistency": {
+              "pass": true,
+              "note": "decision=GO, expected=GO"
+            },
+            "final_score_formula": {
+              "pass": true,
+              "note": "final=92.8, expected=92.8"
+            }
+          },
+          "snapshot": {
+            "decision": "GO",
+            "complianceScore": 92,
+            "performancePotentialScore": 94,
+            "finalScore": 92.8
+          }
+        }
+      ],
+      "apiSmoke": {
+        "pass": true,
+        "message": "ok length=medium"
+      },
+      "realPerformance": {
+        "benchmark": {
+          "platform": "Blog Blogger",
+          "supported": true,
+          "retentionRateMin": 45,
+          "ctrMin": 3.5,
+          "rankingLiveMax": 20,
+          "stage": 2
+        },
+        "evaluation": {
+          "benchmarkVersion": "v1-real-platform",
+          "platform": "Blog Blogger",
+          "status": "pass",
+          "completeness": 100,
+          "score": 116,
+          "missingMetrics": [],
+          "checks": [
+            {
+              "id": "retention_rate",
+              "label": "Retention Rate",
+              "value": 50,
+              "target": 45,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ctr",
+              "label": "CTR",
+              "value": 4.3,
+              "target": 3.5,
+              "comparator": "min",
+              "status": "pass",
+              "pass": true
+            },
+            {
+              "id": "ranking_live",
+              "label": "Ranking Live",
+              "value": 16,
+              "target": 20,
+              "comparator": "max",
+              "status": "pass",
+              "pass": true
+            }
+          ],
+          "benchmark": {
+            "platform": "Blog Blogger",
+            "supported": true,
+            "retentionRateMin": 45,
+            "ctrMin": 3.5,
+            "rankingLiveMax": 20,
+            "stage": 2
+          }
+        }
+      }
+    }
+  ],
+  "summary": {
+    "verdict": "PASS",
+    "passPlatformCount": 17,
+    "failPlatformCount": 0,
+    "totalPlatformCount": 17
+  }
+}

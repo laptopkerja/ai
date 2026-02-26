@@ -113,13 +113,13 @@ Owner: Codex + User
 - [x] Tambah unit + integration test untuk performa real platform.
 
 ### Phase 2 - Automated Matrix
-- [ ] Tambah runner audit otomatis untuk matrix 17 platform x allowed length.
-- [ ] Implement assertion rubric lengkap (contract, guardrail, decision, final score).
+- [x] Tambah runner audit otomatis untuk matrix 17 platform x allowed length.
+- [x] Implement assertion rubric lengkap (contract, guardrail, decision, final score).
 
 ### Phase 3 - Reporting & Gate
-- [ ] Tambah report exporter (`JSON`, `CSV`, `Markdown`) untuk hasil audit 17 platform.
-- [ ] Tambah command `npm run audit:platform17`.
-- [ ] Integrasikan verdict `17/17 PASS` ke quality gate.
+- [x] Tambah report exporter (`JSON`, `CSV`, `Markdown`) untuk hasil audit 17 platform.
+- [x] Tambah command `npm run audit:platform17`.
+- [x] Integrasikan verdict `17/17 PASS` ke quality gate.
 
 ## Priority Lockdown (Internal Team 4 User)
 ### Security Perimeter (Point 1-6)
@@ -172,6 +172,7 @@ Owner: Codex + User
 - 2026-02-22: Selesai perbaikan UX internal #5: sync Alert Center kini hanya menambah `seen/count` untuk event unik/perubahan nyata (refresh berulang tidak lagi menaikkan count).
 - 2026-02-26: Menambahkan dokumen rencana audit 17 platform (`docs/PLATFORM_17_AUDIT_PLAN.md`) dan status implementasi (`docs/PLATFORM_17_AUDIT_STATUS.md`), serta menambahkan rollout checklist audit 17 platform di tracker ini.
 - 2026-02-26: Menambahkan fondasi performa real platform: benchmark shared, evaluator backend, endpoint ingest/summary/benchmark, SQL migration `platform_performance_metrics`, dan test unit+integration terkait.
+- 2026-02-26: Menuntaskan Platform 17 Audit end-to-end: matrix runner + checklist 12 item, API smoke per platform, exporter report `JSON/CSV/Markdown`, command `npm run audit:platform17`, CI gate GitHub, dan hasil terbaru `17/17 PASS`.
 
 ## Notes
 - Jika prioritas berubah, update urutan phase di file ini (jangan simpan hanya di chat).

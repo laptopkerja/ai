@@ -64,28 +64,26 @@ Implementasi teknis layer performa real:
 - Jika ada minimal 1 kategori gagal, platform tetap `FAIL` dan checklist tetap `[ ]`.
 - Penandaan checklist harus berdasarkan hasil runner audit otomatis, bukan manual feeling.
 
-### Contoh Penandaan (Simulasi)
-Gunakan format ini untuk menandai platform yang sudah lulus penuh:
+### Checklist Lulus (Snapshot Terbaru)
+Status di bawah mengikuti hasil report terbaru `reports/platform-17-audit/latest.md`:
 
-- [x] TikTok (contoh simulasi: lulus semua kategori)
-- [ ] YouTube Short
-- [ ] YouTube Long
-- [ ] Shopee
-- [ ] Tokopedia
-- [ ] Lazada
-- [ ] Instagram Reels
-- [ ] Facebook Reels
-- [ ] Pinterest
-- [ ] WhatsApp Status
-- [ ] Threads
-- [ ] WhatsApp Channel
-- [ ] Telegram
-- [ ] LinkedIn
-- [ ] X (Twitter)
-- [ ] SoundCloud
-- [ ] Blog Blogger
-
-Catatan: daftar di atas adalah format acuan. Status real harus mengikuti output audit terbaru.
+- [x] TikTok
+- [x] YouTube Short
+- [x] YouTube Long
+- [x] Shopee
+- [x] Tokopedia
+- [x] Lazada
+- [x] Instagram Reels
+- [x] Facebook Reels
+- [x] Pinterest
+- [x] WhatsApp Status
+- [x] Threads
+- [x] WhatsApp Channel
+- [x] Telegram
+- [x] LinkedIn
+- [x] X (Twitter)
+- [x] SoundCloud
+- [x] Blog Blogger
 
 ## Tujuan, Hasil, dan Dampak
 ### Tujuan

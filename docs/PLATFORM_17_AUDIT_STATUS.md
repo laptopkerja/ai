@@ -6,9 +6,10 @@ Scope: status terhadap rencana di `docs/PLATFORM_17_AUDIT_PLAN.md`
 ## Ringkasan Eksekutif
 - Fondasi kontrak dan guardrail lintas platform: **sudah terimplementasi**.
 - Fondasi performa real platform (retention/CTR/ranking live): **sudah terimplementasi**.
-- Coverage test otomatis `17/17` dengan verdict pass/fail per platform: **belum terimplementasi penuh**.
-- Reporting artefak audit (`JSON/CSV/Markdown`) khusus 17 platform: **belum**.
-- Quality gate CI khusus audit 17 platform: **belum**.
+- Coverage test otomatis `17/17` dengan verdict pass/fail per platform: **sudah**.
+- Reporting artefak audit (`JSON/CSV/Markdown`) khusus 17 platform: **sudah**.
+- Quality gate CI khusus audit 17 platform: **sudah**.
+- Hasil audit terbaru: **`17/17 PASS`**.
 
 ## Status Detail (Sudah vs Belum)
 
@@ -32,35 +33,30 @@ Scope: status terhadap rencana di `docs/PLATFORM_17_AUDIT_PLAN.md`
 | Unit test evaluator metrics real | Sudah | Normalization/evaluation/aggregate verdict tervalidasi | `tests/unit/platformPerformance.test.mjs` |
 | Integration test API metrics real | Sudah | Benchmarks, ingest, summary, validation payload | `tests/integration/platform-performance-api.test.mjs` |
 | Smoke preset multi-platform | Sudah (6 preset) | Smoke script untuk platform baru terpilih | `scripts/smoke-new-platform-presets.mjs` |
-| Runner audit pass/fail 17 platform (full matrix) | Belum | Belum ada test runner khusus platform x allowed length | N/A |
-| Reporter audit 17 platform (JSON/CSV/MD) | Belum | Belum ada exporter artefak audit | N/A |
-| NPM command `audit:platform17` | Belum | Script belum terdaftar di `package.json` | `package.json` |
-| CI gate berbasis `17/17 PASS` | Belum | Belum ada blok release berdasar verdict audit 17 platform | N/A |
+| Runner audit pass/fail 17 platform (full matrix) | Sudah | Runner matrix platform x allowed length + checklist 12 item | `server/lib/platform17Audit.js`, `scripts/run-platform-17-audit.mjs` |
+| Test audit 17 platform | Sudah | Test audit matrix + fail scenario | `tests/audit/platform-17-audit.test.mjs` |
+| Reporter audit 17 platform (JSON/CSV/MD) | Sudah | Export artefak latest report | `scripts/export-platform-17-audit-report.mjs`, `reports/platform-17-audit/latest.*` |
+| NPM command `audit:platform17` | Sudah | Menjalankan test + runner + exporter | `package.json` |
+| CI gate berbasis `17/17 PASS` | Sudah | Workflow GitHub memblok jika verdict bukan PASS | `.github/workflows/platform-17-audit-gate.yml` |
 
 ## Hasil Verifikasi Terkini (2026-02-26)
 Perintah yang dijalankan:
 
-1. `node --test tests/unit/platformContracts.snapshot.test.mjs tests/unit/generationQuality.test.mjs`
-2. `node --test tests/integration/generate-api.test.mjs`
-3. `node --test tests/unit/platformPerformance.test.mjs`
-4. `node --test tests/integration/platform-performance-api.test.mjs`
+1. `npm run check:syntax`
+2. `npm run test:audit:platform17`
+3. `npm run audit:platform17`
 
 Hasil:
 
-- Unit test terkait kontrak + quality: **PASS**
-- Integration generate API: **PASS**
-- Unit test performa real platform: **PASS**
-- Integration API performa real platform: **PASS**
-
-Catatan:
-- Hasil di atas memvalidasi fondasi sistem sudah sehat, tetapi belum otomatis menghasilkan verdict akhir `17/17 PASS` per platform.
+- Syntax check modul audit: **PASS**
+- Test matrix audit 17 platform: **PASS**
+- Runner + API smoke + exporter report: **PASS**
+- Verdict global audit: **`PASS (17/17)`**
 
 ## Kesimpulan Status Implementasi
-- **Sudah diimplementasikan:** fondasi kontrak, guardrail, scoring, endpoint runtime, fondasi performa real platform, dan automation test inti.
-- **Belum diimplementasikan:** audit runner matriks 17 platform penuh, reporting artefak audit, command audit khusus, dan CI gate `17/17`.
+- **Sudah diimplementasikan:** seluruh deliverables pada rencana audit 17 platform, termasuk matrix runner, report exporter, command audit, dan CI gate.
+- **Status akhir:** `PLATFORM_17_AUDIT_PLAN` untuk scope implementasi saat ini dinyatakan **selesai**.
 
-## Backlog Implementasi Lanjutan (Prioritas)
-1. Tambah `tests/audit/platform-17-audit.test.mjs` untuk verdict per platform.
-2. Tambah script report export (`JSON/CSV/Markdown`).
-3. Tambah `npm run audit:platform17`.
-4. Integrasikan ke quality pipeline agar release gagal jika < `17/17 PASS`.
+## Backlog Implementasi Lanjutan (Opsional)
+1. Integrasikan data live analytics platform (bukan synthetic benchmark) untuk audit berbasis performa produksi.
+2. Tambahkan trend history report per hari untuk memantau regressi antar release.
