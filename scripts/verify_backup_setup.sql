@@ -10,7 +10,8 @@ select
   to_regclass('public.team_presets') as team_presets,
   to_regclass('public.team_preset_versions') as team_preset_versions,
   to_regclass('public.dashboard_alerts') as dashboard_alerts,
-  to_regclass('public.dashboard_snapshots') as dashboard_snapshots;
+  to_regclass('public.dashboard_snapshots') as dashboard_snapshots,
+  to_regclass('public.platform_performance_metrics') as platform_performance_metrics;
 
 -- 1b) Critical column check for provider key table
 select
@@ -43,6 +44,8 @@ union all
 select 'dashboard_alerts' as table_name, count(*) as total_rows from public.dashboard_alerts
 union all
 select 'dashboard_snapshots' as table_name, count(*) as total_rows from public.dashboard_snapshots
+union all
+select 'platform_performance_metrics' as table_name, count(*) as total_rows from public.platform_performance_metrics
 order by table_name;
 
 -- 3) RLS enabled check
@@ -59,7 +62,8 @@ where schemaname = 'public'
     'team_presets',
     'team_preset_versions',
     'dashboard_alerts',
-    'dashboard_snapshots'
+    'dashboard_snapshots',
+    'platform_performance_metrics'
   )
 order by tablename;
 
@@ -80,7 +84,8 @@ where schemaname = 'public'
     'team_presets',
     'team_preset_versions',
     'dashboard_alerts',
-    'dashboard_snapshots'
+    'dashboard_snapshots',
+    'platform_performance_metrics'
   )
 order by tablename, policyname;
 

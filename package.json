@@ -13,11 +13,12 @@
     "test": "node --test tests",
     "test:unit": "node --test tests/unit",
     "test:integration": "node --test tests/integration",
+    "test:platform-performance": "node --test tests/unit/platformPerformance.test.mjs tests/integration/platform-performance-api.test.mjs",
     "smoke:new-platforms": "node scripts/smoke-new-platform-presets.mjs",
     "env:status": "node scripts/switch-env.mjs status",
     "env:use:primary": "node scripts/switch-env.mjs primary",
     "env:use:backup": "node scripts/switch-env.mjs backup",
-    "check:syntax": "node --check server/index.js && node --check server/admin-auth.js && node --check server/lib/aiProviders.js && node --check server/lib/providerKeysCrypto.js && node --check server/lib/providerModelDiscovery.js && node --check server/lib/generationQuality.js",
+    "check:syntax": "node --check server/index.js && node --check server/admin-auth.js && node --check server/lib/aiProviders.js && node --check server/lib/providerKeysCrypto.js && node --check server/lib/providerModelDiscovery.js && node --check server/lib/generationQuality.js && node --check server/lib/platformPerformance.js && node --check shared/lib/platformPerformanceBenchmarks.js",
     "quality": "npm run check:syntax && npm run test && npm run build && node scripts/validate-presets.mjs"
   },
   "dependencies": {

@@ -1385,7 +1385,7 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
                 {getPresetLabel(preset) || '-- choose preset --'}
               </Dropdown.Toggle>
 
-              <Dropdown.Menu style={{ maxHeight: 320, width: '100%', padding: '.5rem' }}>
+              <Dropdown.Menu style={{ maxHeight: 400, width: '100%', padding: '.5rem' }}>
                 <div className="mb-2">
                   <Form.Control size="sm" placeholder="🔍 Cari preset..." value={presetSearch} onChange={(e) => setPresetSearch(e.target.value)} />
                 </div>
@@ -1402,7 +1402,7 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
                   <Button size="sm" variant="outline-secondary" onClick={() => { setPresetSearch(''); setPresetFilterPlatform(''); setPresetFilterType('all'); }}>Reset</Button>
                 </div>
 
-                <div style={{ maxHeight: 220, overflow: 'auto' }}>
+                <div style={{ maxHeight: 300, overflow: 'auto' }}>
                   {/* Built-in items */}
                   {filterPresetItems().map(item => (
                     <Dropdown.Item key={item.value} onClick={() => { setValue('preset', item.value); setPresetOpen(false); }}>

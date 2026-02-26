@@ -1,0 +1,41 @@
+name: Cleanup Platform Performance (30d)
+
+on:
+  schedule:
+    # 02:17 UTC daily (09:17 WIB)
+    - cron: '17 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Supabase RPC cleanup function
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${SUPABASE_URL:-}" ] || [ -z "${SUPABASE_SERVICE_ROLE_KEY:-}" ]; then
+            echo "Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY secrets."
+            exit 1
+          fi
+
+          RAW_RESPONSE=$(curl -sS -w "\n%{http_code}" -X POST \
+            "${SUPABASE_URL}/rest/v1/rpc/cleanup_platform_performance_metrics_30d" \
+            -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" \
+            -H "Content-Type: application/json" \
+            --data '{}')
+
+          HTTP_CODE=$(echo "${RAW_RESPONSE}" | tail -n 1)
+          RESPONSE_BODY=$(echo "${RAW_RESPONSE}" | sed '$d')
+
+          echo "HTTP ${HTTP_CODE}"
+          echo "Response: ${RESPONSE_BODY}"
+
+          if [ "${HTTP_CODE}" -lt 200 ] || [ "${HTTP_CODE}" -ge 300 ]; then
+            echo "Cleanup RPC failed."
+            exit 1
+          fi

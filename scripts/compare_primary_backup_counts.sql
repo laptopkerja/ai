@@ -31,7 +31,8 @@ begin
       ('team_presets', 'created_by_user_id'),
       ('team_preset_versions', 'actor_user_id'),
       ('dashboard_alerts', 'created_by_user_id'),
-      ('dashboard_snapshots', 'generated_by_user_id')
+      ('dashboard_snapshots', 'generated_by_user_id'),
+      ('platform_performance_metrics', 'created_by_user_id')
     ) as t(table_name, user_col)
   loop
     if to_regclass('public.' || rec.table_name) is null then

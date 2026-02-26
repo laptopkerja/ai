@@ -22,6 +22,17 @@ import { encryptProviderApiKey, decryptProviderApiKey, hasProviderKeyEncryptionK
 import { generateStructuredWithProvider, isVisionCapableModel, isVisionProviderImplemented } from './lib/aiProviders.js'
 import { detectProviderModels } from './lib/providerModelDiscovery.js'
 import applyGenerationQualityGuardrails from './lib/generationQuality.js'
+import {
+  REAL_PERFORMANCE_BENCHMARK_VERSION,
+  listPlatformRealPerformanceBenchmarks,
+  resolvePlatformRealPerformanceBenchmark
+} from '../shared/lib/platformPerformanceBenchmarks.js'
+import {
+  normalizePlatformPerformanceItem,
+  mapPlatformPerformanceStorageRow,
+  evaluateRealPlatformPerformance,
+  aggregateRealPlatformPerformance
+} from './lib/platformPerformance.js'
 import lintPresetAgainstPlatformContract from '../src/lib/presetPlatformLint.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -241,8 +252,11 @@ const TEAM_PRESET_SEED_MARKER_ID = '__team_presets_seeded__'
 const TEAM_PRESET_ALLOWED_ACTIONS = new Set(['create', 'edit', 'clone', 'import', 'rollback', 'seed'])
 const DASHBOARD_ALERT_TABLE = 'dashboard_alerts'
 const DASHBOARD_SNAPSHOT_TABLE = 'dashboard_snapshots'
+const PLATFORM_PERFORMANCE_TABLE = 'platform_performance_metrics'
 const DASHBOARD_ALLOWED_ALERT_STATUS = new Set(['open', 'acknowledged', 'resolved'])
 const DASHBOARD_ALERT_SEVERITY = new Set(['secondary', 'info', 'warning', 'danger', 'success'])
+const MAX_PLATFORM_PERFORMANCE_INGEST_ITEMS = Math.max(1, Math.min(Number(process.env.MAX_PLATFORM_PERFORMANCE_INGEST_ITEMS || 500), 5000))
+const MAX_PLATFORM_PERFORMANCE_FETCH_ROWS = Math.max(50, Math.min(Number(process.env.MAX_PLATFORM_PERFORMANCE_FETCH_ROWS || 1000), 5000))
 const CORS_ALLOWED_ORIGINS = parseCorsAllowedOrigins(process.env.CORS_ALLOWED_ORIGINS || '')
 const CORS_EFFECTIVE_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS.size
   ? CORS_ALLOWED_ORIGINS
@@ -256,6 +270,8 @@ if (LEAKED_SERVICE_ROLE_ENV_KEYS.length) {
   }
   console.warn(`[security] ${message}`)
 }
+
+const localPlatformPerformanceRows = []
 
 app.use(cors({
   origin(origin, callback) {
@@ -2539,7 +2555,12 @@ const sensitiveAuthMiddleware = REQUIRE_AUTH_FOR_SENSITIVE_ENDPOINTS
 function isMissingRelationError(error) {
   const code = String(error?.code || '')
   const msg = String(error?.message || '').toLowerCase()
-  return code === '42P01' || (msg.includes('relation') && msg.includes('does not exist'))
+  return (
+    code === '42P01'
+    || (msg.includes('relation') && msg.includes('does not exist'))
+    || (msg.includes('schema cache') && msg.includes('could not find the table'))
+    || (msg.includes('schema cache') && msg.includes('table'))
+  )
 }
 
 const TEAM_PRESET_SELECT_COLUMNS = [
@@ -2804,6 +2825,27 @@ function normalizeSnapshotScope(value, fallback = 'all') {
   const normalized = String(value || '').trim().toLowerCase()
   if (['all', 'supabase', 'local'].includes(normalized)) return normalized
   return fallback
+}
+
+function normalizeWindowDays(value, fallback = 30) {
+  const parsed = Number(value)
+  if (!Number.isFinite(parsed) || parsed <= 0) return fallback
+  return Math.max(1, Math.min(Math.floor(parsed), 365))
+}
+
+function normalizeFetchLimit(value, fallback = 1000) {
+  const parsed = Number(value)
+  if (!Number.isFinite(parsed) || parsed <= 0) return fallback
+  return Math.max(1, Math.min(Math.floor(parsed), MAX_PLATFORM_PERFORMANCE_FETCH_ROWS))
+}
+
+function mapPlatformPerformanceRowWithEvaluation(row) {
+  const mapped = mapPlatformPerformanceStorageRow(row)
+  if (!mapped) return null
+  return {
+    ...mapped,
+    evaluation: evaluateRealPlatformPerformance(mapped)
+  }
 }
 
 function mapTeamPresetRow(row) {
@@ -5900,6 +5942,209 @@ app.delete('/api/presets/:id', requireAuthenticatedUser, async (req, res) => {
   } catch (e) {
     console.error(e)
     return sendError(res, 500, 'INTERNAL_ERROR', 'Delete failed')
+  }
+})
+
+app.get('/api/dashboard/platform-performance/benchmarks', sensitiveAuthMiddleware, async (req, res) => {
+  try {
+    return sendOk(res, {
+      version: REAL_PERFORMANCE_BENCHMARK_VERSION,
+      platforms: listPlatformRealPerformanceBenchmarks()
+    })
+  } catch (e) {
+    return sendError(res, 500, 'INTERNAL_ERROR', 'Failed to read platform performance benchmarks')
+  }
+})
+
+app.post('/api/dashboard/platform-performance/ingest', sensitiveAuthMiddleware, async (req, res) => {
+  try {
+    const payload = isPlainObject(req.body) ? req.body : {}
+    const list = Array.isArray(payload.items)
+      ? payload.items
+      : (isPlainObject(payload.item) ? [payload.item] : (isPlainObject(payload) ? [payload] : []))
+
+    if (!list.length) {
+      return sendError(res, 400, 'VALIDATION_ERROR', 'items is required')
+    }
+    if (list.length > MAX_PLATFORM_PERFORMANCE_INGEST_ITEMS) {
+      return sendError(
+        res,
+        400,
+        'VALIDATION_ERROR',
+        `items max is ${MAX_PLATFORM_PERFORMANCE_INGEST_ITEMS}`
+      )
+    }
+
+    const normalized = []
+    const invalid = []
+    list.forEach((item, idx) => {
+      const parsed = normalizePlatformPerformanceItem(item, { index: idx })
+      if (!parsed.ok) {
+        invalid.push(parsed.error)
+        return
+      }
+      normalized.push(parsed.value)
+    })
+
+    if (invalid.length) {
+      return sendError(res, 400, 'VALIDATION_ERROR', 'Invalid platform performance payload', invalid)
+    }
+
+    const actorUser = req.authUser || await resolveOptionalAuthenticatedUser(req)
+    const actorDisplayName = actorUser ? await resolveActorDisplayName(actorUser) : null
+    const nowIso = new Date().toISOString()
+
+    const storageRows = normalized.map((item) => ({
+      observed_at: item.observedAt,
+      platform: item.platform,
+      channel_id: item.channelId,
+      content_id: item.contentId,
+      period: item.period,
+      retention_rate: item.retentionRate,
+      ctr: item.ctr,
+      ranking_live: item.rankingLive,
+      impressions: item.impressions,
+      views: item.views,
+      clicks: item.clicks,
+      watch_time_seconds: item.watchTimeSeconds,
+      source: item.source,
+      metadata: item.metadata,
+      created_by_user_id: actorUser?.id || null,
+      created_by_display_name: actorDisplayName || null,
+      created_at: nowIso,
+      updated_at: nowIso
+    }))
+
+    let mappedRows = []
+    let storage = 'local_memory'
+
+    if (supabaseAdmin) {
+      const { data, error } = await supabaseAdmin
+        .from(PLATFORM_PERFORMANCE_TABLE)
+        .insert(storageRows)
+        .select('*')
+
+      if (error) {
+        if (!isMissingRelationError(error)) {
+          return sendError(res, 500, 'INTERNAL_ERROR', `Failed to ingest platform performance: ${sanitizeSupabaseError(error)}`)
+        }
+        // Graceful fallback for local/dev when migration has not been executed yet.
+        const fallbackRows = storageRows.map((row) => ({ ...row, id: uuidv4() }))
+        localPlatformPerformanceRows.push(...fallbackRows)
+        mappedRows = fallbackRows
+          .map((row) => mapPlatformPerformanceRowWithEvaluation(row))
+          .filter(Boolean)
+        storage = 'local_memory_fallback'
+      } else {
+        mappedRows = (Array.isArray(data) ? data : [])
+          .map((row) => mapPlatformPerformanceRowWithEvaluation(row))
+          .filter(Boolean)
+        storage = 'supabase'
+      }
+    } else {
+      const localRows = storageRows.map((row) => ({ ...row, id: uuidv4() }))
+      localPlatformPerformanceRows.push(...localRows)
+      mappedRows = localRows
+        .map((row) => mapPlatformPerformanceRowWithEvaluation(row))
+        .filter(Boolean)
+    }
+
+    const summary = aggregateRealPlatformPerformance(mappedRows)
+    return sendOk(res, {
+      storage,
+      rows: mappedRows,
+      summary
+    }, 201)
+  } catch (e) {
+    return sendError(res, 500, 'INTERNAL_ERROR', 'Failed to ingest platform performance')
+  }
+})
+
+app.get('/api/dashboard/platform-performance', sensitiveAuthMiddleware, async (req, res) => {
+  try {
+    const windowDays = normalizeWindowDays(req.query?.windowDays, 30)
+    const limit = normalizeFetchLimit(req.query?.limit, 500)
+    const platformInput = String(req.query?.platform || '').trim()
+    let platformFilter = ''
+    if (platformInput) {
+      const benchmark = resolvePlatformRealPerformanceBenchmark(platformInput)
+      if (!benchmark.supported || !benchmark.platform) {
+        return sendError(res, 400, 'VALIDATION_ERROR', 'platform is invalid')
+      }
+      platformFilter = benchmark.platform
+    }
+
+    const sinceMs = Date.now() - (windowDays * 24 * 60 * 60 * 1000)
+    const sinceIso = new Date(sinceMs).toISOString()
+    let mappedRows = []
+    let storage = 'local_memory'
+
+    if (supabaseAdmin) {
+      let query = supabaseAdmin
+        .from(PLATFORM_PERFORMANCE_TABLE)
+        .select('*')
+        .gte('observed_at', sinceIso)
+        .order('observed_at', { ascending: false })
+        .limit(limit)
+
+      if (platformFilter) query = query.eq('platform', platformFilter)
+
+      const { data, error } = await query
+      if (error) {
+        if (!isMissingRelationError(error)) {
+          return sendError(res, 500, 'INTERNAL_ERROR', `Failed to read platform performance: ${sanitizeSupabaseError(error)}`)
+        }
+        const filtered = localPlatformPerformanceRows
+          .filter((row) => {
+            const platform = String(row?.platform || '').trim()
+            const observedMs = Date.parse(String(row?.observed_at || row?.observedAt || ''))
+            if (!Number.isFinite(observedMs)) return false
+            if (observedMs < sinceMs) return false
+            if (platformFilter && platform !== platformFilter) return false
+            return true
+          })
+          .sort((a, b) => Date.parse(String(b?.observed_at || '')) - Date.parse(String(a?.observed_at || '')))
+          .slice(0, limit)
+
+        mappedRows = filtered
+          .map((row) => mapPlatformPerformanceRowWithEvaluation(row))
+          .filter(Boolean)
+        storage = 'local_memory_fallback'
+      } else {
+        mappedRows = (Array.isArray(data) ? data : [])
+          .map((row) => mapPlatformPerformanceRowWithEvaluation(row))
+          .filter(Boolean)
+        storage = 'supabase'
+      }
+    } else {
+      const filtered = localPlatformPerformanceRows
+        .filter((row) => {
+          const platform = String(row?.platform || '').trim()
+          const observedMs = Date.parse(String(row?.observed_at || row?.observedAt || ''))
+          if (!Number.isFinite(observedMs)) return false
+          if (observedMs < sinceMs) return false
+          if (platformFilter && platform !== platformFilter) return false
+          return true
+        })
+        .sort((a, b) => Date.parse(String(b?.observed_at || '')) - Date.parse(String(a?.observed_at || '')))
+        .slice(0, limit)
+
+      mappedRows = filtered
+        .map((row) => mapPlatformPerformanceRowWithEvaluation(row))
+        .filter(Boolean)
+    }
+
+    const summary = aggregateRealPlatformPerformance(mappedRows)
+    return sendOk(res, {
+      storage,
+      windowDays,
+      limit,
+      platform: platformFilter || null,
+      rows: mappedRows,
+      summary
+    })
+  } catch (e) {
+    return sendError(res, 500, 'INTERNAL_ERROR', 'Failed to read platform performance')
   }
 })
 

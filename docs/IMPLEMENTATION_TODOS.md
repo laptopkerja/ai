@@ -100,6 +100,27 @@ Owner: Codex + User
 - [x] Tambahkan assertion integration untuk metadata quality di `/api/generate`
 - [x] Update `check:syntax` agar mencakup modul quality baru
 
+## Platform 17 Audit Rollout (2026-02-26)
+### Phase 1 - Plan & Baseline
+- [x] Buat dokumen rencana audit pass/fail 17 platform.
+- [x] Buat dokumen status implementasi (sudah vs belum) dengan evidence file.
+
+### Phase 1B - Real Metrics Foundation
+- [x] Tambah benchmark performa real per platform (retention/CTR/ranking live).
+- [x] Tambah evaluator + agregator verdict performa real platform.
+- [x] Tambah endpoint ingest/summary/benchmark performa real.
+- [x] Tambah SQL migration tabel `platform_performance_metrics`.
+- [x] Tambah unit + integration test untuk performa real platform.
+
+### Phase 2 - Automated Matrix
+- [ ] Tambah runner audit otomatis untuk matrix 17 platform x allowed length.
+- [ ] Implement assertion rubric lengkap (contract, guardrail, decision, final score).
+
+### Phase 3 - Reporting & Gate
+- [ ] Tambah report exporter (`JSON`, `CSV`, `Markdown`) untuk hasil audit 17 platform.
+- [ ] Tambah command `npm run audit:platform17`.
+- [ ] Integrasikan verdict `17/17 PASS` ke quality gate.
+
 ## Priority Lockdown (Internal Team 4 User)
 ### Security Perimeter (Point 1-6)
 - [x] Batasi login hanya 4 email allowlist team (hard reject di backend auth flow).
@@ -149,6 +170,8 @@ Owner: Codex + User
 - 2026-02-22: Selesai perbaikan akurasi #3: source `Supabase` di History kini pagination server-side (`range + count exact`), termasuk fallback aman untuk sort score/decision client-side.
 - 2026-02-22: Selesai perbaikan akurasi #4: dashboard cloud fetch sekarang paginated full window (tanpa hard limit 500), sehingga KPI tidak bias pada dataset besar.
 - 2026-02-22: Selesai perbaikan UX internal #5: sync Alert Center kini hanya menambah `seen/count` untuk event unik/perubahan nyata (refresh berulang tidak lagi menaikkan count).
+- 2026-02-26: Menambahkan dokumen rencana audit 17 platform (`docs/PLATFORM_17_AUDIT_PLAN.md`) dan status implementasi (`docs/PLATFORM_17_AUDIT_STATUS.md`), serta menambahkan rollout checklist audit 17 platform di tracker ini.
+- 2026-02-26: Menambahkan fondasi performa real platform: benchmark shared, evaluator backend, endpoint ingest/summary/benchmark, SQL migration `platform_performance_metrics`, dan test unit+integration terkait.
 
 ## Notes
 - Jika prioritas berubah, update urutan phase di file ini (jangan simpan hanya di chat).
