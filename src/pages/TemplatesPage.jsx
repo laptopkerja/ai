@@ -246,6 +246,14 @@ function resolvePresetActionTime(preset) {
   )
 }
 
+function hasVariantToken(source, token) {
+  const safeSource = String(source || '').toLowerCase()
+  const safeToken = String(token || '').toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  if (!safeSource || !safeToken) return false
+  const pattern = new RegExp(`(^|[^a-z0-9])${safeToken}([^a-z0-9]|$)`, 'i')
+  return pattern.test(safeSource)
+}
+
 function resolvePresetVariant(preset) {
   const source = String(
     preset?.id ||
@@ -253,8 +261,9 @@ function resolvePresetVariant(preset) {
     preset?.label ||
     ''
   ).toLowerCase()
-  if (source.includes('hard-sell') || source.includes('hard sell')) return 'hard'
-  if (source.includes('soft-education') || source.includes('soft education')) return 'soft'
+  if (hasVariantToken(source, 'hard')) return 'hard'
+  if (hasVariantToken(source, 'medium')) return 'medium'
+  if (hasVariantToken(source, 'soft')) return 'soft'
   return 'other'
 }
 
@@ -297,6 +306,7 @@ export default function TemplatesPage() {
   const [sortMode, setSortMode] = useState('recommended')
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(13)
+  const [selectedTemplateIds, setSelectedTemplateIds] = useState([])
 
   const platformOptions = useMemo(() => {
     const set = new Set()
@@ -351,6 +361,22 @@ export default function TemplatesPage() {
     () => buildModernPaginationItems(page, totalPages),
     [page, totalPages]
   )
+  const selectedTemplateIdSet = useMemo(
+    () => new Set(
+      (selectedTemplateIds || [])
+        .map((id) => String(id || '').trim())
+        .filter(Boolean)
+    ),
+    [selectedTemplateIds]
+  )
+  const selectedTemplates = useMemo(
+    () => templates.filter((preset) => selectedTemplateIdSet.has(String(preset?.id || '').trim())),
+    [templates, selectedTemplateIdSet]
+  )
+  const selectedCount = selectedTemplates.length
+  const allFilteredSelected = filteredTemplates.length > 0 && filteredTemplates.every(
+    (preset) => selectedTemplateIdSet.has(String(preset?.id || '').trim())
+  )
 
   useEffect(() => {
     if (page > totalPages) setPage(totalPages)
@@ -359,6 +385,18 @@ export default function TemplatesPage() {
   useEffect(() => {
     setPage(1)
   }, [searchQuery, platformFilter, variantFilter, sortMode, pageSize])
+
+  useEffect(() => {
+    setSelectedTemplateIds((prev) => {
+      const validIds = new Set(
+        templates
+          .map((preset) => String(preset?.id || '').trim())
+          .filter(Boolean)
+      )
+      const next = (prev || []).filter((id) => validIds.has(String(id || '').trim()))
+      return next.length === (prev || []).length ? prev : next
+    })
+  }, [templates])
 
   const selectedVersions = useMemo(() => {
     if (!historyTarget?.id) return []
@@ -631,64 +669,190 @@ export default function TemplatesPage() {
     URL.revokeObjectURL(url)
   }
 
+  function toggleTemplateSelection(id, checked) {
+    const presetId = String(id || '').trim()
+    if (!presetId) return
+    setSelectedTemplateIds((prev) => {
+      const set = new Set((prev || []).map((item) => String(item || '').trim()).filter(Boolean))
+      if (checked) set.add(presetId)
+      else set.delete(presetId)
+      return Array.from(set)
+    })
+  }
+
+  function selectAllFilteredTemplates() {
+    const ids = filteredTemplates
+      .map((preset) => String(preset?.id || '').trim())
+      .filter(Boolean)
+    setSelectedTemplateIds(Array.from(new Set(ids)))
+  }
+
+  function clearSelectedTemplates() {
+    setSelectedTemplateIds([])
+  }
+
+  function exportSelectedTemplates() {
+    if (!selectedTemplates.length) {
+      showToast('Belum ada template terpilih.', { bg: 'warning' })
+      return
+    }
+    const data = JSON.stringify(selectedTemplates, null, 2)
+    const blob = new Blob([data], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = `templates-selected-export-${Date.now()}.json`
+    anchor.click()
+    URL.revokeObjectURL(url)
+    showToast(`Export selected berhasil: ${selectedTemplates.length} template`, { bg: 'success' })
+  }
+
+  async function deleteSelectedTemplates() {
+    const selectedIds = Array.from(new Set(
+      (selectedTemplateIds || [])
+        .map((id) => String(id || '').trim())
+        .filter(Boolean)
+    ))
+    if (!selectedIds.length) {
+      showToast('Belum ada template terpilih.', { bg: 'warning' })
+      return
+    }
+    const confirmed = window.confirm(`Hapus ${selectedIds.length} template terpilih?`)
+    if (!confirmed) return
+
+    const headers = await buildAuthHeaders()
+    const requestConfig = Object.keys(headers).length ? { headers } : {}
+
+    const deleteResults = await Promise.all(
+      selectedIds.map(async (id) => {
+        try {
+          await apiAxios({
+            method: 'delete',
+            url: `/api/presets/${encodeURIComponent(id)}`,
+            ...requestConfig
+          })
+          return { id, ok: true }
+        } catch (err) {
+          return { id, ok: false }
+        }
+      })
+    )
+
+    const deletedOnServer = deleteResults.filter((item) => item.ok).length
+    const deletedLocally = selectedIds.length
+
+    setTemplates((prev) => prev.filter((preset) => {
+      const presetId = String(preset?.id || '').trim()
+      return !selectedIds.includes(presetId)
+    }))
+    setVersionsById((prev) => {
+      const next = { ...prev }
+      selectedIds.forEach((id) => {
+        if (next[id]) delete next[id]
+      })
+      return next
+    })
+    setSelectedTemplateIds([])
+
+    if (deletedOnServer === deletedLocally) {
+      showToast(`Delete selected berhasil: ${deletedLocally} template`, { bg: 'success' })
+      return
+    }
+    showToast(
+      `Delete selected: ${deletedLocally} lokal, ${deletedOnServer} sinkron server.`,
+      { bg: 'warning' }
+    )
+  }
+
   async function importFile(e) {
-    const file = e.target.files?.[0]
-    if (!file) return
-    const reader = new FileReader()
-    reader.onload = async () => {
+    const files = Array.from(e.target.files || [])
+    e.target.value = null
+    if (!files.length) return
+
+    const parseErrors = []
+    const validationErrors = []
+    const validItems = []
+
+    for (const file of files) { // eslint-disable-line no-restricted-syntax
+      let text = ''
       try {
-        const parsed = JSON.parse(reader.result)
-        const rows = Array.isArray(parsed) ? parsed : [parsed]
-        const errors = []
-        const validItems = []
-        for (let idx = 0; idx < rows.length; idx += 1) {
-          const item = rows[idx]
-          const normalized = normalizePreset(item)
-          const templateErrors = validateTemplate(normalized)
-          const lintResult = lintPresetAgainstPlatformContract(normalized)
-          if (templateErrors.length) {
-            errors.push(`Item ${idx + 1}: ${templateErrors.join('; ')}`)
-          } else if (lintResult.errors.length) {
-            errors.push(`Item ${idx + 1}: ${lintResult.errors.join('; ')}`)
-          } else {
-            validItems.push(normalized)
-          }
-        }
-
-        if (errors.length) showToast(`Import sebagian gagal: ${errors.length} item`, { bg: 'warning' })
-        if (!validItems.length) return
-
-        const headers = await buildAuthHeaders()
-        const requestConfig = Object.keys(headers).length ? { headers } : {}
-        const persisted = []
-        for (const item of validItems) { // eslint-disable-line no-restricted-syntax
-          try {
-            const resp = await apiAxios({ // eslint-disable-line no-await-in-loop
-              method: 'post',
-              url: '/api/presets',
-              data: { preset: item, action: 'import' },
-              ...requestConfig
-            })
-            if (resp.data?.ok && resp.data.data) persisted.push(normalizePresetForView(resp.data.data, TEMPLATE_SOURCE_SUPABASE))
-            else persisted.push(normalizePresetForView(item, TEMPLATE_SOURCE_LOCAL))
-          } catch (err) {
-            persisted.push(normalizePresetForView(item, TEMPLATE_SOURCE_LOCAL))
-          }
-        }
-
-        setTemplates((prev) => {
-          let next = [...prev]
-          persisted.forEach((item) => { next = mergeById(next, item) })
-          return next
-        })
-        persisted.forEach((item) => pushSnapshot(item, 'import'))
-        showToast(`Import berhasil: ${persisted.length} template`, { bg: 'success' })
+        text = await file.text() // eslint-disable-line no-await-in-loop
       } catch (err) {
-        showToast('File JSON tidak valid', { bg: 'danger' })
+        parseErrors.push(`${file.name}: gagal membaca file`)
+        continue // eslint-disable-line no-continue
+      }
+
+      let parsed
+      try {
+        parsed = JSON.parse(text)
+      } catch (err) {
+        parseErrors.push(`${file.name}: JSON tidak valid`)
+        continue // eslint-disable-line no-continue
+      }
+
+      const rows = Array.isArray(parsed) ? parsed : [parsed]
+      for (let idx = 0; idx < rows.length; idx += 1) {
+        const item = rows[idx]
+        const normalized = normalizePreset(item)
+        const templateErrors = validateTemplate(normalized)
+        const lintResult = lintPresetAgainstPlatformContract(normalized)
+        if (templateErrors.length) {
+          validationErrors.push(`${file.name} item ${idx + 1}: ${templateErrors.join('; ')}`)
+        } else if (lintResult.errors.length) {
+          validationErrors.push(`${file.name} item ${idx + 1}: ${lintResult.errors.join('; ')}`)
+        } else {
+          validItems.push(normalized)
+        }
       }
     }
-    reader.readAsText(file)
-    e.target.value = null
+
+    if (!validItems.length) {
+      showToast('Tidak ada item valid untuk di-import', { bg: 'warning' })
+      return
+    }
+
+    const dedupedById = new Map()
+    validItems.forEach((item) => {
+      const id = String(item?.id || '').trim()
+      if (!id) return
+      dedupedById.set(id, item)
+    })
+    const itemsToImport = Array.from(dedupedById.values())
+    const droppedDuplicateCount = Math.max(0, validItems.length - itemsToImport.length)
+
+    if (parseErrors.length || validationErrors.length || droppedDuplicateCount > 0) {
+      const parts = []
+      if (parseErrors.length) parts.push(`${parseErrors.length} file invalid`)
+      if (validationErrors.length) parts.push(`${validationErrors.length} item gagal validasi`)
+      if (droppedDuplicateCount > 0) parts.push(`${droppedDuplicateCount} duplikat id dilewati`)
+      showToast(`Import warning: ${parts.join(', ')}`, { bg: 'warning' })
+    }
+
+    const headers = await buildAuthHeaders()
+    const requestConfig = Object.keys(headers).length ? { headers } : {}
+    const persisted = []
+    for (const item of itemsToImport) { // eslint-disable-line no-restricted-syntax
+      try {
+        const resp = await apiAxios({ // eslint-disable-line no-await-in-loop
+          method: 'post',
+          url: '/api/presets',
+          data: { preset: item, action: 'import' },
+          ...requestConfig
+        })
+        if (resp.data?.ok && resp.data.data) persisted.push(normalizePresetForView(resp.data.data, TEMPLATE_SOURCE_SUPABASE))
+        else persisted.push(normalizePresetForView(item, TEMPLATE_SOURCE_LOCAL))
+      } catch (err) {
+        persisted.push(normalizePresetForView(item, TEMPLATE_SOURCE_LOCAL))
+      }
+    }
+
+    setTemplates((prev) => {
+      let next = [...prev]
+      persisted.forEach((item) => { next = mergeById(next, item) })
+      return next
+    })
+    persisted.forEach((item) => pushSnapshot(item, 'import'))
+    showToast(`Import berhasil: ${persisted.length} template dari ${files.length} file`, { bg: 'success' })
   }
 
   async function openHistoryModal(preset) {
@@ -763,7 +927,7 @@ export default function TemplatesPage() {
         <div className="d-flex justify-content-between align-items-center mb-2">
           <h5 className="mb-0 templates-title-compact">Templates & Presets</h5>
           <div>
-            <input id="tmpl-import" type="file" accept="application/json" style={{ display: 'none' }} onChange={importFile} />
+            <input id="tmpl-import" type="file" accept="application/json,.json" multiple style={{ display: 'none' }} onChange={importFile} />
             <Button size="sm" variant="outline-secondary" className="me-2" onClick={() => document.getElementById('tmpl-import').click()}>Import</Button>
             <Button size="sm" variant="outline-secondary" className="me-2" onClick={exportAll}>Export</Button>
             <Button
@@ -799,8 +963,9 @@ export default function TemplatesPage() {
                 </Form.Select>
                 <Form.Select value={variantFilter} onChange={(e) => setVariantFilter(e.target.value)}>
                   <option value="all">Semua Varian</option>
-                  <option value="hard">Hard Sell</option>
-                  <option value="soft">Soft Education</option>
+                  <option value="hard">Hard</option>
+                  <option value="medium">Medium</option>
+                  <option value="soft">Soft</option>
                   <option value="other">Lainnya</option>
                 </Form.Select>
                 <Form.Select value={sortMode} onChange={(e) => setSortMode(e.target.value)}>
@@ -825,8 +990,9 @@ export default function TemplatesPage() {
           <Col md={2} className="d-none d-md-block">
             <Form.Select value={variantFilter} onChange={(e) => setVariantFilter(e.target.value)}>
               <option value="all">Semua Varian</option>
-              <option value="hard">Hard Sell</option>
-              <option value="soft">Soft Education</option>
+              <option value="hard">Hard</option>
+              <option value="medium">Medium</option>
+              <option value="soft">Soft</option>
               <option value="other">Lainnya</option>
             </Form.Select>
           </Col>
@@ -857,11 +1023,42 @@ export default function TemplatesPage() {
           </Alert>
         )}
 
+        {filteredTemplates.length > 0 && (
+          <div className="templates-selection-toolbar mb-2">
+            <div className="d-flex align-items-center gap-2 flex-wrap">
+              <Form.Check
+                type="checkbox"
+                id="tmpl-select-all-filtered"
+                className="template-select-check"
+                checked={allFilteredSelected}
+                onChange={(e) => {
+                  if (e.target.checked) selectAllFilteredTemplates()
+                  else clearSelectedTemplates()
+                }}
+                label={`Select All (Filtered: ${filteredTemplates.length})`}
+              />
+              <Badge bg="secondary">Selected: {selectedCount}</Badge>
+            </div>
+            <div className="d-flex align-items-center gap-2 flex-wrap">
+              <Button size="sm" variant="outline-primary" onClick={exportSelectedTemplates} disabled={!selectedCount}>
+                Export Selected
+              </Button>
+              <Button size="sm" variant="outline-danger" onClick={deleteSelectedTemplates} disabled={!selectedCount}>
+                Delete Selected
+              </Button>
+            </div>
+          </div>
+        )}
+
         <ListGroup>
           {pagedTemplates.map((preset, idx) => (
-            <ListGroup.Item key={preset.id}>
+            <ListGroup.Item
+              key={preset.id}
+              className={selectedTemplateIdSet.has(String(preset?.id || '').trim()) ? 'template-list-item-selected' : ''}
+            >
               {(() => {
                 const presetNumber = pageStartIndex + idx + 1
+                const presetId = String(preset?.id || '').trim()
                 const sourceKey = normalizeTemplateSource(preset?._storageSource, TEMPLATE_SOURCE_LOCAL)
                 const sourceLabel = resolveTemplateSourceLabel(sourceKey)
                 const sourceIcon = resolveTemplateSourceIcon(sourceKey)
@@ -869,6 +1066,13 @@ export default function TemplatesPage() {
               <Row className="align-items-center">
                 <Col xs={10}>
                   <div className="d-flex align-items-center gap-2">
+                    <Form.Check
+                      type="checkbox"
+                      checked={selectedTemplateIdSet.has(presetId)}
+                      onChange={(e) => toggleTemplateSelection(presetId, e.target.checked)}
+                      className="template-select-check"
+                      aria-label={`Pilih template ${preset.title}`}
+                    />
                     <Badge bg="dark">#{presetNumber}</Badge>
                     <strong>{preset.title}</strong>
                   </div>

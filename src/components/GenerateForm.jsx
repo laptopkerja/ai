@@ -330,6 +330,13 @@ const CHECKLIST_DOMAIN_FIELDS = {
       required: true
     },
     {
+      name: 'checklist_brandName',
+      key: 'brand_name',
+      label: 'Brand / Merk (Opsional)',
+      placeholder: 'Wardah / Somethinc / Scarlett',
+      col: 4
+    },
+    {
       name: 'checklist_productType',
       key: 'product_type',
       label: 'Product/Content Type',
@@ -360,6 +367,13 @@ const CHECKLIST_DOMAIN_FIELDS = {
       ],
       col: 4,
       required: true
+    },
+    {
+      name: 'checklist_brandName',
+      key: 'brand_name',
+      label: 'Brand / Merk (Opsional)',
+      placeholder: 'Wardah / Emina / Skintific',
+      col: 4
     },
     {
       name: 'checklist_productType',
@@ -394,7 +408,7 @@ const CHECKLIST_DOMAIN_FIELDS = {
     {
       name: 'checklist_promoValidUntil',
       key: 'promo_valid_until',
-      label: 'Promo Valid Until',
+      label: 'Promo Valid Until (Opsional)',
       type: 'date',
       col: 4
     },
@@ -418,7 +432,7 @@ const CHECKLIST_DOMAIN_FIELDS = {
     {
       name: 'checklist_spoilerLevel',
       key: 'spoiler_level',
-      label: 'Spoiler Level',
+      label: 'Spoiler Level (Opsional)',
       type: 'select',
       options: [
         { value: '', label: '(Pilih)' },
@@ -426,13 +440,12 @@ const CHECKLIST_DOMAIN_FIELDS = {
         { value: 'light', label: 'Light' },
         { value: 'full', label: 'Full' }
       ],
-      col: 4,
-      required: true
+      col: 4
     },
     {
       name: 'checklist_referenceScope',
       key: 'reference_scope',
-      label: 'Reference Scope',
+      label: 'Reference Scope (Opsional)',
       type: 'select',
       options: [
         { value: '', label: '(Pilih)' },
@@ -546,7 +559,7 @@ const CHECKLIST_DOMAIN_FIELDS = {
       type: 'select',
       options: [
         { value: '', label: '(Pilih)' },
-        { value: 'apparel', label: 'Apparel' },
+        { value: 'apparel', label: 'Pakaian' },
         { value: 'sepatu', label: 'Sepatu' },
         { value: 'tas', label: 'Tas' },
         { value: 'accessories', label: 'Accessories' }
@@ -685,7 +698,7 @@ const CHECKLIST_DOMAIN_FIELDS = {
       options: [
         { value: '', label: '(Pilih)' },
         { value: 'alat_fitness', label: 'Alat Fitness' },
-        { value: 'apparel_olahraga', label: 'Apparel Olahraga' },
+        { value: 'apparel_olahraga', label: 'Pakaian Olahraga' },
         { value: 'sepatu_olahraga', label: 'Sepatu Olahraga' },
         { value: 'aksesoris_olahraga', label: 'Aksesoris Olahraga' }
       ],
@@ -1391,7 +1404,7 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
       extra.push('checklist_priceNow', 'checklist_platformStockInfo')
     }
     if (domainKey === 'movie_tv_tmdb' && values?.useTmdb !== false) {
-      extra.push('checklist_contentAngle', 'checklist_spoilerLevel')
+      extra.push('checklist_contentAngle')
     }
     if (platformKey === 'Blog Blogger' && domainKey !== 'blog_seo') {
       extra.push('checklist_pf_blogKeywordFocus')
@@ -1434,12 +1447,16 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
         missingLabels.push(field.label)
       }
     }
+    const requiredTotal = requiredNames.size
+    const pass = requiredTotal === 0
+      ? true
+      : (filledRequired >= requiredTotal && missingLabels.length === 0)
 
     return {
       enabled: true,
-      pass: missingLabels.length === 0,
+      pass,
       missingLabels,
-      requiredTotal: requiredNames.size,
+      requiredTotal,
       filledRequired,
       domainLabel: getChecklistDomainLabel(bundle.domainKey),
       platformLabel: getChecklistPlatformLabel(bundle.platformKey)
@@ -2428,8 +2445,8 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
 
             {checklistEnabled && (
               <div className="border rounded p-2 mt-2">
-                <Row className="g-2 align-items-end">
-                  <Col md={4}>
+                <Row className="g-2 align-items-end domain-field">
+                  <Col md={12}>
                     <Form.Label className="mb-1">Domain</Form.Label>
                     <Form.Select size="sm" {...register('checklistDomain')}>
                       {CHECKLIST_DOMAIN_OPTIONS.map((item) => (
@@ -2437,7 +2454,7 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
                       ))}
                     </Form.Select>
                   </Col>
-                  <Col md={8}>
+                  <Col className="text-checklist" md={12}>
                     <small className="text-muted d-block">
                       Isi field relevan untuk domain dan platform aktif. Checklist ini mencakup Beauty, Fashion, Mom/Baby, Food/Grocery, Gadget, Sports, Automotive, dan Health.
                     </small>
