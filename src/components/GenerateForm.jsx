@@ -882,7 +882,10 @@ const CHECKLIST_PLATFORM_FIELDS = {
   'Blog Blogger': [
     { name: 'checklist_pf_blogTitleFocus', key: 'seo_title_focus', label: 'SEO Title Focus', placeholder: 'judul dengan keyword utama', col: 4, required: true },
     { name: 'checklist_pf_blogKeywordFocus', key: 'seo_keyword_focus', label: 'SEO Keyword Focus', placeholder: 'cluster keyword utama + turunan', col: 4, required: true },
-    { name: 'checklist_pf_blogMetaIntent', key: 'meta_intent', label: 'Meta Intent', placeholder: 'ringkasan untuk CTR search', col: 4, required: true }
+    { name: 'checklist_pf_blogMetaIntent', key: 'meta_intent', label: 'Meta Intent', placeholder: 'ringkasan untuk CTR search', col: 4, required: true },
+    { name: 'checklist_pf_blogInternalLinks', key: 'internal_links', label: 'Internal Links (2-5)', placeholder: '/slug-1, /slug-2', col: 4 },
+    { name: 'checklist_pf_blogExternalReferences', key: 'external_references', label: 'External References (1-3)', placeholder: 'https://source-1, https://source-2', col: 4 },
+    { name: 'checklist_pf_blogFeaturedSnippet', key: 'featured_snippet', label: 'Featured Snippet', placeholder: 'jawaban ringkas 1-2 kalimat', col: 4 }
   ]
 }
 const ECOMMERCE_PLATFORMS = new Set(['Shopee', 'Tokopedia', 'Lazada'])
@@ -1408,6 +1411,14 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
     }
     if (platformKey === 'Blog Blogger' && domainKey !== 'blog_seo') {
       extra.push('checklist_pf_blogKeywordFocus')
+    }
+    if (platformKey === 'Blog Blogger' && domainKey === 'blog_seo') {
+      extra.push(
+        'checklist_targetWordCount',
+        'checklist_pf_blogInternalLinks',
+        'checklist_pf_blogExternalReferences',
+        'checklist_pf_blogFeaturedSnippet'
+      )
     }
 
     return Array.from(new Set(extra))
