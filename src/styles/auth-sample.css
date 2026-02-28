@@ -68,7 +68,7 @@
 			font-size:13px;
 			color: #e74c3c; /* default error color */
 			min-height:18px;
-			margin-top:6px;
+			margin-top:30px;
 		}
 		.face{
 			height: 120px;
@@ -416,7 +416,7 @@
     top: calc(38% + 30px);
 }
 }
-	@media (max-width: 576px){
+	@media (max-width: 768px){
 		.handl{ left: calc(35% - 60px); top: calc(33% + 20px); }
 		.handr{ left: calc(58% + 50px); top: calc(33% + 20px); }
 		.pawl{ left: calc(35% - 40px); top: calc(50% + 40px); }
