@@ -752,6 +752,23 @@ export default function TmdbFinderPage() {
     browseCategory: browsePicker?.category
   }
 
+  function buildReturnStateForGenerate({ includeTmdbSelectionMarker = false } = {}) {
+    const stateObj = location?.state && typeof location.state === 'object' ? location.state : null
+    const nextState = {}
+    if (includeTmdbSelectionMarker) {
+      nextState.tmdbSelectionUpdatedAt = Date.now()
+    }
+    const returnMode = String(stateObj?.returnMode || '').trim()
+    if (returnMode === 'Instant' || returnMode === 'Standard') {
+      nextState.tmdbReturnMode = returnMode
+      if (returnMode === 'Instant') {
+        const returnPreset = String(stateObj?.returnPreset || '').trim()
+        if (returnPreset) nextState.tmdbReturnPreset = returnPreset
+      }
+    }
+    return nextState
+  }
+
   useEffect(() => {
     writeTmdbFinderPrefs({
       enabled: true,
@@ -2041,7 +2058,7 @@ export default function TmdbFinderPage() {
       return false
     }
     if (navigateBack) {
-      navigate('/generate', { state: { tmdbSelectionUpdatedAt: Date.now() } })
+      navigate('/generate', { state: buildReturnStateForGenerate({ includeTmdbSelectionMarker: true }) })
       return true
     }
     setNotice('Data TMDB sudah diterapkan ke Generate. Anda bisa lanjut eksplor kandidat lain.')
@@ -2459,7 +2476,12 @@ export default function TmdbFinderPage() {
           <small className="text-muted">Cari Movie/TV, pilih detail + gambar, lalu kirim ke Generate.</small>
         </div>
         <div className="d-flex gap-2">
-          <Button type="button" variant="outline-secondary" size="sm" onClick={() => navigate('/generate')}>
+          <Button
+            type="button"
+            variant="outline-secondary"
+            size="sm"
+            onClick={() => navigate('/generate', { state: buildReturnStateForGenerate({ includeTmdbSelectionMarker: false }) })}
+          >
             Kembali ke Generate
           </Button>
         </div>

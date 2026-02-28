@@ -1253,15 +1253,26 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
     const stateObj = location?.state && typeof location.state === 'object' ? location.state : null
     const marker = Number(stateObj?.tmdbSelectionUpdatedAt || 0)
     if (!marker) return
+    const returnModeRaw = String(stateObj?.tmdbReturnMode || '').trim()
+    const returnPresetRaw = String(stateObj?.tmdbReturnPreset || '').trim()
+    const hasValidReturnMode = returnModeRaw === 'Standard' || returnModeRaw === 'Instant'
 
     const latestSelection = readTmdbGenerateSelection()
     const hasSelection = Number.isInteger(Number(latestSelection?.tmdbId)) && Number(latestSelection?.tmdbId) > 0
     if (hasSelection && !useTmdb) {
       setValue('useTmdb', true, { shouldDirty: true, shouldTouch: true })
     }
+    if (hasValidReturnMode) {
+      setValue('mode', returnModeRaw, { shouldDirty: true, shouldTouch: true })
+      if (returnModeRaw === 'Instant' && returnPresetRaw) {
+        setValue('preset', returnPresetRaw, { shouldDirty: true, shouldTouch: true })
+      }
+    }
 
     const nextState = { ...stateObj }
     delete nextState.tmdbSelectionUpdatedAt
+    delete nextState.tmdbReturnMode
+    delete nextState.tmdbReturnPreset
     navigate(location.pathname, {
       replace: true,
       state: Object.keys(nextState).length ? nextState : null
@@ -1781,8 +1792,17 @@ export default function GenerateForm({ onResult, regenerateToken = 0 }) {
     if (!useTmdb) return
     const { cleanedTopic } = resolveTopicAndImageRefs(getValues('topic'))
     const seedQuery = String(cleanedTopic || tmdbSelection?.query || '').trim()
+    const currentMode = String(getValues('mode') || 'Standard').trim()
+    const currentPreset = String(getValues('preset') || '').trim()
+    const nextState = {
+      seedQuery,
+      returnMode: (currentMode === 'Instant' || currentMode === 'Standard') ? currentMode : 'Standard'
+    }
+    if (nextState.returnMode === 'Instant' && currentPreset) {
+      nextState.returnPreset = currentPreset
+    }
     writeTmdbFinderPrefs({ enabled: true, query: seedQuery || '' })
-    navigate('/tmdb-finder', { state: { seedQuery } })
+    navigate('/tmdb-finder', { state: nextState })
   }
 
   function clearTmdbSelectionOnly() {
