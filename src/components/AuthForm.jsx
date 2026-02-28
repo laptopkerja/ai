@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Card, Alert, Spinner } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
+import { Icon } from '@iconify/react'
 import { supabase } from '../supabase/client'
 import { useNavigate } from 'react-router-dom'
 import { apiAxios } from '../lib/apiRuntime'
@@ -9,17 +9,20 @@ export default function AuthForm() {
   const { register, handleSubmit } = useForm()
   const [isSigningUp, setIsSigningUp] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
   const [cooldown, setCooldown] = useState(0)
   const [signupPolicy, setSignupPolicy] = useState(null)
   const navigate = useNavigate()
   const publicSignupEnabled = !!signupPolicy?.publicSignupEnabled
+  const emailField = register('email', { required: true })
+  const passwordField = register('password', { required: true })
 
   useEffect(() => {
     let t
     if (cooldown > 0) {
-      t = setInterval(() => setCooldown(c => c - 1), 1000)
+      t = setInterval(() => setCooldown((c) => c - 1), 1000)
     }
     return () => clearInterval(t)
   }, [cooldown])
@@ -36,7 +39,9 @@ export default function AuthForm() {
       }
     }
     loadSignupPolicy()
-    return () => { mounted = false }
+    return () => {
+      mounted = false
+    }
   }, [])
 
   useEffect(() => {
@@ -67,11 +72,11 @@ export default function AuthForm() {
           if (p.data?.ok) setSignupPolicy(p.data.data)
         } catch (e) {}
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { error: signInError } = await supabase.auth.signInWithPassword({
           email: data.email,
           password: data.password
         })
-        if (error) throw error
+        if (signInError) throw signInError
         const { data: sessionData } = await supabase.auth.getSession()
         const accessToken = sessionData?.session?.access_token
         if (!accessToken) throw new Error('Sesi login tidak ditemukan')
@@ -91,11 +96,11 @@ export default function AuthForm() {
       if (import.meta.env.DEV) {
         console.error('Auth error', err)
       }
-      // Handle Supabase rate limit (429) explicitly and show cooldown
       const status = err?.response?.status || err?.status
       const apiError = err?.response?.data?.error
       const message = apiError?.message || err?.message || (err?.error_description ?? null) || JSON.stringify(err)
       const normalizedMessage = String(message || '').trim()
+
       if (status === 429 || /too many requests/i.test(message)) {
         setError('Too many requests. Please wait 30 seconds before trying again.')
         setCooldown(30)
@@ -108,7 +113,6 @@ export default function AuthForm() {
           setError(normalizedMessage || 'Akses ditolak.')
         }
       } else if (status === 400) {
-        // Handle specific Supabase auth errors (e.g. email not confirmed)
         if (/email_not_confirmed|Email not confirmed/i.test(normalizedMessage)) {
           setError('Email belum dikonfirmasi. Periksa email Anda untuk link verifikasi atau minta admin mengkonfirmasi akun dari Supabase Dashboard.')
         } else if (/invalid login credentials/i.test(normalizedMessage)) {
@@ -127,46 +131,98 @@ export default function AuthForm() {
     }
   }
 
-  // Google OAuth disabled per requirement - using email/password only
+  const statusMessage = error || success || ''
+  const statusStyle = success && !error ? { color: '#2ecc71' } : undefined
 
   return (
-    <Card className="mx-auto" style={{ maxWidth: 480 }}>
-      <Card.Body>
-        <h3 className="mb-3">{isSigningUp ? 'Sign up' : 'Sign in'}</h3>
-        {error && <Alert variant="danger">{error}</Alert>}
-        {success && <Alert variant="success">{success}</Alert>}
-        {signupPolicy && !publicSignupEnabled && (
-          <Alert variant="info">
-            Pendaftaran akun publik dinonaktifkan. Akun baru dibuat manual oleh owner.
-          </Alert>
-        )}
-        {isSigningUp && signupPolicy && (
-          <Alert variant={signupPolicy.signupOpen ? 'info' : 'warning'}>
-            Slot pendaftaran: {signupPolicy.currentUsers}/{signupPolicy.maxUsers}
-          </Alert>
-        )}
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <Form.Group className="mb-2" controlId="email">
-            <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="you@example.com" {...register('email', { required: true })} />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="password">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" {...register('password', { required: true })} />
-          </Form.Group>
-          <div className="d-grid gap-2">
-            <Button variant="primary" type="submit" disabled={loading}>
-              {loading ? <Spinner animation="border" size="sm" /> : (isSigningUp ? 'Create account' : 'Sign in')}
-            </Button>
-            {publicSignupEnabled && (
-              <Button variant="outline-secondary" onClick={() => setIsSigningUp(v => !v)}>
-                {isSigningUp ? 'Have an account? Sign in' : "Don't have account? Sign up"}
-              </Button>
-            )}
-            {/* OAuth disabled: email/password only */}
+    <div className={`auth-sample-page${isPasswordFocused ? ' hands-cover' : ''}`}>
+      <div className="bg-animation">
+        <div id="stars"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
+        <div id="stars4"></div>
+      </div>
+
+      <div className="login">
+        <form className="form" onSubmit={handleSubmit(onSubmit)}>
+          <div className="inputs">
+            <Icon icon="mdi:account" className="fa" aria-hidden="true" />
+            <input
+              id="email"
+              type="email"
+              placeholder="Email"
+              autoComplete="username"
+              {...emailField}
+            />
+            <br />
+            <Icon icon="mdi:lock" className="fa" aria-hidden="true" />
+            <input
+              id="password"
+              type="password"
+              placeholder="Password"
+              autoComplete={isSigningUp ? 'new-password' : 'current-password'}
+              {...passwordField}
+              onFocus={() => setIsPasswordFocused(true)}
+              onBlur={(event) => {
+                passwordField.onBlur(event)
+                setIsPasswordFocused(false)
+              }}
+            />
+            <br />
           </div>
-        </Form>
-      </Card.Body>
-    </Card>
+          <div style={{ textAlign: 'center', marginTop: 12 }}>
+            <button type="submit" disabled={loading || cooldown > 0}>
+              {loading
+                ? 'PROCESSING...'
+                : isSigningUp
+                  ? 'CREATE ACCOUNT'
+                  : cooldown > 0
+                    ? `RETRY IN ${cooldown}S`
+                    : 'LOGIN'}
+            </button>
+          </div>
+          {publicSignupEnabled && (
+            <div style={{ textAlign: 'center', marginTop: 10 }}>
+              <button
+                type="button"
+                onClick={() => setIsSigningUp((v) => !v)}
+                disabled={loading}
+                style={{
+                  fontSize: 12,
+                  textTransform: 'none',
+                  backgroundColor: 'rgba(20, 26, 38, 0.52)',
+                  boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.18)'
+                }}
+              >
+                {isSigningUp ? 'Have an account? Sign in' : "Don't have account? Sign up"}
+              </button>
+            </div>
+          )}
+          <div id="loginStatus" className="status" style={statusStyle}>{statusMessage}</div>
+        </form>
+      </div>
+
+      <div className="backg">
+        <div className={`panda${success ? ' success' : ''}`}>
+          <div className="earl"></div>
+          <div className="earr"></div>
+          <div className="face">
+            <div className="blshl"></div>
+            <div className="blshr"></div>
+            <div className="eyel"><div className="eyeball1"></div></div>
+            <div className="eyer"><div className="eyeball2"></div></div>
+            <div className="nose"><div className="line"></div></div>
+            <div className="mouth">
+              <div className="m"><div className="m1"></div></div>
+              <div className="mm"><div className="m1"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="pawl"><div className="p1"><div className="p2"></div><div className="p3"></div><div className="p4"></div></div></div>
+      <div className="pawr"><div className="p1"><div className="p2"></div><div className="p3"></div><div className="p4"></div></div></div>
+      <div className="handl"></div>
+      <div className="handr"></div>
+    </div>
   )
 }
