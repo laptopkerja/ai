@@ -63,6 +63,47 @@
 			font-size: 14px;
 		}
 
+		.password-field{
+			position: relative;
+			width: 100%;
+		}
+
+		.password-field input{
+			padding-right: 54px;
+		}
+
+		.password-field .password-toggle{
+			position: absolute;
+			right: 6px;
+			top: 50%;
+			transform: translateY(-50%);
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 20px;
+			height: 20px;
+			background: transparent;
+			border: 0;
+			box-shadow: none;
+			color: #4d4449;
+			font-family: 'Ubuntu', sans-serif;
+			font-size: 12px;
+			text-transform: none;
+			padding: 0;
+			margin: 0;
+			line-height: 1;
+			cursor: pointer;
+		}
+
+		.password-field .password-toggle:hover{
+			color: #2d2b2d;
+		}
+
+		.password-field .password-toggle svg{
+			width: 16px;
+			height: 16px;
+		}
+
 		.status{
 			text-align:center;
 			font-size:13px;
@@ -101,7 +142,7 @@
 		}
 		.panda{
 			position: relative;
-			bottom: 0;
+			bottom: -6px;
 			left: 6px;
 
 		} 
@@ -417,10 +458,13 @@
 }
 }
 	@media (max-width: 768px){
-		.handl{ left: calc(35% - 60px); top: calc(33% + 20px); }
-		.handr{ left: calc(58% + 50px); top: calc(33% + 20px); }
-		.pawl{ left: calc(35% - 40px); top: calc(50% + 40px); }
-		.pawr{ left: calc(66% - 10px); top: calc(50% + 40px); }
+    .panda{
+     bottom: 28px;
+    }
+		.handl{ left: calc(35% - 60px); top: calc(29% + 20px); }
+		.handr{ left: calc(58% + 50px); top: calc(29% + 20px); }
+		.pawl{ left: calc(33% - 40px); top: calc(50% + 40px); }
+		.pawr{ left: calc(68% - 10px); top: calc(50% + 40px); }
 		.backg{ top: calc(30% - 86px); }
 		.login{ width: 86%; left: 50%; top: calc(48%); transform: translate(-50%,-50%); }
 		.hands-cover .handl{ 

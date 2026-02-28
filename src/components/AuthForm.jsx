@@ -10,6 +10,7 @@ export default function AuthForm() {
   const [isSigningUp, setIsSigningUp] = useState(false)
   const [loading, setLoading] = useState(false)
   const [isPasswordFocused, setIsPasswordFocused] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
   const [cooldown, setCooldown] = useState(0)
@@ -117,9 +118,6 @@ export default function AuthForm() {
           setError('Email belum dikonfirmasi. Periksa email Anda untuk link verifikasi atau minta admin mengkonfirmasi akun dari Supabase Dashboard.')
         } else if (/invalid login credentials/i.test(normalizedMessage)) {
           setError('Email/password salah, atau akun belum ada di project Supabase yang sedang aktif.')
-          if (typeof window !== 'undefined') {
-            window.alert('Email/password salah. Silakan cek dan coba lagi.')
-          }
         } else {
           const detail = err?.response?.data ?? err?.response ?? null
           setError(`Login gagal: ${normalizedMessage}${detail ? ' - ' + JSON.stringify(detail) : ''}`)
@@ -146,9 +144,6 @@ export default function AuthForm() {
     }
 
     setError(message)
-    if (typeof window !== 'undefined') {
-      window.alert(message)
-    }
   }
 
   const statusMessage = error || success || ''
@@ -176,18 +171,31 @@ export default function AuthForm() {
             />
             <br />
             <Icon icon="mdi:lock" className="fa" aria-hidden="true" />
-            <input
-              id="password"
-              type="password"
-              placeholder="Password"
-              autoComplete={isSigningUp ? 'new-password' : 'current-password'}
-              {...passwordField}
-              onFocus={() => setIsPasswordFocused(true)}
-              onBlur={(event) => {
-                passwordField.onBlur(event)
-                setIsPasswordFocused(false)
-              }}
-            />
+            <div className="password-field">
+              <input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Password"
+                autoComplete={isSigningUp ? 'new-password' : 'current-password'}
+                {...passwordField}
+                onFocus={() => setIsPasswordFocused(true)}
+                onBlur={(event) => {
+                  passwordField.onBlur(event)
+                  setIsPasswordFocused(false)
+                }}
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword((v) => !v)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                <Icon
+                  icon={showPassword ? 'clarity:eye-hide-line' : 'clarity:eye-show-line'}
+                  aria-hidden="true"
+                />
+              </button>
+            </div>
             <br />
           </div>
           <div style={{ textAlign: 'center', marginTop: 12 }}>
