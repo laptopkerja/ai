@@ -117,6 +117,9 @@ export default function AuthForm() {
           setError('Email belum dikonfirmasi. Periksa email Anda untuk link verifikasi atau minta admin mengkonfirmasi akun dari Supabase Dashboard.')
         } else if (/invalid login credentials/i.test(normalizedMessage)) {
           setError('Email/password salah, atau akun belum ada di project Supabase yang sedang aktif.')
+          if (typeof window !== 'undefined') {
+            window.alert('Email/password salah. Silakan cek dan coba lagi.')
+          }
         } else {
           const detail = err?.response?.data ?? err?.response ?? null
           setError(`Login gagal: ${normalizedMessage}${detail ? ' - ' + JSON.stringify(detail) : ''}`)
@@ -128,6 +131,23 @@ export default function AuthForm() {
       }
     } finally {
       setLoading(false)
+    }
+  }
+
+  function onInvalid(validationErrors) {
+    const emailMissing = !!validationErrors?.email
+    const passwordMissing = !!validationErrors?.password
+
+    let message = 'Email dan password wajib diisi.'
+    if (emailMissing && !passwordMissing) {
+      message = 'Email wajib diisi.'
+    } else if (!emailMissing && passwordMissing) {
+      message = 'Password wajib diisi.'
+    }
+
+    setError(message)
+    if (typeof window !== 'undefined') {
+      window.alert(message)
     }
   }
 
@@ -144,7 +164,7 @@ export default function AuthForm() {
       </div>
 
       <div className="login">
-        <form className="form" onSubmit={handleSubmit(onSubmit)}>
+        <form className="form" noValidate onSubmit={handleSubmit(onSubmit, onInvalid)}>
           <div className="inputs">
             <Icon icon="mdi:account" className="fa" aria-hidden="true" />
             <input
