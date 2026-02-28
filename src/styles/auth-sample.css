@@ -416,7 +416,7 @@
     top: calc(38% + 30px);
 }
 }
-	@media (max-width: 480px){
+	@media (max-width: 576px){
 		.handl{ left: calc(35% - 60px); top: calc(33% + 20px); }
 		.handr{ left: calc(58% + 50px); top: calc(33% + 20px); }
 		.pawl{ left: calc(35% - 40px); top: calc(50% + 40px); }
