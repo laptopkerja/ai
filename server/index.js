@@ -1887,6 +1887,60 @@ function appendTmdbContextToPrompt(prompt, tmdbContext) {
   return `${prompt || ''}${block}`
 }
 
+function resolveTmdbTitleValue(tmdbContext, fallbackTopic = '') {
+  const title = normalizeTmdbText(tmdbContext?.title || '')
+  if (title) return title
+  const originalTitle = normalizeTmdbText(tmdbContext?.originalTitle || '')
+  if (originalTitle) return originalTitle
+  return normalizeTmdbText(fallbackTopic || '')
+}
+
+function replaceLegacyTmdbTitleTokens(text, tmdbTitle = '') {
+  const source = String(text || '')
+  if (!source || !tmdbTitle) return source
+  return source
+    .replace(/\{\s*judul\s*tv\s*yang\s*di\s*pilih\s*\}/gi, tmdbTitle)
+    .replace(/\{\s*judul\s*tv\s*yang\s*dipilih\s*\}/gi, tmdbTitle)
+    .replace(/\{\s*judul_tv_yang_dipilih\s*\}/gi, tmdbTitle)
+    .replace(/\{\s*judul_tv\s*\}/gi, tmdbTitle)
+    .replace(/\{\s*tmdb_title\s*\}/gi, tmdbTitle)
+    .replace(/\{\{\s*tmdb\.title\s*\}\}/gi, tmdbTitle)
+    .replace(/\{\{\s*tmdbTitle\s*\}\}/gi, tmdbTitle)
+}
+
+function applyTmdbTitleToCtaConfig(config, tmdbContext, fallbackTopic = '') {
+  if (!isPlainObject(config) || !Array.isArray(config.cta) || !config.cta.length) return config
+  const tmdbTitle = resolveTmdbTitleValue(tmdbContext, fallbackTopic)
+  if (!tmdbTitle) return config
+
+  const compileContext = {
+    ...config,
+    tmdb: {
+      title: tmdbTitle,
+      mediaType: tmdbContext?.mediaType || null,
+      referenceScope: tmdbContext?.referenceScope || null
+    },
+    tmdbTitle,
+    judul_tv: tmdbTitle
+  }
+
+  let changed = false
+  const nextCta = config.cta.map((item) => {
+    if (!isPlainObject(item) || typeof item.text !== 'string' || !item.text.trim()) return item
+    const compiledText = compilePrompt(item.text, compileContext)
+    const resolvedText = replaceLegacyTmdbTitleTokens(compiledText, tmdbTitle)
+    if (resolvedText === item.text) return item
+    changed = true
+    return { ...item, text: resolvedText }
+  })
+
+  if (!changed) return config
+  return {
+    ...config,
+    cta: nextCta
+  }
+}
+
 function buildTmdbMeta(tmdbContext) {
   if (!tmdbContext || typeof tmdbContext !== 'object') return null
   const normalizedFactLocks = normalizeTmdbFactLocks(tmdbContext.factLocks, tmdbContext.mediaType)
@@ -4074,6 +4128,68 @@ function applyQualityToGeneratedResult(result, genPayload) {
   return applyGenerationQualityGuardrails(result, buildQualityContext(genPayload))
 }
 
+function normalizePositiveInteger(raw) {
+  const num = Number(raw)
+  if (!Number.isFinite(num)) return null
+  const value = Math.floor(num)
+  return value > 0 ? value : null
+}
+
+function isGenericSeasonScopeLabel(raw) {
+  const value = normalizeTmdbText(raw || '')
+  if (!value) return false
+  return /^season[\s-]*\d+$/i.test(value)
+}
+
+function isGenericEpisodeScopeLabel(raw) {
+  const value = normalizeTmdbText(raw || '')
+  if (!value) return false
+  return /^episode[\s-]*\d+$/i.test(value)
+}
+
+function buildTvScopedTitleFromTmdb(tmdbContext) {
+  if (!isPlainObject(tmdbContext) || !tmdbContext.used) return ''
+  if (String(tmdbContext.mediaType || '').trim().toLowerCase() !== 'tv') return ''
+  const title = normalizeTmdbText(tmdbContext.title || tmdbContext.originalTitle || '')
+  if (!title) return ''
+
+  const referenceScope = String(tmdbContext.referenceScope || 'series').trim().toLowerCase()
+  const seasonNumber = normalizePositiveInteger(tmdbContext?.season?.number)
+  const episodeNumber = normalizePositiveInteger(tmdbContext?.episode?.number)
+  const seasonNameRaw = normalizeTmdbText(tmdbContext?.season?.name || '')
+  const episodeNameRaw = normalizeTmdbText(tmdbContext?.episode?.name || '')
+  const seasonName = seasonNameRaw && !isGenericSeasonScopeLabel(seasonNameRaw)
+    ? seasonNameRaw
+    : ''
+  const episodeName = episodeNameRaw && !isGenericEpisodeScopeLabel(episodeNameRaw)
+    ? episodeNameRaw
+    : ''
+  let suffix = 'Series'
+
+  if (referenceScope === 'episode') {
+    if (seasonNumber && episodeNumber) suffix = `Episode S${seasonNumber}E${episodeNumber}`
+    else if (episodeNumber) suffix = `Episode E${episodeNumber}`
+    else suffix = 'Episode'
+    if (episodeName) suffix = `${suffix}: ${episodeName}`
+  } else if (referenceScope === 'season') {
+    if (seasonNumber) suffix = `Season ${seasonNumber}`
+    else suffix = 'Season'
+    if (seasonName) suffix = `${suffix}: ${seasonName}`
+  }
+
+  return `${title} - ${suffix}`
+}
+
+function applyTvReferenceScopeTitle(result, tmdbContext) {
+  if (!isPlainObject(result)) return result
+  const forcedTitle = buildTvScopedTitleFromTmdb(tmdbContext)
+  if (!forcedTitle) return result
+  return {
+    ...result,
+    title: forcedTitle
+  }
+}
+
 function mockGenerate(data) {
   const id = uuidv4()
   // data may be legacy form values or normalized payload
@@ -5243,15 +5359,20 @@ async function buildGeneratePromptPayload(payloadInput = {}, { authUserId = '' }
       )
     }
 
-    const tpl = defaultTemplateForConfig(normalized)
-    const basePrompt = compilePrompt(tpl, promptInput)
-    const withInstructionPrompt = appendExtraInstructionToPrompt(basePrompt, extraInstruction)
     const tmdbContext = await fetchTmdbEnrichmentContext({
       topic: promptInput?.topic || normalized?.topic || '',
       extraInstruction,
       language: promptInput?.language || normalized?.language || '',
       preference: tmdbPreference
     })
+    const promptInputResolved = applyTmdbTitleToCtaConfig(
+      promptInput,
+      tmdbContext,
+      promptInput?.topic || normalized?.topic || ''
+    )
+    const tpl = defaultTemplateForConfig(promptInputResolved)
+    const basePrompt = compilePrompt(tpl, promptInputResolved)
+    const withInstructionPrompt = appendExtraInstructionToPrompt(basePrompt, extraInstruction)
     const withTmdbPrompt = appendTmdbContextToPrompt(withInstructionPrompt, tmdbContext)
     const finalPrompt = appendImageReferencesToPrompt(withTmdbPrompt, imageReferences)
 
@@ -5260,7 +5381,7 @@ async function buildGeneratePromptPayload(payloadInput = {}, { authUserId = '' }
       provider,
       model,
       presetId,
-      normalizedConfig: promptInput,
+      normalizedConfig: promptInputResolved,
       prompt: finalPrompt,
       imageReferences,
       warnings: visionRouting.warnings,
@@ -5299,14 +5420,19 @@ async function buildGeneratePromptPayload(payloadInput = {}, { authUserId = '' }
     throw createRequestError(400, 'VALIDATION_ERROR', 'Manual payload validation failed after overrides', postOverrideErrs)
   }
 
-  const tpl = defaultTemplateForConfig(normalized)
-  const basePrompt = compilePrompt(tpl, normalized)
   const tmdbContext = await fetchTmdbEnrichmentContext({
     topic: normalized?.topic || normalized?.title || '',
     extraInstruction,
     language: normalized?.language || '',
     preference: tmdbPreference
   })
+  const normalizedResolved = applyTmdbTitleToCtaConfig(
+    normalized,
+    tmdbContext,
+    normalized?.topic || normalized?.title || ''
+  )
+  const tpl = defaultTemplateForConfig(normalizedResolved)
+  const basePrompt = compilePrompt(tpl, normalizedResolved)
   const withTmdbPrompt = appendTmdbContextToPrompt(basePrompt, tmdbContext)
   const finalPrompt = appendImageReferencesToPrompt(withTmdbPrompt, imageReferences)
 
@@ -5315,7 +5441,7 @@ async function buildGeneratePromptPayload(payloadInput = {}, { authUserId = '' }
     provider,
     model,
     presetId: null,
-    normalizedConfig: normalized,
+    normalizedConfig: normalizedResolved,
     prompt: finalPrompt,
     imageReferences,
     warnings: visionRouting.warnings,
@@ -5379,7 +5505,7 @@ app.post('/api/generate', sensitiveAuthMiddleware, async (req, res) => {
     async function generateUsingProviderOrMock(genPayload) {
       const provider = genPayload.provider || null
       const model = genPayload.model || null
-      const baseResult = mockGenerate(genPayload)
+      const baseResult = applyTvReferenceScopeTitle(mockGenerate(genPayload), genPayload.tmdb)
       if (!ENABLE_REAL_PROVIDER_CALLS || !provider || !providerContext.providerApiKey) {
         return applyQualityToGeneratedResult(baseResult, genPayload)
       }
@@ -5408,18 +5534,21 @@ app.post('/api/generate', sensitiveAuthMiddleware, async (req, res) => {
             featuredSnippet: baseResult.featuredSnippet
           }
         })
-        const merged = mergeProviderResult(baseResult, providerResult)
+        const merged = applyTvReferenceScopeTitle(
+          mergeProviderResult(baseResult, providerResult),
+          genPayload.tmdb
+        )
         return applyQualityToGeneratedResult(merged, genPayload)
       } catch (e) {
         if (ALLOW_MOCK_FALLBACK_ON_PROVIDER_ERROR) {
-          const fallbackResult = {
+          const fallbackResult = applyTvReferenceScopeTitle({
             ...baseResult,
             meta: {
               ...(baseResult.meta || {}),
               providerCall: 'mock_fallback',
               providerError: String(e?.message || e || 'Provider call failed').slice(0, 180)
             }
-          }
+          }, genPayload.tmdb)
           return applyQualityToGeneratedResult(fallbackResult, genPayload)
         }
         const providerDetails = isPlainObject(e?.details) ? e.details : {}
